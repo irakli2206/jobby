@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_Georgian } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/header";
+import localFont from 'next/font/local'
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 
 const inter = Inter({ subsets: ["latin"] });
+const NotoSans = Noto_Sans_Georgian({ subsets: ['georgian'] })
+const glaho = localFont({
+  src: './fonts/bpg-glaho-webfont.woff2',
+  display: 'swap',
+  variable: '--font-glaho'
+})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${NotoSans.className} `}>
+        {/* <Header /> */}
+        <div className=" flex justify-center ">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
