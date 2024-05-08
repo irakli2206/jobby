@@ -8,11 +8,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const inter = Inter({ subsets: ["latin"] });
 const NotoSans = Noto_Sans_Georgian({ subsets: ['georgian'] })
-const glaho = localFont({
-  src: './fonts/bpg-glaho-webfont.woff2',
-  display: 'swap',
-  variable: '--font-glaho'
-})
+ 
 
 export const metadata: Metadata = {
   title: "Create Next App",

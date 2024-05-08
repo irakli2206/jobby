@@ -10,6 +10,7 @@ import { BsBriefcaseFill } from "react-icons/bs";
 export type Coordinates = [number, number]
 
 export type Job = {
+  id: number
   coordinates: Coordinates
   companyName: string
   companyLogo: string
@@ -20,6 +21,7 @@ export type Job = {
 
 const jobsData: Job[] = [
   {
+    id: 1,
     coordinates: [42, 45],
     companyName: 'Twinit',
     companyLogo: "https://twinit.ge/assets/img/logo-blue.svg",
@@ -28,6 +30,7 @@ const jobsData: Job[] = [
     title: 'პროგრამისტი'
   },
   {
+    id: 2,
     coordinates: [42.2, 42.7],
     companyName: 'Example Company',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
@@ -36,6 +39,7 @@ const jobsData: Job[] = [
     title: 'დიზაინერი'
   },
   {
+    id: 3,
     coordinates: [41.6, 41.7],
     companyName: 'Another Company',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
@@ -44,6 +48,7 @@ const jobsData: Job[] = [
     title: 'პროექტმენეჯერი'
   },
   {
+    id: 4,
     coordinates: [41.55, 45],
     companyName: 'Tech Solutions',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
@@ -52,6 +57,7 @@ const jobsData: Job[] = [
     title: 'სისტემური ანალიტიკოსი'
   },
   {
+    id: 5,
     coordinates: [42, 44],
     companyName: 'Software Co.',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
@@ -60,6 +66,7 @@ const jobsData: Job[] = [
     title: 'სოფთვერი დეველოპერი'
   },
   {
+    id: 6,
     coordinates: [41.6, 43],
     companyName: 'Creative Solutions',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
