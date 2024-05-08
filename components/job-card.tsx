@@ -15,16 +15,16 @@ import { TbCurrencyLari } from "react-icons/tb";
 import { Job } from '@/app/page';
 import classNames from 'classnames';
 
-type Props = Job & {
+type Props = {
+    job: Job
     locateJob: (job: Job | null) => void
     locatedJob: Job | null
 }
 
-const JobCard = ({ companyLogo, companyName, coordinates, location, salary, title, locateJob, locatedJob }: Props) => {
-     
-    const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) ==  JSON.stringify(coordinates) : false
+const JobCard = ({ job, locateJob, locatedJob }: Props) => {
+    const { companyLogo, companyName, coordinates, location, salary, title } = job
+    const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
 
-    console.log(companyName, isLocated)
 
     return (
         <Card className={classNames("w-full shadow-none hover:bg-primary-foreground cursor-pointer transition", {
@@ -57,15 +57,7 @@ const JobCard = ({ companyLogo, companyName, coordinates, location, salary, titl
                                 })}
                                 onClick={(e) => {
                                     e.stopPropagation()
-                                    if(isLocated) locateJob(null)
-                                    else locateJob({
-                                        companyLogo,
-                                        companyName,
-                                        coordinates,
-                                        location,
-                                        salary,
-                                        title
-                                    })
+                                    locateJob(job)
                                 }}>
                                 <GrMap size={18} className='' />
                             </Button>

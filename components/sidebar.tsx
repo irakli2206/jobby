@@ -27,7 +27,7 @@ const Sidebar = ({jobsData, locateJob, locatedJob}: Props) => {
             <main className='flex flex-col gap-4 py-8 overflow-y-scroll no-scrollbar'>
                 {jobsData.map(job => {
 
-                    return <JobCard {...job} locateJob={locateJob} locatedJob={locatedJob} />
+                    return <JobCard key={JSON.stringify(job.coordinates)} job={job} locateJob={locateJob} locatedJob={locatedJob} />
                 })}
                 
             </main>

@@ -89,7 +89,10 @@ export default function Home() {
   const locateJob = (job: Job | null) => {
 
     if (mapRef) {
-      if (!job) setLocatedJob(null)
+      if (JSON.stringify(job) === JSON.stringify(locatedJob)) {
+        console.log('reached')
+        setLocatedJob(null)
+      }
       else {
         const jobCoordinates = job.coordinates
 
@@ -101,7 +104,7 @@ export default function Home() {
 
         })
 
-        setViewState({ ...viewState, latitude: jobCoordinates[0], longitude: jobCoordinates[1], zoom: 10 })
+        setViewState({ ...viewState, latitude: jobCoordinates[0], longitude: jobCoordinates[1], zoom: 12 })
         setLocatedJob(job)
 
 
@@ -133,13 +136,16 @@ export default function Home() {
         style={{ width: '50%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/light-v11"
       >
-        {jobsData.map(({ coordinates, companyLogo }) => {
+        {jobsData.map((job) => {
+          const { coordinates } = job
           const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
           return (
             <Marker
               latitude={coordinates[0]}
               longitude={coordinates[1]}
-
+              onClick={() => {
+                locateJob(job)
+              }}
             >
               {/* <div className={classNames(`w-20  bg-white px-1 py-2 rounded-lg shadow`, {
                 'w-10': viewState.zoom < 8
@@ -151,7 +157,7 @@ export default function Home() {
                   className=' w-full h-full'
                 />
               </div> */}
-              <div className={classNames(`w-7 h-7 flex items-center justify-center text-white bg-primary rounded-full `, {
+              <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center text-white bg-primary rounded-full `, {
                 '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)]': isLocated
               })}>
                 <BsBriefcaseFill size={16} />
