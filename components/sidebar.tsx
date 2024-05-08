@@ -25,17 +25,17 @@ const Sidebar = ({ jobsData, locateJob, locatedJob }: Props) => {
 
 
     return (
-        <div className='w-1/2 h-screen flex flex-col p-4 border-r '>
+        <div className='w-1/2 h-full flex flex-col p-4 border-r '>
             <header className="flex justify-between gap-8">
-                <div className="flex flex-col gap-4 px-4 pb-2">
+                <div className="flex flex-col gap-4  pb-2">
                     <h1 className='text-3xl font-medium'>Jobby.ge</h1>
                     <p className='text-muted-foreground '>საუკეთესო ადგული ქართულ ვებ სივრცეში სამსახურის საპოვნელად</p>
                 </div>
-                <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button>
+                {/* <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button> */}
             </header>
-            <main className="flex flex-row gap-4 justify-between pt-4">
+            <main className="flex flex-row gap-2 justify-between pt-4 pb-2 ">
                 <Input
-                placeholder='სამუშაოს დასახელება'
+                placeholder='სამუშაოს ან კომპანიის დასახელება'
                 />
                 <Select>
                     <SelectTrigger className="w-[180px]">

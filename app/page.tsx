@@ -125,7 +125,7 @@ export default function Home() {
 
 
   return (
-    <main className="flex min-h-screen w-full justify-between ">
+    <main className="flex h-full w-full justify-between ">
       <Sidebar jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
       <Map
         ref={mapRef}

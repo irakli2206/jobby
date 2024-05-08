@@ -28,13 +28,14 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
 
 
     return (
-        <Link
-            href={job.id.toString()}
+
+        <Card className={classNames("w-full shadow-none hover:bg-primary-foreground cursor-pointer transition", {
+            // "border-green-300 bg-green-50": title === 'პროგრამისტი'
+        })}
+            onClick={() => console.log('clicked')}
         >
-            <Card className={classNames("w-full shadow-none hover:bg-primary-foreground cursor-pointer transition", {
-                // "border-green-300 bg-green-50": title === 'პროგრამისტი'
-            })}
-                onClick={() => console.log('clicked')}
+            <Link
+                href={job.id.toString()}
             >
 
                 <CardContent className='py-4 px-6'>
@@ -60,13 +61,14 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                         'border-green-300 bg-green-50 text-green-500 hover:text-green-500 hover:bg-green-50 hover:border-green-300 hover:opacity-75': isLocated
                                     })}
                                     onClick={(e) => {
+                                        e.preventDefault()
                                         e.stopPropagation()
                                         locateJob(job)
                                     }}>
                                     <GrMap size={18} className='' />
                                 </Button>
                             </header>
-                            <footer className='flex gap-4 mt-4 text-sm'>
+                            <footer className='flex gap-4 mt-2 text-sm'>
                                 <div className="flex gap-1 items-center text-muted-foreground">
                                     <IoIosPin />
                                     {location}
@@ -80,9 +82,9 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                         </section>
                     </div>
                 </CardContent>
+            </Link>
+        </Card>
 
-            </Card>
-        </Link>
     )
 }
 

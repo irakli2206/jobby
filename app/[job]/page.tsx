@@ -27,7 +27,7 @@ const job = {
 const Job = ({ params }: Props) => {
     console.log(params)
     return (
-        <div className='py-24 px-4 max-w-7xl'>
+        <div className='py-12 px-4 max-w-7xl mx-auto'>
             <div className="px-4 sm:px-0">
                 <div className='w-40 h-20 relative mb-2'>
                     <Image
