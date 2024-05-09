@@ -1,5 +1,33 @@
 import React from 'react'
-import { getUser } from '../action'
+import { getProfile, getUser } from '../action'
+import { redirect } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { EllipsisVertical, Plus } from 'lucide-react'
+import { getJobsByUser } from './action'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import Image from 'next/image'
+import { GrMap } from "react-icons/gr";
+import { IoIosPin } from "react-icons/io";
+import { TbCurrencyLari } from "react-icons/tb";
+import { Job } from '@/app/page';
+import classNames from 'classnames';
+import Link from 'next/link';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 const people = [
   {
@@ -57,34 +85,74 @@ const people = [
 ]
 
 const Dashboard = async () => {
-  const user = await getUser()
-  console.log(user)
+  const user = await getProfile()
+
+  if (!user) redirect('/login')
+
+  const jobs = await getJobsByUser(user.id)
+
+  const jobSlots = Array(user.job_limit).fill({})
+  jobs?.forEach((job, i) => jobSlots[i] = job)
+  console.log(jobSlots)
+
   return (
     <div className='max-w-7xl py-12 mx-auto w-full'>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-4 items-center">
         <h1 className='text-xl font-semibold'>შენი განცხადებები</h1>
-        <p>განთავსებადი განცხადება: 3</p>
+        <div className='text-sm flex gap-2 items-center'>
+          <p>განთავსებადი განცხადება: {user.job_limit}</p>
+          <Button variant='ghost' className='text-muted-foreground' ><Plus size={16} className='mr-1' />ზღვრის გაზრდა</Button>
+        </div>
       </div>
-      <ul role="list" className="divide-y divide-gray-100">
-        {people.map((person) => (
-          <li key={person.email} className="flex justify-between gap-x-6 py-5">
-            <div className="flex min-w-0 gap-x-4">
-              <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="" />
-              <div className="min-w-0 flex-auto">
-                <p className="text-sm font-semibold leading-6 text-gray-900">{person.name}</p>
-                <p className="mt-1 truncate text-xs leading-5 text-gray-500">{person.email}</p>
+      <ul role="list" className="divide-y divide-gray-200">
+
+
+        {jobSlots && jobSlots.map(({ id, title, company_logo, company_name, location, salary }: any) => {
+          if (id) return (
+            <li key={id} className="flex justify-between gap-x-6 py-5">
+              <div className="flex min-w-0 gap-x-4">
+                <div className="h-20 w-24">
+                  <Image
+                    src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
+                    alt=''
+                    width={500}
+                    height={1}
+                    className='object-contain h-full'
+                  />
+
+                </div>
+                <div className="min-w-0 flex-auto">
+                  <p className="text-sm font-semibold leading-6 text-gray-900">{title}</p>
+                  <p className="mt-1 truncate text-xs leading-5 text-gray-500">{company_name}</p>
+                </div>
               </div>
-            </div>
-            <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-              <p className="text-sm leading-6 text-gray-900">{person.role}</p>
+              <div className="flex items-center gap-4">
+                <Button variant='outline'>ნახვა</Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Button size='icon' variant='link'>
+                      <EllipsisVertical className='text-muted-foreground' />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>შეცვლა</DropdownMenuItem>
+                    <DropdownMenuItem>დამალვა</DropdownMenuItem>
 
-              <p className="mt-1 text-xs leading-5 text-gray-500">
-                ვადა გასდის <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
-              </p>
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
-            </div>
-          </li>
-        ))}
+              </div>
+            </li>
+          )
+          else return (
+            <li key={id} className="flex justify-between gap-x-6 ">
+              <Button variant='ghost' asChild className="w-full p-12 hover:bg-zinc-50  flex items-center justify-center text-muted-foreground font-medium">
+                <Link href='/dashboard/job/create' className='flex items-center text-sm'><Plus size={14} className='mr-1' /> დაამატე განცხადება</Link>
+              </Button>
+            </li>
+          )
+        })}
+
       </ul>
     </div>
   )

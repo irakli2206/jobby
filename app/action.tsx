@@ -29,7 +29,7 @@ export async function getProfile() {
 export async function signout() {
     const supabase = createClient()
     await supabase.auth.signOut()
-    // revalidatePath('/')
+    revalidatePath('/')
 }
 
 

@@ -36,60 +36,62 @@ import classNames from "classnames"
 import { useEffect, useState } from "react"
 import { getUser, signout } from "@/app/action"
 import { ExitIcon } from '@radix-ui/react-icons'
+import { createClient } from "@/utils/supabase/client"
 
+type Props = {
+  user: any
+}
 
-const Header = () => {
+const Header = ({ user }: Props) => {
   const path = usePathname()
-  let [user, setUser] = useState<any>()
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUser()
-      setUser(userData)
-    }
-    fetchUser()
-  }, [])
 
-  console.log(user)
+  // const signout = async() => {
+  //   const supabase = createClient()
+  //   await supabase.auth.signOut()
+  // }
 
 
   return (
-    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background/20  px-4 md:px-6">
+    <header className="sticky backdrop-blur-sm top-0 flex h-16 items-center gap-4 border-b bg-background/50  px-4 md:px-6">
       <nav className="hidden max-w-7xl w-full mx-auto flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="#"
+          href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
-        <Link
-          href="/"
-          className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-            "text-foreground": path === '/'
-          })}
-        >
-          ძებნა
-        </Link>
-        <Link
-          href="faq"
-          className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-            "text-foreground": path === '/faq'
-          })}
-        >
-          FAQ
-        </Link>
-
-        <div className="flex  items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
+        <div className="mx-auto flex gap-8">
+          <Link
+            href="about"
+            className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
+              "text-foreground": path === '/'
+            })}
+          >
+            ჩვენ შესახებ
+          </Link>
+          <Link
+            href="faq"
+            className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
+              "text-foreground": path === '/faq'
+            })}
+          >
+            კითხვები
+          </Link>
+        </div>
+        <div className="flex justify-self-end items-center gap-4  md:gap-2 lg:gap-4">
           {user ?
-            <Button variant='outline' className='' onClick={signout} >
+            <Button variant='outline' className='' onClick={() => {
+              signout()
+            }} >
               <ExitIcon className="rotate-180 mr-2" /> გამოსვლა
             </Button>
             :
             null
           }
           <Button asChild className=' ' >
-            <Link href='/signup' >განათავსე განცხადება </Link>
+            <Link href={user ? '/dashboard' : '/login'} >განათავსე განცხადება </Link>
           </Button>
 
         </div>
