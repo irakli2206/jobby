@@ -35,20 +35,26 @@ const Sidebar = ({ jobsData, locateJob, locatedJob }: Props) => {
             </header>
             <main className="flex flex-row gap-2 justify-between pt-4 pb-2 ">
                 <Input
-                placeholder='სამუშაოს ან კომპანიის დასახელება'
+                    placeholder='სამუშაოს ან კომპანიის დასახელება'
                 />
                 <Select>
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger className="w-[180px] max-w-[180px] min-w-[180px]">
                         <SelectValue  placeholder="აირჩიე ქალაქი" />
                     </SelectTrigger>
-                    <SelectContent>
-
-                        <SelectItem value="თბილისი">თბილისი</SelectItem>
-                        <SelectItem value="ქუთაისი">ქუთაისი</SelectItem>
-                        <SelectItem value="რუსთავი">რუსთავი</SelectItem>
-                        <SelectItem value="ბათუმი">ბათუმი</SelectItem>
-                        <SelectItem value="ზუგდიდი">ზუგდიდი</SelectItem>
-
+                    <SelectContent className=' '>
+                        <SelectGroup>
+                            <SelectItem value="თბილისი">თბილისი</SelectItem>
+                            <SelectItem value="კახეთი">კახეთი</SelectItem>
+                            <SelectItem value="შიდა ქართლი">შიდა ქართლი</SelectItem>
+                            <SelectItem value="ქვემო ქართლი">ქვემო ქართლი</SelectItem>
+                            <SelectItem value="იმერეთი">იმერეთი</SelectItem>
+                            <SelectItem value="გურია">გურია</SelectItem>
+                            <SelectItem value="სამეგრელო-ზემო სვანეთი">სამეგრელო-ზემო სვანეთი</SelectItem>
+                            <SelectItem value="სამცხე-ჯავახეთი">სამცხე-ჯავახეთი</SelectItem>
+                            <SelectItem value="რაჭა-ლეჩხუმი და ქვემო სვანეთი">რაჭა-ლეჩხუმი და ქვემო სვანეთი</SelectItem>
+                            <SelectItem value="მცხეთა-მთიანეთი">მცხეთა-მთიანეთი</SelectItem>
+                            <SelectItem value="აჭარა">აჭარა</SelectItem>
+                        </SelectGroup>
                     </SelectContent>
                 </Select>
 

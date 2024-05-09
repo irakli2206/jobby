@@ -51,7 +51,7 @@ const Dashboard = async () => {
 
 
         {jobSlots && jobSlots.map(({ id, title, company_logo, company_name, location, salary, created_at }: any, i) => {
-           
+
           if (id) {
             const creationDate = moment(created_at)
             console.log(creationDate)
@@ -81,7 +81,11 @@ const Dashboard = async () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Button variant='outline'>ნახვა</Button>
+                  <Button asChild variant='outline'>
+                    <Link href={`/dashboard/job/${id}`} >
+                      ნახვა
+                    </Link>
+                  </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger>
                       <Button size='icon' variant='link'>
