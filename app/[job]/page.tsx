@@ -19,7 +19,7 @@ const job = {
     coordinates: [42, 45],
     companyName: 'Twinit',
     companyLogo: "https://twinit.ge/assets/img/logo-blue.svg",
-    location: "თბილისი",
+    region: "თბილისი",
     salary: "3200",
     title: 'პროგრამისტი'
 }
@@ -38,7 +38,7 @@ const Job = ({ params }: Props) => {
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
                 <p className="  mt-1 max-w-2xl font-semibold text-gray-500">{job.companyName}</p>
-                {/* <p className="mt-3 max-w-2xl text-sm  text-gray-500">{job.location}</p> */}
+                {/* <p className="mt-3 max-w-2xl text-sm  text-gray-500">{job.region}</p> */}
             </div>
             <div className="mt-6 border-t border-gray-200">
                 <dl className="divide-y divide-gray-200">

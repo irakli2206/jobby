@@ -14,7 +14,7 @@ export type Job = {
   coordinates: Coordinates
   companyName: string
   companyLogo: string
-  location: string
+  region: string
   salary: string
   title: string
 }
@@ -25,7 +25,7 @@ const jobsData: Job[] = [
     coordinates: [42, 45],
     companyName: 'Twinit',
     companyLogo: "https://twinit.ge/assets/img/logo-blue.svg",
-    location: "თბილისი",
+    region: "თბილისი",
     salary: "3200",
     title: 'პროგრამისტი'
   },
@@ -34,7 +34,7 @@ const jobsData: Job[] = [
     coordinates: [42.2, 42.7],
     companyName: 'Example Company',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    location: "ქუთაისი",
+    region: "ქუთაისი",
     salary: "2800",
     title: 'დიზაინერი'
   },
@@ -43,7 +43,7 @@ const jobsData: Job[] = [
     coordinates: [41.6, 41.7],
     companyName: 'Another Company',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    location: "ბათუმი",
+    region: "ბათუმი",
     salary: "3500",
     title: 'პროექტმენეჯერი'
   },
@@ -52,7 +52,7 @@ const jobsData: Job[] = [
     coordinates: [41.55, 45],
     companyName: 'Tech Solutions',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    location: "რუსთავი",
+    region: "რუსთავი",
     salary: "3000",
     title: 'სისტემური ანალიტიკოსი'
   },
@@ -61,7 +61,7 @@ const jobsData: Job[] = [
     coordinates: [42, 44],
     companyName: 'Software Co.',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    location: "გორი",
+    region: "გორი",
     salary: "3300",
     title: 'სოფთვერი დეველოპერი'
   },
@@ -70,7 +70,7 @@ const jobsData: Job[] = [
     coordinates: [41.6, 43],
     companyName: 'Creative Solutions',
     companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    location: "ახალციხე",
+    region: "ახალციხე",
     salary: "2900",
     title: 'გრაფიკური დიზაინერი'
   }

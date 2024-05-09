@@ -9,7 +9,7 @@ import classNames from 'classnames';
 import { randomUUID } from 'crypto';
 import { Delete, DeleteIcon, Plus, Trash } from 'lucide-react';
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsBriefcaseFill } from 'react-icons/bs';
 import Map, { LngLat, MapRef, Marker, ViewState } from 'react-map-gl';
 import {
@@ -21,18 +21,24 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { clearCache, getUser } from '@/app/action';
+import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
 
 const CreateJob = () => {
-
+    const supabase = createClient()
+    const router = useRouter()
+    const [loading, setLoading] = useState(false)
     const [jobData, setJobData] = useState<any>({
         id: crypto.randomUUID(),
+        user_id: "",
         title: "",
         company_name: "",
         description: "",
         responsibilities: [],
         required_experiences: [],
         salary: "",
-        location: "",
+        region: "",
         coordinates: [],
         application_instruction: ""
     })
@@ -40,57 +46,69 @@ const CreateJob = () => {
 
     const { toast } = useToast()
 
-    const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary || !jobData.location || !application_instruction) {
-            console.log('reached')
-            toast({
-                title: "შეცდომა",
-                description: 'გთხოვთ შეავსოთ ან წაშალოთ ცარიელი ველები',
-                duration: 5000,
-                variant: 'destructive'
+    useEffect(() => {
+        const getUserData = async () => {
+            const userData = await getUser()
+            if (userData) setJobData({
+                ...jobData,
+                user_id: userData.id
             })
+        }
+        getUserData()
+    }, [])
+
+    const validateFields = () => {
+        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary || !jobData.region || !jobData.application_instruction) {
+            throw new Error("შეავსე ან წაშალე ცარიელი ველები")
         }
     }
 
-    console.log(jobData.responsibilities)
-    // const handleSave = async () => {
-    //     try {
-    //         setLoading(true)
-    //         const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('avatars').upload(`public/${profile.id}`, avatar as File, {
-    //             upsert: true,
-    //             contentType: 'image/jpeg'
-    //         })
+    console.log(jobData)
+    const handleSave = async () => {
 
-    //         if (imageUploadError) return toast({
-    //             title: "Error",
-    //             description: imageUploadError.message,
-    //             duration: 3000,
-    //             variant: 'destructive'
-    //         })
+        try {
+            validateFields()
+            setLoading(true)
+            // const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('avatars').upload(`public/${profile.id}`, avatar as File, {
+            //     upsert: true,
+            //     contentType: 'image/jpeg'
+            // })
 
-    //         const { error, status } = await supabase.from('profiles').update({
-    //             ...profile,
-    //             avatar: "https://ctvgjowlmxhioryyhtkv.supabase.co/storage/v1/object/public/avatars/" + imageUpload.path
-    //         }).eq('id', profile.id)
-    //         toast({
-    //             title: "Success",
-    //             description: "Your profile details have been updated",
-    //             duration: 3000,
-    //         })
+            // if (imageUploadError) return toast({
+            //     title: "Error",
+            //     description: imageUploadError.message,
+            //     duration: 3000,
+            //     variant: 'destructive'
+            // })
 
-    //         clearCache('/')
+            const { error, status} = await supabase.from('jobs').insert({
+                ...jobData
+            })
 
-    //     } catch (e) {
-    //         toast({
-    //             title: "Oops",
-    //             description: JSON.stringify(e),
-    //             duration: 3000,
-    //         })
-    //     } finally {
-    //         setLoading(false)
-    //     }
+            if(error) throw new Error(error.message)
 
-    // }
+            toast({
+                title: "წარმატება",
+                description: "ახალი სამსახური წარმატებით იქნა დამატებული",
+                duration: 3000,
+            })
+
+            clearCache('/')
+
+            router.push('/dashboard')
+
+        } catch (e) {
+            toast({
+                title: "შეცდომა",
+                description: e.message,
+                duration: 3000,
+                variant: 'destructive'
+            })
+        } finally {
+            setLoading(false)
+        }
+
+    }
 
     return (
         <div className='py-12 px-4 max-w-7xl w-full mx-auto'>
@@ -108,13 +126,29 @@ const CreateJob = () => {
 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="title">სამსახურის დასახელება</Label>
-                    <Input type="text" id="title" placeholder="ვებ დეველოპერი" />
+                    <Input type="text" id="title" placeholder="ვებ დეველოპერი"
+                        value={jobData.title}
+                        onChange={(e) => {
+                            setJobData({
+                                ...jobData,
+                                title: e.target.value
+                            })
+                        }}
+                    />
                 </div>
 
 
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                     <Label htmlFor="name">კომპანიის დასახელება</Label>
-                    <Input type="text" id="name" placeholder="Apple" />
+                    <Input type="text" id="name" placeholder="Apple"
+                        value={jobData.company_name}
+                        onChange={(e) => {
+                            setJobData({
+                                ...jobData,
+                                company_name: e.target.value
+                            })
+                        }}
+                    />
                 </div>
                 {/* <p className="mt-3 max-w-2xl text-sm  text-gray-500">{job.location}</p> */}
             </div>
@@ -253,7 +287,13 @@ const CreateJob = () => {
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <Select>
+                            <Select onValueChange={(e) =>
+                                setJobData({
+                                    ...jobData,
+                                    region: e
+                                })}
+                                value={jobData.region}
+                            >
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="აირჩიე მხარე" />
                                 </SelectTrigger>
@@ -270,7 +310,7 @@ const CreateJob = () => {
                                     <SelectItem value="რაჭა-ლეჩხუმი და ქვემო სვანეთი">რაჭა-ლეჩხუმი და ქვემო სვანეთი</SelectItem>
                                     <SelectItem value="მცხეთა-მთიანეთი">მცხეთა-მთიანეთი</SelectItem>
                                     <SelectItem value="აჭარა">აჭარა</SelectItem>
-                                 </SelectContent>
+                                </SelectContent>
                             </Select>
                         </dd>
                     </div>
@@ -319,11 +359,11 @@ const CreateJob = () => {
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <Textarea
                                 maxLength={200}
-                                value={jobData.description}
+                                value={jobData.application_instruction}
                                 onChange={(e) => {
                                     setJobData({
                                         ...jobData,
-                                        description: e.target.value
+                                        application_instruction: e.target.value
                                     })
                                 }}
 
@@ -333,7 +373,7 @@ const CreateJob = () => {
                 </dl>
             </div>
 
-            <Button size={'lg'} className='my-12 w-full' onClick={validateFields}>შენახვა</Button>
+            <Button size={'lg'} className='my-12 w-full' onClick={handleSave}>შენახვა</Button>
         </div>
     )
 }
