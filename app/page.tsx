@@ -6,6 +6,7 @@ import Sidebar from "@/components/sidebar";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { BsBriefcaseFill } from "react-icons/bs";
+import { getFilteredJobs } from "./action";
 
 export type Coordinates = [number, number]
 
@@ -19,65 +20,16 @@ export type Job = {
   title: string
 }
 
-const jobsData: Job[] = [
-  {
-    id: 1,
-    coordinates: [42, 45],
-    companyName: 'Twinit',
-    companyLogo: "https://twinit.ge/assets/img/logo-blue.svg",
-    region: "თბილისი",
-    salary: "3200",
-    title: 'პროგრამისტი'
-  },
-  {
-    id: 2,
-    coordinates: [42.2, 42.7],
-    companyName: 'Example Company',
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    region: "ქუთაისი",
-    salary: "2800",
-    title: 'დიზაინერი'
-  },
-  {
-    id: 3,
-    coordinates: [41.6, 41.7],
-    companyName: 'Another Company',
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    region: "ბათუმი",
-    salary: "3500",
-    title: 'პროექტმენეჯერი'
-  },
-  {
-    id: 4,
-    coordinates: [41.55, 45],
-    companyName: 'Tech Solutions',
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    region: "რუსთავი",
-    salary: "3000",
-    title: 'სისტემური ანალიტიკოსი'
-  },
-  {
-    id: 5,
-    coordinates: [42, 44],
-    companyName: 'Software Co.',
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    region: "გორი",
-    salary: "3300",
-    title: 'სოფთვერი დეველოპერი'
-  },
-  {
-    id: 6,
-    coordinates: [41.6, 43],
-    companyName: 'Creative Solutions',
-    companyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png",
-    region: "ახალციხე",
-    salary: "2900",
-    title: 'გრაფიკური დიზაინერი'
-  }
-];
+
 
 export default function Home() {
   const mapRef = useRef<MapRef | null>(null)
+
+  const [filters, setFilters] = useState({
+    title: "",
+    region: ''
+  })
+  const [jobsData, setJobsData] = useState([])
   const [locatedJob, setLocatedJob] = useState<Job | null>(null)
   const [viewState, setViewState] = useState<Partial<ViewState>>({
     longitude: 44,
@@ -93,6 +45,30 @@ export default function Home() {
     // }
   })
 
+
+
+
+  useEffect(() => {
+    const getJobsData = async () => {
+      try {
+        const jobs = await getFilteredJobs(filters.title, filters.region)
+        if (jobs.error) throw new Error(jobs.error.message)
+
+        setJobsData(jobs)
+
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    getJobsData()
+  }, [filters])
+
+  const handleFilterChange = (key: string, value: string) => {
+    console.log(key, value)
+    if(key === 'region' && value === filters.region) setFilters({ ...filters, [key]: undefined })
+    setFilters({ ...filters, [key]: value })
+  }
+
   const locateJob = (job: Job | null) => {
 
     if (mapRef) {
@@ -101,7 +77,7 @@ export default function Home() {
         setLocatedJob(null)
       }
       else {
-        const jobCoordinates = job.coordinates
+        const jobCoordinates = job!.coordinates
 
         mapRef.current.flyTo({
           center: [jobCoordinates[1], jobCoordinates[0]],
@@ -126,7 +102,7 @@ export default function Home() {
 
   return (
     <main className="flex h-full w-full justify-between ">
-      <Sidebar jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+      <Sidebar titleFilter={filters.title} regionFilter={filters.region} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
       <Map
         ref={mapRef}
         minZoom={7}

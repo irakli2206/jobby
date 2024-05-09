@@ -88,9 +88,7 @@ const Dashboard = async () => {
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <Button size='icon' variant='link'>
-                        <EllipsisVertical className='text-muted-foreground' />
-                      </Button>
+                      <EllipsisVertical className='text-muted-foreground' />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem>შეცვლა</DropdownMenuItem>

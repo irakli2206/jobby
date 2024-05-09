@@ -20,7 +20,7 @@ export async function getProfile() {
     const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id).maybeSingle()
 
 
-    if (profileError) throw Error("No profile found")
+    if (profileError) return { error: profileError.message }
 
     return profile
 }
@@ -35,4 +35,26 @@ export async function signout() {
 
 export async function clearCache(path: string, type: 'layout' | 'page' = 'page') {
     revalidatePath(path, type)
+}
+
+export async function getJobById(jobId: string) {
+    const supabase = createClient()
+    const { data, error } = await supabase.from('jobs').select().eq('id', jobId).single()
+
+    if (error) return { error: error.message }
+
+    return data
+}
+
+
+export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined) {
+    const supabase = createClient()
+    let query = supabase.from('jobs').select()
+    if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
+    if (regionFilter) query = query.eq('region', regionFilter)
+
+    const { data, error } = await query
+    if (error) return { error: error.message }
+
+    return data
 }

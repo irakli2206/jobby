@@ -23,7 +23,7 @@ type Props = {
 }
 
 const JobCard = ({ job, locateJob, locatedJob }: Props) => {
-    const { companyLogo, companyName, coordinates, location, salary, title } = job
+    const { companyLogo, companyName, coordinates, region, salary, title } = job
     const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
 
 
@@ -71,7 +71,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                             <footer className='flex gap-4 mt-2 text-sm'>
                                 <div className="flex gap-1 items-center text-muted-foreground">
                                     <IoIosPin />
-                                    {location}
+                                    {region}
                                 </div>
                                 <div className="flex gap-1 items-center text-muted-foreground">
                                     <TbCurrencyLari />

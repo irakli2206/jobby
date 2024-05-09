@@ -16,12 +16,15 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 
 
 export type Props = {
+    titleFilter: string
+    regionFilter: string | undefined
+    handleFilterChange: (key: string, value: string | undefined) => void
     jobsData: Job[]
     locateJob: (job: Job | null) => void
     locatedJob: Job | null
 }
 
-const Sidebar = ({ jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ titleFilter, regionFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
 
 
     return (
@@ -35,13 +38,33 @@ const Sidebar = ({ jobsData, locateJob, locatedJob }: Props) => {
             </header>
             <main className="flex flex-row gap-2 justify-between pt-4 pb-2 ">
                 <Input
-                    placeholder='სამუშაოს ან კომპანიის დასახელება'
+                    placeholder='სამსახურის დასახელება'
+                    value={titleFilter}
+                    onChange={(e) => handleFilterChange('title', e.target.value)}
                 />
-                <Select>
+                <Select
+                    key={+new Date()}
+                    defaultValue={regionFilter}
+                    value={regionFilter}
+                    onValueChange={(e) => {
+                        handleFilterChange('region', e)
+                    }}
+                >
                     <SelectTrigger className="w-[180px] max-w-[180px] min-w-[180px]">
-                        <SelectValue  placeholder="აირჩიე ქალაქი" />
+                        <SelectValue placeholder="აირჩიე მხარე" />
                     </SelectTrigger>
-                    <SelectContent className=' '>
+                    <SelectContent >
+                        <Button
+                            className="w-full px-2 mb-2"
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleFilterChange('region', undefined)
+                            }}
+                        >
+                            გაწმენდა
+                        </Button>
                         <SelectGroup>
                             <SelectItem value="თბილისი">თბილისი</SelectItem>
                             <SelectItem value="კახეთი">კახეთი</SelectItem>
@@ -55,7 +78,9 @@ const Sidebar = ({ jobsData, locateJob, locatedJob }: Props) => {
                             <SelectItem value="მცხეთა-მთიანეთი">მცხეთა-მთიანეთი</SelectItem>
                             <SelectItem value="აჭარა">აჭარა</SelectItem>
                         </SelectGroup>
+
                     </SelectContent>
+
                 </Select>
 
                 <Button className=' '>

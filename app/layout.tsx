@@ -7,6 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import Loading from "./loading";
 import { getUser } from "./action";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/footer";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,9 +32,10 @@ export default async function RootLayout({
         {/* <Header /> */}
         <div className=" flex flex-col justify-center ">
           <Header user={user} />
-          <section className='flex h-[calc(100vh-64px)] '>
+          <section className='flex  h-[calc(100vh-64px)] '>
             {children}
           </section>
+          <Footer />
         </div>
         <Toaster />
       </body>

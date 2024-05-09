@@ -80,12 +80,12 @@ const CreateJob = () => {
             //     duration: 3000,
             //     variant: 'destructive'
             // })
+            const formattedJobData = { ...jobData }
+            formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
+            formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
+            const { error, status } = await supabase.from('jobs').insert(formattedJobData)
 
-            const { error, status} = await supabase.from('jobs').insert({
-                ...jobData
-            })
-
-            if(error) throw new Error(error.message)
+            if (error) throw new Error(error.message)
 
             toast({
                 title: "წარმატება",
