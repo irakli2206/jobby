@@ -121,6 +121,7 @@ export default function Home() {
           zoom: 6
         }}
         {...viewState}
+        maxBounds={[[41, 42], [46, 42]]}
         onMove={(e) => setViewState(e.viewState)}
         style={{ width: '50%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/light-v11"
