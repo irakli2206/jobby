@@ -27,9 +27,10 @@ export default function Home() {
 
   const [filters, setFilters] = useState({
     title: "",
-    region: ''
+    region: "",
+    industry: ""
   })
-  const [jobsData, setJobsData] = useState([])
+  const [jobsData, setJobsData] = useState<any[]>([])
   const [locatedJob, setLocatedJob] = useState<Job | null>(null)
   const [viewState, setViewState] = useState<Partial<ViewState>>({
     longitude: 44,
@@ -46,26 +47,36 @@ export default function Home() {
   })
 
 
+  const filterJobs = async () => {
+    try {
+      const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry)
+      //@ts-ignore
+      if (jobs.error) throw new Error(jobs.error.message)
 
+      setJobsData(jobs.data!)
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   useEffect(() => {
     const getJobsData = async () => {
       try {
-        const jobs = await getFilteredJobs(filters.title, filters.region)
+        const jobs = await getFilteredJobs()
         if (jobs.error) throw new Error(jobs.error.message)
 
-        setJobsData(jobs)
+        setJobsData(jobs.data!)
 
       } catch (e) {
         console.log(e)
       }
     }
     getJobsData()
-  }, [filters])
+  }, [])
 
-  const handleFilterChange = (key: string, value: string) => {
+  const handleFilterChange = (key: string, value: string | undefined) => {
     console.log(key, value)
-    if(key === 'region' && value === filters.region) setFilters({ ...filters, [key]: undefined })
     setFilters({ ...filters, [key]: value })
   }
 
@@ -82,16 +93,12 @@ export default function Home() {
         mapRef.current.flyTo({
           center: [jobCoordinates[1], jobCoordinates[0]],
           zoom: 12,
-          duration: 2000,
+          duration: 1000,
           essential: true,
 
         })
 
-        setViewState({ ...viewState, latitude: jobCoordinates[0], longitude: jobCoordinates[1], zoom: 12 })
         setLocatedJob(job)
-
-
-
       }
 
 
@@ -99,10 +106,9 @@ export default function Home() {
   }
 
 
-
   return (
-    <main className="flex h-full w-full justify-between ">
-      <Sidebar titleFilter={filters.title} regionFilter={filters.region} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+    <main className="flex h-[calc(100vh-64px)] w-full justify-between ">
+      <Sidebar filterJobs={filterJobs} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
       <Map
         ref={mapRef}
         minZoom={7}
@@ -124,6 +130,7 @@ export default function Home() {
           const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
           return (
             <Marker
+              key={job.id}
               latitude={coordinates[0]}
               longitude={coordinates[1]}
               onClick={() => {

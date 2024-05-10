@@ -16,16 +16,17 @@ import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 
 
 export type Props = {
+    filterJobs: Function
     titleFilter: string
     regionFilter: string | undefined
+    industryFilter: string | undefined
     handleFilterChange: (key: string, value: string | undefined) => void
     jobsData: Job[]
     locateJob: (job: Job | null) => void
     locatedJob: Job | null
 }
 
-const Sidebar = ({ titleFilter, regionFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
-
+const Sidebar = ({ filterJobs, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
 
     return (
         <div className='w-1/2 h-full flex flex-col p-4 border-r '>
@@ -51,7 +52,7 @@ const Sidebar = ({ titleFilter, regionFilter, handleFilterChange, jobsData, loca
                     }}
                 >
                     <SelectTrigger className="w-[180px] max-w-[180px] min-w-[180px]">
-                        <SelectValue placeholder="აირჩიე მხარე" />
+                        <SelectValue placeholder="მხარე" />
                     </SelectTrigger>
                     <SelectContent >
                         <Button
@@ -82,8 +83,49 @@ const Sidebar = ({ titleFilter, regionFilter, handleFilterChange, jobsData, loca
                     </SelectContent>
 
                 </Select>
+                <Select
+                    key={`${+new Date()}-industry`}
+                    defaultValue={industryFilter}
+                    value={industryFilter}
+                    onValueChange={(e) => {
+                        handleFilterChange('industry', e)
+                    }}
+                >
+                    <SelectTrigger className="w-[180px] max-w-[180px] min-w-[180px]">
+                        <SelectValue placeholder="კატეგორია" />
+                    </SelectTrigger>
+                    <SelectContent >
+                        <Button
+                            className="w-full px-2 mb-2"
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleFilterChange('industry', undefined)
+                            }}
+                        >
+                            გაწმენდა
+                        </Button>
+                        <SelectGroup>
+                            <SelectItem value="ფინანსები">ფინანსები</SelectItem>
+                            <SelectItem value="გაყიდვები">გაყიდვები</SelectItem>
+                            <SelectItem value="მარკეტინგი">მარკეტინგი</SelectItem>
+                            <SelectItem value="IT/პროგრამირება">IT/პროგრამირება</SelectItem>
+                            <SelectItem value="მედია">მედია</SelectItem>
+                            <SelectItem value="განათლება">განათლება</SelectItem>
+                            <SelectItem value="სამართალი">სამართალი</SelectItem>
+                            <SelectItem value="ჯანმრთელობა/მედიცინა">ჯანმრთელობა/მედიცინა</SelectItem>
+                            <SelectItem value="კვება">კვება</SelectItem>
+                            <SelectItem value="მშენებლობა">მშენებლობა</SelectItem>
+                            <SelectItem value="უსაფრთხოება">უსაფრთხოება</SelectItem>
+                            <SelectItem value="მიწოდება/ლოგისტიკა">მიწოდება/ლოგისტიკა</SelectItem>
+                            <SelectItem value="სხვა">სხვა</SelectItem>
+                        </SelectGroup>
 
-                <Button className=' '>
+                    </SelectContent>
+
+                </Select>
+                <Button onClick={() => filterJobs()} className=' '>
                     <MagnifyingGlassIcon className='mr-2' />
                     ძებნა
                 </Button>

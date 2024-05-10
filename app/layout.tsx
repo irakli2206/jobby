@@ -32,7 +32,7 @@ export default async function RootLayout({
         {/* <Header /> */}
         <div className=" flex flex-col justify-center ">
           <Header user={user} />
-          <section className='flex  h-[calc(100vh-64px)] '>
+          <section className='flex  min-h-[calc(100vh-64px)] '>
             {children}
           </section>
           <Footer />

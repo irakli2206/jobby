@@ -47,14 +47,15 @@ export async function getJobById(jobId: string) {
 }
 
 
-export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined) {
+export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined, industryFilter?: string | undefined) {
     const supabase = createClient()
     let query = supabase.from('jobs').select()
     if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
     if (regionFilter) query = query.eq('region', regionFilter)
+    if (industryFilter) query = query.eq('industry', industryFilter)
 
     const { data, error } = await query
-    if (error) return { error: error.message }
+    if (error) return { data:null, error: error.message }
 
-    return data
+    return {data, error:null}
 }

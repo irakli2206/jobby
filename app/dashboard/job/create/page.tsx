@@ -152,8 +152,41 @@ const CreateJob = () => {
                 </div>
                 {/* <p className="mt-3 max-w-2xl text-sm  text-gray-500">{job.location}</p> */}
             </div>
+
             <div className="mt-6 border-t border-gray-200">
+
                 <dl className="divide-y divide-gray-200">
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">კატეგორია</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <Select onValueChange={(e) =>
+                            setJobData({
+                                ...jobData,
+                                industry: e
+                            })}
+                            value={jobData.industry}
+                        >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="კატეგორია" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="ფინანსები">ფინანსები</SelectItem>
+                                <SelectItem value="გაყიდვები">გაყიდვები</SelectItem>
+                                <SelectItem value="მარკეტინგი">მარკეტინგი</SelectItem>
+                                <SelectItem value="IT/პროგრამირება">IT/პროგრამირება</SelectItem>
+                                <SelectItem value="მედია">მედია</SelectItem>
+                                <SelectItem value="განათლება">განათლება</SelectItem>
+                                <SelectItem value="სამართალი">სამართალი</SelectItem>
+                                <SelectItem value="ჯანმრთელობა/მედიცინა">ჯანმრთელობა/მედიცინა</SelectItem>
+                                <SelectItem value="კვება">კვება</SelectItem>
+                                <SelectItem value="მშენებლობა">მშენებლობა</SelectItem>
+                                <SelectItem value="უსაფრთხოება">უსაფრთხოება</SelectItem>
+                                <SelectItem value="მიწოდება/ლოგისტიკა">მიწოდება/ლოგისტიკა</SelectItem>
+                                <SelectItem value="სხვა">სხვა</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </dd>
+                </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
@@ -295,7 +328,7 @@ const CreateJob = () => {
                                 value={jobData.region}
                             >
                                 <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="აირჩიე მხარე" />
+                                    <SelectValue placeholder="მხარე" />
                                 </SelectTrigger>
                                 <SelectContent>
 
