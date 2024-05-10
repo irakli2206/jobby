@@ -31,7 +31,7 @@ import {
 // } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useParams, usePathname } from "next/navigation"
+import { useParams, usePathname, useRouter } from "next/navigation"
 import classNames from "classnames"
 import { useEffect, useState } from "react"
 import { getUser, signout } from "@/app/action"
@@ -46,12 +46,6 @@ const Header = ({ user }: Props) => {
   const path = usePathname()
 
 
-  // const signout = async() => {
-  //   const supabase = createClient()
-  //   await supabase.auth.signOut()
-  // }
-
-
   return (
     <header className="sticky z-[1000] backdrop-blur-sm top-0 flex h-16 items-center gap-4 border-b bg-background/50  px-4 md:px-6">
       <nav className="hidden max-w-7xl w-full mx-auto flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -64,7 +58,7 @@ const Header = ({ user }: Props) => {
         </Link>
         <div className="mx-auto flex gap-8">
           <Link
-            href="about"
+            href="/about"
             className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
               "text-foreground": path === '/'
             })}
@@ -72,7 +66,7 @@ const Header = ({ user }: Props) => {
             ჩვენ შესახებ
           </Link>
           <Link
-            href="faq"
+            href="/faq"
             className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
               "text-foreground": path === '/faq'
             })}
