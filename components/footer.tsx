@@ -10,20 +10,20 @@ const Footer = () => {
         <footer className='w-full border-t '>
             <div className='max-w-7xl container  border-zinc-200 py-16 '>
                 <div className="flex flex-col gap-6">
-                    <p className='text-sm font-semibold'>Jobby.ge</p>
+                    <p className='text-sm font-bold'>Jobby.ge</p>
                     <ul className='flex flex-col gap-3'>
                         <li>
-                            <Button asChild variant='link' className='p-0 font-light h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
                                 <Link href='/developers'>ძებნა</Link>
                             </Button>
                         </li>
                         <li>
-                            <Button asChild variant='link' className='p-0 font-light h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
                                 <Link href='/pricing'>ჩვენ შესახებ</Link>
                             </Button>
                         </li>
                         <li>
-                            <Button asChild variant='link' className='p-0 font-light h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
                                 <Link href='/faq'>კითხვები</Link>
                             </Button>
                         </li>

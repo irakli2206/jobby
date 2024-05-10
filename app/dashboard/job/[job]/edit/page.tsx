@@ -21,13 +21,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { clearCache, getUser } from '@/app/action';
+import { clearCache, getJobById, getUser } from '@/app/action';
 import { createClient } from '@/utils/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
-const CreateJob = () => {
+const Edit = () => {
     const supabase = createClient()
     const router = useRouter()
+    const params = useParams()
     const [loading, setLoading] = useState(false)
     const [jobData, setJobData] = useState<any>({
         id: crypto.randomUUID(),
@@ -47,15 +48,24 @@ const CreateJob = () => {
     const { toast } = useToast()
 
     useEffect(() => {
-        const getUserData = async () => {
-            const userData = await getUser()
-            if (userData) setJobData({
+        const getJobData = async () => {
+
+            const job = await getJobById(params.job as string)
+            const formattedJob = {
+                ...job,
+                required_experiences: job.required_experiences.map(r => ({ id: crypto.randomUUID(), text: r })),
+                responsibilities: job.responsibilities.map(r => ({ id: crypto.randomUUID(), text: r }))
+            }
+            if (job) setJobData({
                 ...jobData,
-                user_id: userData.id
+                ...formattedJob
             })
+            else router.push('/dashboard')
         }
-        getUserData()
+        getJobData()
     }, [])
+
+
 
     const validateFields = () => {
         if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary || !jobData.region || !jobData.application_instruction) {
@@ -69,25 +79,32 @@ const CreateJob = () => {
         try {
             validateFields()
             setLoading(true)
-            const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('jobs').upload(`logos/${crypto.randomUUID()}`, logo as File, {
-                upsert: true,
-                contentType: 'image/*'
-            })
-            if (imageUploadError) throw new Error(imageUploadError.message)
 
+            let imagePath
+            console.log('logo', logo)
+            if (logo) {
+                const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('jobs').upload(`logos/${crypto.randomUUID()}`, logo as File, {
+                    upsert: true,
+                    contentType: 'image/webp'
+                })
+                if (imageUploadError) throw new Error(imageUploadError.message)
+                imagePath = imageUpload
+            }
+
+            
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
-            const { error, status } = await supabase.from('jobs').insert({
+            if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
+            const { error, status } = await supabase.from('jobs').upsert({
                 ...formattedJobData,
-                company_logo: `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imageUpload.path}`
             })
 
             if (error) throw new Error(error.message)
 
             toast({
                 title: "წარმატება",
-                description: "ახალი სამსახური წარმატებით იქნა დამატებული",
+                description: "სამსახურის აღწერა განახლდა",
                 duration: 3000,
             })
 
@@ -210,7 +227,7 @@ const CreateJob = () => {
                                         return <div key={responsibility.id} className='flex gap-2 items-center'>
                                             <Input
 
-                                                value={responsibility[i]}
+                                                value={responsibility.text}
                                                 onChange={(e) => {
                                                     let updatedResponsibilities = [...jobData.responsibilities]
                                                     updatedResponsibilities[i].text = e.target.value
@@ -258,7 +275,7 @@ const CreateJob = () => {
                                         return <div key={experience.id} className='flex gap-2 items-center'>
                                             <Input
 
-                                                value={experience[i]}
+                                                value={experience.text}
                                                 onChange={(e) => {
                                                     let updatedResponsibilities = [...jobData.required_experiences]
                                                     updatedResponsibilities[i].text = e.target.value
@@ -409,4 +426,4 @@ const CreateJob = () => {
     )
 }
 
-export default CreateJob
+export default Edit

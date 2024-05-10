@@ -91,7 +91,9 @@ const Dashboard = async () => {
                       <EllipsisVertical className='text-muted-foreground' />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem>შეცვლა</DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/dashboard/job/${id}/edit`}>შეცვლა</Link>
+                      </DropdownMenuItem>
                       <DropdownMenuItem>დამალვა</DropdownMenuItem>
 
                     </DropdownMenuContent>

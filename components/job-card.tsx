@@ -75,7 +75,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                 </div>
                                 <div className="flex gap-1 items-center text-muted-foreground">
                                     <TbCurrencyLari />
-                                    {salary}/თვე
+                                    {salary}
 
                                 </div>
                             </footer>
