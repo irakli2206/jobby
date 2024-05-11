@@ -121,7 +121,7 @@ export default function Home() {
           zoom: 6
         }}
         {...viewState}
-        maxBounds={[[41, 42], [46, 42]]}
+        // maxBounds={[[40, 39], [46.5, 43]]} ზუმზე ვეღარ მოძრაობ აჩმახებს მაგრად
         onMove={(e) => setViewState(e.viewState)}
         style={{ width: '50%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/light-v11"
@@ -130,15 +130,16 @@ export default function Home() {
           const { coordinates } = job
           const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
           return (
-            <Marker
-              key={job.id}
-              latitude={coordinates[0]}
-              longitude={coordinates[1]}
-              onClick={() => {
-                locateJob(job)
-              }}
-            >
-              {/* <div className={classNames(`w-20  bg-white px-1 py-2 rounded-lg shadow`, {
+            <>
+              {coordinates ? <Marker
+                key={job.id}
+                latitude={coordinates[0]}
+                longitude={coordinates[1]}
+                onClick={() => {
+                  locateJob(job)
+                }}
+              >
+                {/* <div className={classNames(`w-20  bg-white px-1 py-2 rounded-lg shadow`, {
                 'w-10': viewState.zoom < 8
               })}>
                 <Image
@@ -148,12 +149,17 @@ export default function Home() {
                   className=' w-full h-full'
                 />
               </div> */}
-              <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center text-white bg-primary rounded-full `, {
-                '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)]': isLocated
-              })}>
-                <BsBriefcaseFill size={16} />
-              </div>
-            </Marker>
+                <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center text-white bg-primary rounded-full `, {
+                  '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)]': isLocated
+                })}>
+                  <BsBriefcaseFill size={16} />
+                </div>
+              </Marker>
+                :
+                null
+              }
+            </>
+
           )
         })}
 

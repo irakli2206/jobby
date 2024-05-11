@@ -19,7 +19,7 @@ const Footer = () => {
                         </li>
                         <li>
                             <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
-                                <Link href='/pricing'>ჩვენ შესახებ</Link>
+                                <Link href='/pricing'>ფასი</Link>
                             </Button>
                         </li>
                         <li>

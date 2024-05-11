@@ -31,8 +31,6 @@ const Edit = () => {
     const params = useParams()
     const [loading, setLoading] = useState(false)
     const [jobData, setJobData] = useState<any>({
-        id: crypto.randomUUID(),
-        user_id: "",
         title: "",
         company_name: "",
         description: "",
@@ -51,13 +49,14 @@ const Edit = () => {
         const getJobData = async () => {
 
             const job = await getJobById(params.job as string)
+            console.log(job)
             const formattedJob = {
                 ...job,
-                required_experiences: job.required_experiences.map(r => ({ id: crypto.randomUUID(), text: r })),
-                responsibilities: job.responsibilities.map(r => ({ id: crypto.randomUUID(), text: r }))
+                required_experiences: job.required_experiences ? job.required_experiences.map(r => ({ id: crypto.randomUUID(), text: r })) : [],
+                responsibilities: job.responsibilities ? job.responsibilities.map(r => ({ id: crypto.randomUUID(), text: r })) : []
             }
+
             if (job) setJobData({
-                ...jobData,
                 ...formattedJob
             })
             else router.push('/dashboard')
@@ -65,7 +64,7 @@ const Edit = () => {
         getJobData()
     }, [])
 
-
+    console.log(jobData)
 
     const validateFields = () => {
         if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary || !jobData.region || !jobData.application_instruction) {
@@ -73,7 +72,6 @@ const Edit = () => {
         }
     }
 
-    console.log(jobData)
     const handleSave = async () => {
 
         try {
@@ -91,7 +89,6 @@ const Edit = () => {
                 imagePath = imageUpload
             }
 
-            
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
@@ -99,7 +96,7 @@ const Edit = () => {
             const { error, status } = await supabase.from('jobs').upsert({
                 ...formattedJobData,
             })
-
+            console.log(formattedJobData)
             if (error) throw new Error(error.message)
 
             toast({
@@ -113,6 +110,7 @@ const Edit = () => {
             router.push('/dashboard')
 
         } catch (e) {
+            console.log(e)
             toast({
                 title: "შეცდომა",
                 description: e.message,
@@ -223,7 +221,7 @@ const Edit = () => {
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
-                                    jobData.responsibilities.map((responsibility: any, i) => {
+                                    jobData.responsibilities.map((responsibility: any, i: number) => {
                                         return <div key={responsibility.id} className='flex gap-2 items-center'>
                                             <Input
 
@@ -231,16 +229,16 @@ const Edit = () => {
                                                 onChange={(e) => {
                                                     let updatedResponsibilities = [...jobData.responsibilities]
                                                     updatedResponsibilities[i].text = e.target.value
-                                                    setJobData(prevState => ({
+                                                    setJobData((prevState: any) => ({
                                                         ...prevState,
                                                         responsibilities: updatedResponsibilities
                                                     }))
                                                 }}
                                             />
                                             <Button onClick={() => {
-                                                setJobData(prevState => ({
+                                                setJobData((prevState: any) => ({
                                                     ...prevState,
-                                                    responsibilities: prevState.responsibilities.filter((r) => r.id !== responsibility.id)
+                                                    responsibilities: prevState.responsibilities.filter((r: any) => r.id !== responsibility.id)
                                                 }))
                                             }} variant='ghost' size='icon'>
                                                 <Trash size={20} />
@@ -252,7 +250,7 @@ const Edit = () => {
                                 <Button variant='ghost' className='w-fit'
                                     onClick={() => {
                                         const id = crypto.randomUUID()
-                                        setJobData(jobData => ({
+                                        setJobData((jobData: any) => ({
                                             ...jobData,
                                             responsibilities: [...jobData.responsibilities, {
                                                 id,
@@ -271,7 +269,7 @@ const Edit = () => {
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
-                                    jobData.required_experiences.map((experience: any, i) => {
+                                    jobData.required_experiences.map((experience: any, i: number) => {
                                         return <div key={experience.id} className='flex gap-2 items-center'>
                                             <Input
 
@@ -279,16 +277,16 @@ const Edit = () => {
                                                 onChange={(e) => {
                                                     let updatedResponsibilities = [...jobData.required_experiences]
                                                     updatedResponsibilities[i].text = e.target.value
-                                                    setJobData(prevState => ({
+                                                    setJobData((prevState: any) => ({
                                                         ...prevState,
                                                         required_experiences: updatedResponsibilities
                                                     }))
                                                 }}
                                             />
                                             <Button onClick={() => {
-                                                setJobData(prevState => ({
+                                                setJobData((prevState: any) => ({
                                                     ...prevState,
-                                                    required_experiences: prevState.required_experiences.filter((e) => e.id !== experience.id)
+                                                    required_experiences: prevState.required_experiences.filter((e: any) => e.id !== experience.id)
                                                 }))
                                             }} variant='ghost' size='icon'>
                                                 <Trash size={20} />
@@ -300,7 +298,7 @@ const Edit = () => {
                                 <Button variant='ghost' className='w-fit'
                                     onClick={() => {
                                         const id = crypto.randomUUID()
-                                        setJobData(required_experiences => ({
+                                        setJobData((required_experiences: any[]) => ({
                                             ...required_experiences,
                                             required_experiences: [...jobData.required_experiences, {
                                                 id,
@@ -386,7 +384,7 @@ const Edit = () => {
                                 style={{ width: '100%', height: 400 }}
                                 mapStyle="mapbox://styles/mapbox/light-v11"
                             >
-                                {jobData.coordinates.length &&
+                                {jobData.coordinates && jobData.coordinates.length &&
                                     <Marker
                                         latitude={jobData.coordinates[0]}
                                         longitude={jobData.coordinates[1]}

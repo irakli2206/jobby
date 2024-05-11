@@ -44,7 +44,9 @@ const Dashboard = async () => {
         <h1 className='text-xl font-semibold'>შენი განცხადებები</h1>
         <div className='text-sm flex gap-2 items-center'>
           <p>განთავსებადი განცხადება: {user.job_limit}</p>
-          <Button variant='ghost' className='text-muted-foreground' ><Plus size={16} className='mr-1' />ზღვრის გაზრდა</Button>
+          <Button variant='ghost' className='text-muted-foreground' asChild >
+            <Link href='pricing'><Plus size={16} className='mr-1' />ზღვრის გაზრდა</Link>
+          </Button>
         </div>
       </div>
       <ul role="list" className="divide-y divide-gray-200">

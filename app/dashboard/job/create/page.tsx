@@ -31,7 +31,7 @@ const CreateJob = () => {
     const [loading, setLoading] = useState(false)
     const [jobData, setJobData] = useState<any>({
         id: crypto.randomUUID(),
-        user_id: "",
+        profile_id: "",
         title: "",
         company_name: "",
         description: "",
@@ -51,7 +51,7 @@ const CreateJob = () => {
             const userData = await getUser()
             if (userData) setJobData({
                 ...jobData,
-                user_id: userData.id
+                profile_id: userData.id
             })
         }
         getUserData()

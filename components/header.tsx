@@ -58,17 +58,17 @@ const Header = ({ user }: Props) => {
         </Link>
         <div className="mx-auto flex gap-8">
           <Link
-            href="/about"
+            href="/pricing"
             className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-              "text-foreground": path === '/'
+              "text-black": path.includes('pricing')
             })}
           >
-            ჩვენ შესახებ
+            ფასი
           </Link>
           <Link
             href="/faq"
             className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-              "text-foreground": path === '/faq'
+              "text-foreground": path.includes('faq')
             })}
           >
             კითხვები
