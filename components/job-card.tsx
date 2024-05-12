@@ -80,7 +80,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                 <DotFilledIcon className=' ' orientation='vertical' />
                                 <div className="flex gap-1 items-center ">
                                     <TbCurrencyLari />
-                                    {salary}
+                                    {salary || "შეთანხმებით"}
 
                                 </div>
                                 <DotFilledIcon className=' ' orientation='vertical' />
