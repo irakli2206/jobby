@@ -72,7 +72,6 @@ const Edit = () => {
         getJobData()
     }, [])
 
-    console.log(jobData)
 
     const validateFields = () => {
         if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary.length || !jobData.region || !jobData.application_instruction) {
@@ -90,7 +89,6 @@ const Edit = () => {
             setLoading(true)
 
             let imagePath
-            console.log('logo', logo)
             if (logo) {
                 const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('jobs').upload(`logos/${crypto.randomUUID()}`, logo as File, {
                     upsert: true,
@@ -108,7 +106,6 @@ const Edit = () => {
             const { error, status } = await supabase.from('jobs').upsert({
                 ...formattedJobData,
             })
-            console.log(formattedJobData)
             if (error) throw new Error(error.message)
 
             toast({
@@ -330,7 +327,6 @@ const Edit = () => {
 
                             <div className="flex gap-2 items-center">
                                 <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.salary.length ? jobData.salary[0] : ''} onChange={(e) => {
-                                    console.log(jobData)
                                     const newSalary = [...jobData.salary]
                                     newSalary[0] = e.target.valueAsNumber
                                     setJobData({

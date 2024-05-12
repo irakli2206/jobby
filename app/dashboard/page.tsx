@@ -29,37 +29,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 import moment from 'moment'
 
+import JobsTable from './components/jobs-table'
 
-type Payment = {
-  id: string
-  amount: number
-  status: "pending" | "processing" | "success" | "failed"
-  email: string
-}
 
-export const payments: Payment[] = [
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "489e1d42",
-    amount: 125,
-    status: "processing",
-    email: "example@gmail.com",
-  },
-  // ...
-]
 
 const Dashboard = async () => {
   const user = await getProfile()
 
   const jobs = await getJobsByUser(user.id)
 
-  const jobSlots = Array(user.job_limit).fill({})
-  jobs?.forEach((job, i) => jobSlots[i] = job)
+
+  const freeSlots = user.job_limit - jobs.length
+
 
   return (
     <div className='max-w-7xl py-12 mx-auto w-full'>
@@ -72,72 +53,24 @@ const Dashboard = async () => {
           </Button>
         </div>
       </div>
-      <ul role="list" className="divide-y divide-gray-200">
 
 
-        {jobSlots && jobSlots.map(({ id, title, company_logo, company_name, location, salary, created_at }: any, i) => {
 
-          if (id) {
-            const creationDate = moment(created_at)
-            console.log(creationDate)
-            //Expires in 1 month
-            const expiryDate = moment(creationDate).add(1, 'M')
+      <div className="container mx-auto px-0 py-10">
+        <JobsTable data={jobs} />
 
+        <div className="flex flex-col divide-y border-t">
+          {Array.from({ length: freeSlots }).map(slot => {
             return (
-              <li key={id} className="flex justify-between gap-x-6 py-5">
-                <div className="flex min-w-0 gap-x-4">
-                  <div className="h-20 w-24">
-                    <Image
-                      src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
-                      alt=''
-                      width={500}
-                      height={1}
-                      className='object-contain h-full'
-                    />
-
-                  </div>
-                  <div className="min-w-0 flex flex-col flex-auto h-full">
-                    <p className="text-sm font-semibold leading-6 text-gray-900">{title}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-muted-foreground">{company_name}</p>
-
-                    <div className="flex gap-2 text-xs text-muted-foreground mt-auto">
-                      წაშლის დრო: {expiryDate.format('DD/MM/YYYY')}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <Button asChild variant='outline'>
-                    <Link href={`/dashboard/job/${id}`} >
-                      ნახვა
-                    </Link>
-                  </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <EllipsisVertical className='text-muted-foreground' />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem asChild>
-                        <Link href={`/dashboard/job/${id}/edit`}>შეცვლა</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>დამალვა</DropdownMenuItem>
-
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-
-                </div>
-              </li>
-            )
-          }
-          else return (
-            <li key={i} className="flex justify-between ">
-              <Button variant='ghost' asChild className="w-full h-[120px] hover:bg-zinc-50  flex items-center justify-center text-muted-foreground font-medium">
+              <Button asChild variant='ghost' className="w-full h-20 hover:bg-gray-50 text-muted-foreground">
                 <Link href='/dashboard/job/create' className='flex items-center text-sm'><Plus size={14} className='mr-1' /> დაამატე განცხადება</Link>
               </Button>
-            </li>
-          )
-        })}
+            )
+          })}
+        </div>
+      </div>
 
-      </ul>
+
     </div>
   )
 }

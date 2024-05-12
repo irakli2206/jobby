@@ -7,7 +7,6 @@ export const getJobsByUser = async(userId: string) => {
     const supabase = createClient()
     const {data, error} = await supabase.from('jobs').select().eq('profile_id', userId)
 
-    console.log('jobs', data)
 
     return data
 }

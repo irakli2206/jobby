@@ -108,7 +108,6 @@ export default function Home() {
   }, [sortBy])
 
   const handleFilterChange = (key: string, value: string | undefined) => {
-    console.log(key, value)
     setFilters({ ...filters, [key]: value })
   }
 
@@ -116,7 +115,6 @@ export default function Home() {
 
     if (mapRef) {
       if (JSON.stringify(job) === JSON.stringify(locatedJob)) {
-        console.log('reached')
         setLocatedJob(null)
       }
       else {

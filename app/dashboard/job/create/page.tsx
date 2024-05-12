@@ -74,7 +74,6 @@ const CreateJob = () => {
         }
     }
 
-    console.log(jobData)
     const handleSave = async () => {
 
         try {
@@ -313,7 +312,6 @@ const CreateJob = () => {
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
                             <div className="flex gap-2">
                                 <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.salary.length ? jobData.salary[0] : ''} onChange={(e) => {
-                                    console.log(jobData)
                                     const newSalary = [...jobData.salary]
                                     newSalary[0] = e.target.valueAsNumber
                                     setJobData({
