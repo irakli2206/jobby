@@ -4,7 +4,7 @@ import Image from 'next/image'
 import React from 'react'
 import { BsBriefcaseFill } from 'react-icons/bs';
 import Map, { MapRef, Marker, ViewState } from 'react-map-gl';
-import { getJobById } from '../action';
+import { getJobById, incrementJobViews } from '../action';
 import MapView from './map';
 
 type Params = {
@@ -18,7 +18,7 @@ type Props = {
 
 const Job = async ({ params }: Props) => {
     const job = await getJobById(params.job)
-
+    await incrementJobViews(job)
 
     return (
         <div className='py-12 px-4 max-w-7xl mx-auto '>
@@ -65,8 +65,8 @@ const Job = async ({ params }: Props) => {
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.salary}</dd>
+                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
+                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.salary ? `${job.salary[0]}-${job.salary[1]} ლარი` : "შეთანხმებით"}</dd>
                     </div>
                     {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>

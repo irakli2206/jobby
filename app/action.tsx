@@ -46,6 +46,16 @@ export async function getJobById(jobId: string) {
     return data
 }
 
+export async function incrementJobViews(job: Object) {
+    console.log(job)
+    const supabase = createClient()
+    const { data, error } = await supabase.from('jobs').update({ 'views': ++job.views }).eq('id', job.id)
+
+    if (error) return { error: error.message }
+
+    return null
+}
+
 
 export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined, industryFilter?: string | undefined, sort: "created_at" | "views" = 'created_at') {
     const supabase = createClient()
