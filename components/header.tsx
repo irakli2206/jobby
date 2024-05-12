@@ -7,6 +7,7 @@ import {
   CircleUser,
   CreditCard,
   DollarSign,
+  FilePlus2,
   Menu,
   Package2,
   Search,
@@ -85,7 +86,7 @@ const Header = ({ user }: Props) => {
             null
           }
           <Button asChild className=' ' >
-            <Link href={user ? '/dashboard' : '/login'} >განათავსე განცხადება </Link>
+            <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2"/> განათავსე განცხადება </Link>
           </Button>
 
         </div>
