@@ -15,6 +15,8 @@ import { TbCurrencyLari } from "react-icons/tb";
 import { Job } from '@/app/page';
 import classNames from 'classnames';
 import Link from 'next/link';
+import { CalendarIcon, DotFilledIcon } from '@radix-ui/react-icons'
+import moment from 'moment-with-locales-es6';
 
 type Props = {
     job: Job
@@ -23,9 +25,11 @@ type Props = {
 }
 
 const JobCard = ({ job, locateJob, locatedJob }: Props) => {
-    const { companyLogo, companyName, coordinates, region, salary, title } = job
+    const { companyLogo, companyName, coordinates, region, salary, title, created_at } = job
     const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
 
+    let createdAt: any = moment(created_at)
+    createdAt = createdAt.locale('ka').fromNow()
 
     return (
 
@@ -68,16 +72,24 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                     <GrMap size={18} className='' />
                                 </Button>
                             </header>
-                            <footer className='flex gap-4 mt-2 text-sm'>
-                                <div className="flex gap-1 items-center text-muted-foreground">
+                            <footer className='flex items-center gap-1 mt-2 text-sm text-muted-foreground'>
+                                <div className="flex gap-1 items-center ">
                                     <IoIosPin />
                                     {region}
                                 </div>
-                                <div className="flex gap-1 items-center text-muted-foreground">
+                                <DotFilledIcon className=' ' orientation='vertical' />
+                                <div className="flex gap-1 items-center ">
                                     <TbCurrencyLari />
                                     {salary}
 
                                 </div>
+                                <DotFilledIcon className=' ' orientation='vertical' />
+                                <div className="flex gap-1 items-center ">
+                                    <CalendarIcon />
+                                    <time dateTime={created_at}>{createdAt}</time>
+
+                                </div>
+
                             </footer>
                         </section>
                     </div>

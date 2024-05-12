@@ -29,6 +29,9 @@ export type Props = {
     locatedJob: Job | null
 }
 
+const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარა"]
+const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
+
 const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
 
     return (
@@ -72,17 +75,7 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, region
                                     გაწმენდა
                                 </Button>
                                 <SelectGroup>
-                                    <SelectItem value="თბილისი">თბილისი</SelectItem>
-                                    <SelectItem value="კახეთი">კახეთი</SelectItem>
-                                    <SelectItem value="შიდა ქართლი">შიდა ქართლი</SelectItem>
-                                    <SelectItem value="ქვემო ქართლი">ქვემო ქართლი</SelectItem>
-                                    <SelectItem value="იმერეთი">იმერეთი</SelectItem>
-                                    <SelectItem value="გურია">გურია</SelectItem>
-                                    <SelectItem value="სამეგრელო-ზემო სვანეთი">სამეგრელო-ზემო სვანეთი</SelectItem>
-                                    <SelectItem value="სამცხე-ჯავახეთი">სამცხე-ჯავახეთი</SelectItem>
-                                    <SelectItem value="რაჭა-ლეჩხუმი და ქვემო სვანეთი">რაჭა-ლეჩხუმი და ქვემო სვანეთი</SelectItem>
-                                    <SelectItem value="მცხეთა-მთიანეთი">მცხეთა-მთიანეთი</SelectItem>
-                                    <SelectItem value="აჭარა">აჭარა</SelectItem>
+                                    {regions.map(region => <SelectItem value={region}>{region}</SelectItem>)}
                                 </SelectGroup>
 
                             </SelectContent>
@@ -112,19 +105,7 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, region
                                     გაწმენდა
                                 </Button>
                                 <SelectGroup>
-                                    <SelectItem value="ფინანსები">ფინანსები</SelectItem>
-                                    <SelectItem value="გაყიდვები">გაყიდვები</SelectItem>
-                                    <SelectItem value="მარკეტინგი">მარკეტინგი</SelectItem>
-                                    <SelectItem value="IT/პროგრამირება">IT/პროგრამირება</SelectItem>
-                                    <SelectItem value="მედია">მედია</SelectItem>
-                                    <SelectItem value="განათლება">განათლება</SelectItem>
-                                    <SelectItem value="სამართალი">სამართალი</SelectItem>
-                                    <SelectItem value="ჯანმრთელობა/მედიცინა">ჯანმრთელობა/მედიცინა</SelectItem>
-                                    <SelectItem value="კვება">კვება</SelectItem>
-                                    <SelectItem value="მშენებლობა">მშენებლობა</SelectItem>
-                                    <SelectItem value="უსაფრთხოება">უსაფრთხოება</SelectItem>
-                                    <SelectItem value="მიწოდება/ლოგისტიკა">მიწოდება/ლოგისტიკა</SelectItem>
-                                    <SelectItem value="სხვა">სხვა</SelectItem>
+                                    {industries.map(industry => <SelectItem value={industry}>{industry}</SelectItem>)}
                                 </SelectGroup>
 
                             </SelectContent>
@@ -150,12 +131,26 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, region
 
             </main>
             <footer className='flex flex-col gap-4 py-8 overflow-y-scroll no-scrollbar'>
+                <Select defaultValue='created_at'>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="დალაგება" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectItem value="created_at">ახალი</SelectItem>
+                            <SelectItem value="banana">ნახვები</SelectItem>
+                            <SelectItem value="blueberry">Blueberry</SelectItem>
+                            <SelectItem value="grapes">Grapes</SelectItem>
+                            <SelectItem value="pineapple">Pineapple</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+                <>
+                    {jobsData.map(job => {
 
-                {jobsData.map(job => {
-
-                    return <JobCard key={JSON.stringify(job.coordinates)} job={job} locateJob={locateJob} locatedJob={locatedJob} />
-                })}
-
+                        return <JobCard key={JSON.stringify(job.coordinates)} job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                    })}
+                </>
             </footer>
         </div>
     )
