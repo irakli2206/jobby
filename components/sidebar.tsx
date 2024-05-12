@@ -14,9 +14,12 @@ import {
 } from "@/components/ui/select"
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { Delete, DeleteIcon, Plus, Trash } from 'lucide-react';
+import classNames from 'classnames'
 
 export type Props = {
     filterJobs: Function
+    clearFilters: Function
+    filtersChanged: boolean
     titleFilter: string
     regionFilter: string | undefined
     industryFilter: string | undefined
@@ -26,7 +29,7 @@ export type Props = {
     locatedJob: Job | null
 }
 
-const Sidebar = ({ filterJobs, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
 
     return (
         <div className='w-1/2 h-full flex flex-col p-4 border-r '>
@@ -131,12 +134,14 @@ const Sidebar = ({ filterJobs, titleFilter, regionFilter, industryFilter, handle
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <Button onClick={() => filterJobs()} className=' '>
+                    <Button onClick={() => filterJobs()} className={classNames('', {
+                        'animate-pulse': filtersChanged
+                    })}>
                         <MagnifyingGlassIcon className='mr-2' />
                         ძებნა
                     </Button>
 
-                    <Button variant='outline' onClick={() => filterJobs()} className=' '>
+                    <Button variant='outline' onClick={() => clearFilters()} className=' '>
                         <Trash size={14} className='mr-2' />
                         გაწმენდა
                     </Button>

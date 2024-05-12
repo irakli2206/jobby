@@ -20,16 +20,22 @@ export type Job = {
   title: string
 }
 
-
+function isEqual(objA: Object, objB: Object) {
+  return JSON.stringify(objA) === JSON.stringify(objB);
+}
 
 export default function Home() {
   const mapRef = useRef<MapRef | null>(null)
+
 
   const [filters, setFilters] = useState({
     title: "",
     region: "",
     industry: ""
   })
+  //useRef doesn't change between renders, but filters state does, meaning we can identify when the two start differing
+  const prevFilters = useRef(filters)
+  const filtersChanged = !isEqual(filters, prevFilters.current)
   const [jobsData, setJobsData] = useState<any[]>([])
   const [locatedJob, setLocatedJob] = useState<Job | null>(null)
   const [viewState, setViewState] = useState<Partial<ViewState>>({
@@ -54,6 +60,27 @@ export default function Home() {
       if (jobs.error) throw new Error(jobs.error.message)
 
       setJobsData(jobs.data!)
+      prevFilters.current = filters
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const clearFilters = async () => {
+    try {
+      const emptyFilters = {
+        industry: "",
+        region: "",
+        title: ""
+      }
+      setFilters(emptyFilters)
+      const jobs = await getFilteredJobs("", "", "")
+      //@ts-ignore
+      if (jobs.error) throw new Error(jobs.error.message)
+
+      setJobsData(jobs.data!)
+      prevFilters.current = emptyFilters
 
     } catch (e) {
       console.log(e)
@@ -108,7 +135,7 @@ export default function Home() {
 
   return (
     <main className="flex h-[calc(100vh-64px)] w-full justify-between ">
-      <Sidebar filterJobs={filterJobs} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+      <Sidebar filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
       <Map
         ref={mapRef}
         minZoom={7}
