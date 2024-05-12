@@ -24,11 +24,13 @@ import {
 import { clearCache, getUser } from '@/app/action';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const CreateJob = () => {
     const supabase = createClient()
     const router = useRouter()
     const [loading, setLoading] = useState(false)
+    const [noSalary, setNoSalary] = useState(false)
     const [jobData, setJobData] = useState<any>({
         id: crypto.randomUUID(),
         profile_id: "",
@@ -37,7 +39,7 @@ const CreateJob = () => {
         description: "",
         responsibilities: [],
         required_experiences: [],
-        salary: "",
+        salary: [],
         region: "",
         coordinates: [],
         application_instruction: ""
@@ -45,6 +47,12 @@ const CreateJob = () => {
     const [logo, setLogo] = useState<File | undefined>()
 
     const { toast } = useToast()
+
+    useEffect(() => {
+        if (noSalary) {
+            setJobData({ ...jobData, salary: [] })
+        }
+    }, [noSalary])
 
     useEffect(() => {
         const getUserData = async () => {
@@ -58,8 +66,11 @@ const CreateJob = () => {
     }, [])
 
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary || !jobData.region || !jobData.application_instruction) {
+        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary.length || !jobData.region || !jobData.application_instruction) {
             throw new Error("შეავსე ცარიელი ველები")
+        }
+        else if (jobData.salary[1] > jobData.salary[0]) {
+            throw new Error("შეიყვანე სწორი ანაზღაურება")
         }
     }
 
@@ -299,19 +310,35 @@ const CreateJob = () => {
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <Textarea
-                                maxLength={128}
-                                placeholder='1500-2500 ლარი გამოცდილების მიხედვით'
-                                value={jobData.salary}
-                                onChange={(e) => {
+                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
+                            <div className="flex gap-2">
+                                <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.salary.length ? jobData.salary[0] : ''} onChange={(e) => {
+                                    console.log(jobData)
+                                    const newSalary = [...jobData.salary]
+                                    newSalary[0] = e.target.valueAsNumber
                                     setJobData({
                                         ...jobData,
-                                        salary: e.target.value
+                                        salary: newSalary
                                     })
-                                }}
-
-                            />
+                                }} />
+                                <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.salary.length ? jobData.salary[1] : ''} onChange={(e) => {
+                                    const newSalary = [...jobData.salary]
+                                    newSalary[1] = e.target.valueAsNumber
+                                    setJobData({
+                                        ...jobData,
+                                        salary: newSalary
+                                    })
+                                }} />
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Checkbox id="terms" checked={noSalary} onCheckedChange={() => setNoSalary(!noSalary)} />
+                                <label
+                                    htmlFor="terms"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    შეთანხმებით
+                                </label>
+                            </div>
                         </dd>
                     </div>
 

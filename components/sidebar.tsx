@@ -20,6 +20,8 @@ export type Props = {
     filterJobs: Function
     clearFilters: Function
     filtersChanged: boolean
+    sortBy: 'created_at' | 'views'
+    setSortBy: (sort: 'created_at' | 'views') => void
     titleFilter: string
     regionFilter: string | undefined
     industryFilter: string | undefined
@@ -32,7 +34,7 @@ export type Props = {
 const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარა"]
 const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
 
-const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
 
     return (
         <div className='w-1/2 h-full flex flex-col p-4 border-r '>
@@ -43,7 +45,7 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, region
                 </div>
                 {/* <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button> */}
             </header>
-            <main className="flex flex-row gap-2 justify-between pt-4 pb-2 ">
+            <main className="flex flex-col gap-2 justify-between pt-4 pb-2 ">
                 <div className="flex-col w-full flex gap-2">
                     <Input
                         placeholder='სამსახურის დასახელება'
@@ -113,16 +115,15 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, region
                         </Select>
                     </div>
                 </div>
-
-                <div className="flex flex-col gap-2">
-                    <Button onClick={() => filterJobs()} className={classNames('', {
+                <div className="flex flex-col w-full gap-2 mt-2">
+                    <Button onClick={() => filterJobs()} className={classNames('w-full', {
                         'animate-pulse': filtersChanged
                     })}>
                         <MagnifyingGlassIcon className='mr-2' />
                         ძებნა
                     </Button>
 
-                    <Button variant='outline' onClick={() => clearFilters()} className=' '>
+                    <Button variant='outline' onClick={() => clearFilters()} className='w-full'>
                         <Trash size={14} className='mr-2' />
                         გაწმენდა
                     </Button>
@@ -130,26 +131,33 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, titleFilter, region
 
 
             </main>
+
             <footer className='flex flex-col gap-4 py-8 overflow-y-scroll no-scrollbar'>
-                <Select defaultValue='created_at'>
+                <Select value={sortBy}
+                    onValueChange={(e) => {
+                        setSortBy(e as "created_at" | "views")
+                    }}
+                    defaultValue='created_at'>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder="დალაგება" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
                             <SelectItem value="created_at">ახალი</SelectItem>
-                            <SelectItem value="banana">ნახვები</SelectItem>
-                            <SelectItem value="blueberry">Blueberry</SelectItem>
-                            <SelectItem value="grapes">Grapes</SelectItem>
-                            <SelectItem value="pineapple">Pineapple</SelectItem>
+                            <SelectItem value="views">მონახულებები</SelectItem>
+
                         </SelectGroup>
                     </SelectContent>
                 </Select>
                 <>
-                    {jobsData.map(job => {
+                    {jobsData.length ? jobsData.map(job => {
 
                         return <JobCard key={JSON.stringify(job.coordinates)} job={job} locateJob={locateJob} locatedJob={locatedJob} />
-                    })}
+                    })
+                        :
+                        // <p className='mx-auto mt-8'>მითითებული განცხადებები ვერ მოიძებნა</p>
+                        null
+                    }
                 </>
             </footer>
         </div>

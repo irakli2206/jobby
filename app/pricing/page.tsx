@@ -23,7 +23,6 @@ const formSchema = z.object({
 const Pricing = () => {
   const { user } = useGetUser()
 
-  console.log(user)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

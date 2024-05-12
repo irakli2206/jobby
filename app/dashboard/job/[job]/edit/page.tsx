@@ -24,19 +24,21 @@ import {
 import { clearCache, getJobById, getUser } from '@/app/action';
 import { createClient } from '@/utils/supabase/client';
 import { useParams, useRouter } from 'next/navigation';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const Edit = () => {
     const supabase = createClient()
     const router = useRouter()
     const params = useParams()
     const [loading, setLoading] = useState(false)
+    const [noSalary, setNoSalary] = useState(false)
     const [jobData, setJobData] = useState<any>({
         title: "",
         company_name: "",
         description: "",
         responsibilities: [],
         required_experiences: [],
-        salary: "",
+        salary: [],
         region: "",
         coordinates: [],
         application_instruction: ""
@@ -46,14 +48,20 @@ const Edit = () => {
     const { toast } = useToast()
 
     useEffect(() => {
+        if (noSalary) {
+            setJobData({ ...jobData, salary: [] })
+        }
+    }, [noSalary])
+
+    useEffect(() => {
         const getJobData = async () => {
 
             const job = await getJobById(params.job as string)
-            console.log(job)
             const formattedJob = {
                 ...job,
                 required_experiences: job.required_experiences ? job.required_experiences.map(r => ({ id: crypto.randomUUID(), text: r })) : [],
-                responsibilities: job.responsibilities ? job.responsibilities.map(r => ({ id: crypto.randomUUID(), text: r })) : []
+                responsibilities: job.responsibilities ? job.responsibilities.map(r => ({ id: crypto.randomUUID(), text: r })) : [],
+                salary: !job.salary ? [] : job.salary
             }
 
             if (job) setJobData({
@@ -67,8 +75,11 @@ const Edit = () => {
     console.log(jobData)
 
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary || !jobData.region || !jobData.application_instruction) {
+        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary.length || !jobData.region || !jobData.application_instruction) {
             throw new Error("შეავსე ცარიელი ველები")
+        }
+        else if ((jobData.salary[1] < jobData.salary[0]) || jobData.salary[0] < 0 || jobData.salary[1] < 0) {
+            throw new Error("შეიყვანე სწორი ანაზღაურება")
         }
     }
 
@@ -92,6 +103,7 @@ const Edit = () => {
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
+            formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
             if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
             const { error, status } = await supabase.from('jobs').upsert({
                 ...formattedJobData,
@@ -259,7 +271,7 @@ const Edit = () => {
                                         }))
                                     }}
                                 >
-                                    <Plus size={16} className='mr-1' /> Add
+                                    <Plus size={16} className='mr-1' /> დამატება
                                 </Button>
                             </ol>
                         </dd>
@@ -307,15 +319,45 @@ const Edit = () => {
                                         }))
                                     }}
                                 >
-                                    <Plus size={16} className='mr-1' /> Add
+                                    <Plus size={16} className='mr-1' /> დამატება
                                 </Button>
                             </ol>
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <Textarea
+                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
+                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
+
+                            <div className="flex gap-2 items-center">
+                                <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.salary.length ? jobData.salary[0] : ''} onChange={(e) => {
+                                    console.log(jobData)
+                                    const newSalary = [...jobData.salary]
+                                    newSalary[0] = e.target.valueAsNumber
+                                    setJobData({
+                                        ...jobData,
+                                        salary: newSalary
+                                    })
+                                }} />
+                                <span>-</span>
+                                <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.salary.length ? jobData.salary[1] : ''} onChange={(e) => {
+                                    const newSalary = [...jobData.salary]
+                                    newSalary[1] = e.target.valueAsNumber
+                                    setJobData({
+                                        ...jobData,
+                                        salary: newSalary
+                                    })
+                                }} />
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <Checkbox id="terms" checked={noSalary} onCheckedChange={() => setNoSalary(!noSalary)} />
+                                <label
+                                    htmlFor="terms"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    შეთანხმებით
+                                </label>
+                            </div>
+                            {/* <Textarea
                                 maxLength={128}
                                 placeholder='1500-2500 ლარი გამოცდილების მიხედვით'
                                 value={jobData.salary}
@@ -326,7 +368,7 @@ const Edit = () => {
                                     })
                                 }}
 
-                            />
+                            /> */}
                         </dd>
                     </div>
 

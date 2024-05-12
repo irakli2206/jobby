@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { CalendarIcon, DotFilledIcon } from '@radix-ui/react-icons'
 import moment from 'moment-with-locales-es6';
+import { MousePointerClick } from 'lucide-react';
 
 type Props = {
     job: Job
@@ -25,7 +26,7 @@ type Props = {
 }
 
 const JobCard = ({ job, locateJob, locatedJob }: Props) => {
-    const { companyLogo, companyName, coordinates, region, salary, title, created_at } = job
+    const { coordinates, region, salary, title, created_at, views, company_logo, company_name } = job
     const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
 
     let createdAt: any = moment(created_at)
@@ -46,7 +47,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                     <div className="flex gap-4 w-full items-center">
                         <div className="h-20 w-24">
                             <Image
-                                src={companyLogo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
+                                src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                                 alt=''
                                 width={500}
                                 height={1}
@@ -57,7 +58,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                         <section className="flex flex-col w-full">
                             <header className='flex justify-between'>
                                 <div className="flex flex-col ">
-                                    <p className="font-semibold text-sm text-muted-foreground">{companyName}</p>
+                                    <p className="font-semibold text-sm text-muted-foreground">{company_name}</p>
                                     <h2 className="font-semibold text-lg">{title}</h2>
                                 </div>
                                 <Button variant='outline' size='icon'
@@ -73,20 +74,27 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                 </Button>
                             </header>
                             <footer className='flex items-center gap-1 mt-2 text-sm text-muted-foreground'>
-                                <div className="flex gap-1 items-center ">
+                                {/* <div className="flex gap-1 items-center ">
                                     <IoIosPin />
                                     {region}
                                 </div>
+                                <DotFilledIcon className=' ' orientation='vertical' /> */}
+                                <div className="flex gap-1 items-center ">
+                                    <CalendarIcon />
+                                    <time dateTime={created_at}>{createdAt}</time>
+
+                                </div>
                                 <DotFilledIcon className=' ' orientation='vertical' />
+
                                 <div className="flex gap-1 items-center ">
                                     <TbCurrencyLari />
-                                    {salary || "შეთანხმებით"}
+                                    {salary ? `${salary[0]}-${salary[1]}` : "შეთანხმებით"}
 
                                 </div>
                                 <DotFilledIcon className=' ' orientation='vertical' />
                                 <div className="flex gap-1 items-center ">
-                                    <CalendarIcon />
-                                    <time dateTime={created_at}>{createdAt}</time>
+                                    <MousePointerClick size={16} />
+                                    {views} მონახულება
 
                                 </div>
 

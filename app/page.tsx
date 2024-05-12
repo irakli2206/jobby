@@ -38,6 +38,7 @@ export default function Home() {
   const filtersChanged = !isEqual(filters, prevFilters.current)
   const [jobsData, setJobsData] = useState<any[]>([])
   const [locatedJob, setLocatedJob] = useState<Job | null>(null)
+  const [sortBy, setSortBy] = useState<"created_at" | "views">('created_at')
   const [viewState, setViewState] = useState<Partial<ViewState>>({
     longitude: 44,
     latitude: 42,
@@ -51,6 +52,10 @@ export default function Home() {
     //   left: 0
     // }
   })
+
+  useEffect(() => {
+    
+  }, [])
 
 
   const filterJobs = async () => {
@@ -90,7 +95,7 @@ export default function Home() {
   useEffect(() => {
     const getJobsData = async () => {
       try {
-        const jobs = await getFilteredJobs()
+        const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy)
         if (jobs.error) throw new Error(jobs.error.message)
 
         setJobsData(jobs.data!)
@@ -100,7 +105,7 @@ export default function Home() {
       }
     }
     getJobsData()
-  }, [])
+  }, [sortBy])
 
   const handleFilterChange = (key: string, value: string | undefined) => {
     console.log(key, value)
@@ -135,7 +140,7 @@ export default function Home() {
 
   return (
     <main className="flex h-[calc(100vh-64px)] w-full justify-between ">
-      <Sidebar filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+      <Sidebar filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
       <Map
         ref={mapRef}
         minZoom={7}
