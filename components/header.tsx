@@ -61,7 +61,7 @@ const Header = ({ user }: Props) => {
           <Link
             href="/pricing"
             className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-              "text-black": path.includes('pricing')
+              "!text-black": path.includes('pricing')
             })}
           >
             ფასი
@@ -69,7 +69,7 @@ const Header = ({ user }: Props) => {
           <Link
             href="/faq"
             className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-              "text-foreground": path.includes('faq')
+              "!text-black": path.includes('faq')
             })}
           >
             კითხვები

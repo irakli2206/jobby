@@ -15,6 +15,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import useGetUser from '../hooks/useGetUser';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   count: z.coerce.number().min(1, "აირჩიეთ 0-ზე დიდი რიცხვი"),
@@ -22,7 +23,7 @@ const formSchema = z.object({
 
 const Pricing = () => {
   const { user } = useGetUser()
-
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,6 +36,9 @@ const Pricing = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+
+    if (!user) router.push('signup?ask_auth=true')
+    else router.push('')
   }
 
   return (
@@ -97,10 +101,8 @@ const Pricing = () => {
                       </FormItem>
                     )}
                   />
-                  <Button type='submit' className='w-full ' asChild>
-                    <Link href={user ? "" : 'signup?ask_auth=true'}>
-                      ყიდვა
-                    </Link>
+                  <Button type='submit' className='w-full '  >
+                    ყიდვა
                   </Button>
                 </form>
               </Form>
