@@ -11,15 +11,15 @@ import { Badge } from '@/components/ui/badge';
 const FAQ = () => {
     const accordionData = [
         {
-            question: "რით ჯობიხართ jobs.ge-ის და მისთანებს?",
+            question: "რით სჯობიხართ jobs.ge-ის და მისთანებს?",
             answer: `პასუხი მარტივია - გამოყენების სიმარტივე. \n\n ჩვენთან ყველაფერი ხდება უფრო სწრაფად და მარტივად. დამსაქმებელი უფრო სწრაფად დებს განცხადებას და არ უწევს დამატებითი ღირებულებების გადახდა თუ მას სურს ლოგოს დამატება როგორც ეს ხდება jobs.ge-ზე. სამსახურისმაძიებლები კი რუკის წყალობით უფრო თვალსაჩინოდ ფილტრავენ მათთვის სასურველ განცხადებებს. გარდა ამისა Jobby.ge-ზე ყველა განცხადება თანასწორია. არანაირი პრემიუმ განცხადებები.`
         },
         {
-            question: "როგორ შეედრება თქვენი ფასი სხვა პლატფორმების ფასებს?",
-            answer: `Jobby.ge-ის ერთერთი დადებითი მხარე არის ერთიანი გადახდა ყველა ფუნქციისთვის. 44 ლარად თქვენ ქმნით სრულფასოვან განცხადებას. არანაირი დამატებითი გადახდები ახალი ფუნქციონალის გასახსნელად და 50 სახის პრემიუმ სტატუსი თქვენ არ დაგჭირდებათ, და არც მოგიწევთ ღელვა იმაზე რომ ვიღაცის პრემიუმ განცხადება დაჩრდილავს თქვენსას, ჩვენთან პრემიუმ განცხადებები არაა! \n
+            question: "როგორ შეედრება შენი ფასი სხვა პლატფორმების ფასებს?",
+            answer: `Jobby.ge-ის ერთერთი დადებითი მხარე არის ერთიანი გადახდა ყველა ფუნქციისთვის. 44 ლარად შენ ქმნი სრულფასოვან განცხადებას. არანაირი დამატებითი გადახდები ახალი ფუნქციონალის გასახსნელად და 50 სახის პრემიუმ სტატუსი თქვენ არ დაგჭირდებათ, და არც მოგიწევთ ღელვა იმაზე რომ ვიღაცის პრემიუმ განცხადება დაჩრდილავს თქვენსას, ჩვენთან პრემიუმ განცხადებები არაა! \n
                 მაშ ასე, 
                 Jobby.ge - 44 ლარი. 
-                jobs.ge - განცხადების და კომპანიის ლოგოს დასადება თქვენ გადაიხდით 55 ლარს.
+                jobs.ge - განცხადების და კომპანიის ლოგოს დასადებად შენ გადაიხდი 55 ლარს.
                 hr.ge - საკმაოდ მოქნილი არჩევნის მქონე საიტი. სტანდარტი ღირს 40 ლარი, თუმცა არცერთის ფუნქციონალში არ შედის განცხადების ნახვების დათვლა.
             `
         },
@@ -29,20 +29,20 @@ const FAQ = () => {
         },
         {
             question: "როგორ წავშალო დადებული განცხადება?",
-            answer: `დადებული განცხადება თავისით წაიშლება 1 თვის გასვლის შემდეგ. თუ გინდათ რომ შეზღუდოთ თქვენი განცხადების ხილვადობა, გადადით განცხადებების მართვის პანელში, დააჭირეთ სამწერტილს მარჯვენა მხარეს და აირჩიეთ "დამალვა"`
+            answer: `დადებული განცხადება თავისით წაიშლება 1 თვის გასვლის შემდეგ. თუ გინდა რომ შეზღუდო შენი განცხადების ხილვადობა, გადადი განცხადებების მართვის პანელში, დააჭირეთ სამწერტილს მარჯვენა მხარეს და აირჩიე "დამალვა"`
         },
-        {
-            question: "Can I cancel the subscription?",
-            answer: `Ending your subscription is straightforward. Just navigate to the billing section in your dashboard, then select "Manage subscriptions" followed by "Cancel plan." Your subscription benefits will cease once the current period concludes. If you wish, you can also renew your subscription before it expires.`
-        },
-        {
-            question: "Can I register as a non-ReactJS developer?",
-            answer: `While technically possible, it's unlikely that employers will actively seek you out.`
-        },
-        {
-            question: "Do I have to pass a test to register?",
-            answer: `No, registering does not entail passing any tests initially. However, we intend to incorporate verification tests specifically for assessing your React proficiency. Successfully passing these tests will earn you a badge, showcasing your skills to potential employers.`
-        },
+        // {
+        //     question: "Can I cancel the subscription?",
+        //     answer: `Ending your subscription is straightforward. Just navigate to the billing section in your dashboard, then select "Manage subscriptions" followed by "Cancel plan." Your subscription benefits will cease once the current period concludes. If you wish, you can also renew your subscription before it expires.`
+        // },
+        // {
+        //     question: "Can I register as a non-ReactJS developer?",
+        //     answer: `While technically possible, it's unlikely that employers will actively seek you out.`
+        // },
+        // {
+        //     question: "Do I have to pass a test to register?",
+        //     answer: `No, registering does not entail passing any tests initially. However, we intend to incorporate verification tests specifically for assessing your React proficiency. Successfully passing these tests will earn you a badge, showcasing your skills to potential employers.`
+        // },
     ];
 
     return (
@@ -56,7 +56,7 @@ const FAQ = () => {
 
                         return (
                             <AccordionItem value={question}>
-                                <AccordionTrigger className="text-lg lg:text-xl text-start">{question}</AccordionTrigger>
+                                <AccordionTrigger className="text-lg text-start">{question}</AccordionTrigger>
                                 <AccordionContent className="text-base whitespace-pre-line">
                                     {answer}
                                 </AccordionContent>

@@ -3,7 +3,7 @@
 
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TbCurrencyLari } from "react-icons/tb";
 import { CheckCircledIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
@@ -13,12 +13,17 @@ import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import useGetUser from '../hooks/useGetUser';
+import Link from 'next/link';
 
 const formSchema = z.object({
   count: z.coerce.number().min(1, "აირჩიეთ 0-ზე დიდი რიცხვი"),
 })
 
 const Pricing = () => {
+  const { user } = useGetUser()
+
+  console.log(user)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,11 +39,11 @@ const Pricing = () => {
   }
 
   return (
-    <div className='max-w-7xl py-12 mx-auto w-full '>
+    <div className='max-w-7xl py-12 px-2 mx-auto w-full '>
       <div className="h-full w-full flex flex-col gap-12 items-center">
         <div className="flex flex-col gap-8">
           <Badge variant="outline" className='w-fit mx-auto'>ფასი</Badge>
-          <h1 className='text-4xl font-semibold'>პირდაპირი და მარტივი გადახდა</h1>
+          <h1 className='text-3xl sm:text-4xl font-semibold text-center '>პირდაპირი და მარტივი გადახდა</h1>
         </div>
 
         <div className="flex px-2">
@@ -78,23 +83,25 @@ const Pricing = () => {
                   <FormField
 
                     name="count"
-                    render={({field}) => (
-                  <FormItem>
-                    <FormLabel  >რაოდენობა</FormLabel>
-                    <FormControl>
-                      <Input
-                        type='number'
-                        defaultValue={1}
-                        {...field}
-                      />
-                    </FormControl>
-                    {/* <FormDescription /> */}
-                    <FormMessage />
-                  </FormItem>
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel  >რაოდენობა</FormLabel>
+                        <FormControl>
+                          <Input
+                            type='number'
+                            defaultValue={1}
+                            {...field}
+                          />
+                        </FormControl>
+                        {/* <FormDescription /> */}
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
-                  <Button type='submit' className='w-full '>
-                    ყიდვა
+                  <Button type='submit' className='w-full ' asChild>
+                    <Link href={user ? "" : 'signup?ask_auth=true'}>
+                      ყიდვა
+                    </Link>
                   </Button>
                 </form>
               </Form>

@@ -2,7 +2,7 @@
 
 // import ChooseType from '@/components/sections/signup/ChooseType'
 // import { AccountTypeT } from '@/types/general'
-import { BriefcaseBusiness, RefreshCw, UserRoundSearch } from 'lucide-react'
+import { BriefcaseBusiness, Info, RefreshCw, UserRoundSearch } from 'lucide-react'
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import {
@@ -29,6 +29,13 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { signup } from './action'
+import { useSearchParams } from 'next/navigation'
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+  } from "@/components/ui/alert"
+
 
 const formSchema = z.object({
     firstName: z.string().min(1, "Required field"),
@@ -41,6 +48,10 @@ export type SignupFormValues = z.infer<typeof formSchema>
 
 
 const SignupView = () => {
+    const params = useSearchParams()
+    const isAskAuthVisible = params.get('ask_auth')
+
+
     const form = useForm<SignupFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -78,6 +89,16 @@ const SignupView = () => {
         <div className="w-full flex  min-h-full">
             <div className="flex items-center justify-center pb-12 flex-1">
                 <div className="mx-auto grid md:w-[350px] px-2 sm:px-0 gap-6">
+                    {isAskAuthVisible === 'true' &&
+                        <Alert className='bg-blue-50 border-blue-200 '>
+                            <Info className="h-4 w-4 !text-blue-500" />
+                            <AlertTitle className='mt-1'>შექმენი ანგარიში</AlertTitle>
+                            <AlertDescription className='mt-2'>
+                                მოხარულები ვართ რომ გინდა განცხადებების ყიდვა, თუმცა ჯერ უნდა შექმნა ანგარიში
+                            </AlertDescription>
+                        </Alert>}
+
+
                     <div className="grid gap-2 text-center">
                         <h1 className="text-3xl font-bold ">შექმნა</h1>
                         <p className="text-balance text-muted-foreground">

@@ -14,7 +14,7 @@ const Footer = () => {
                     <ul className='flex flex-col gap-3'>
                         <li>
                             <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
-                                <Link href='/developers'>ძებნა</Link>
+                                <Link href='/'>ძებნა</Link>
                             </Button>
                         </li>
                         <li>
