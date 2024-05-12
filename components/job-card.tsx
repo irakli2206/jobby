@@ -33,7 +33,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
 
     return (
 
-        <Card className={classNames("w-full shadow-none hover:bg-primary-foreground cursor-pointer transition", {
+        <Card className={classNames("w-full rounded-md shadow-none hover:bg-primary-foreground cursor-pointer transition", {
             // "border-green-300 bg-green-50": title === 'პროგრამისტი'
         })}
             onClick={() => console.log('clicked')}
