@@ -45,7 +45,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
 
                 <CardContent className='py-4 px-6'>
                     <div className="flex gap-4 w-full items-center">
-                        <div className="h-20 w-24">
+                        <div className="h-20 w-20">
                             <Image
                                 src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                                 alt=''

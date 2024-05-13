@@ -37,7 +37,7 @@ const industries = ["ფინანსები", "გაყიდვები"
 const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
 
     return (
-        <div className='w-1/2 h-full flex flex-col p-4 border-r '>
+        <div className='w-full h-full flex flex-col p-4 '>
             <header className="flex justify-between gap-8">
                 <div className="flex flex-col gap-4  pb-2">
                     <h1 className='text-3xl font-medium'>Jobby.ge</h1>
@@ -77,7 +77,7 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, 
                                     გაწმენდა
                                 </Button>
                                 <SelectGroup>
-                                    {regions.map(region => <SelectItem value={region}>{region}</SelectItem>)}
+                                    {regions.map(region => <SelectItem key={region} value={region}>{region}</SelectItem>)}
                                 </SelectGroup>
 
                             </SelectContent>
@@ -107,7 +107,7 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, 
                                     გაწმენდა
                                 </Button>
                                 <SelectGroup>
-                                    {industries.map(industry => <SelectItem value={industry}>{industry}</SelectItem>)}
+                                    {industries.map(industry => <SelectItem key={industry} value={industry}>{industry}</SelectItem>)}
                                 </SelectGroup>
 
                             </SelectContent>
