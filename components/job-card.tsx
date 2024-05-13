@@ -26,7 +26,7 @@ type Props = {
 }
 
 const JobCard = ({ job, locateJob, locatedJob }: Props) => {
-    const { coordinates, region, salary, title, created_at, views, company_logo, company_name } = job
+    const { coordinates, region, salary, title, created_at, views, company_logo, company_name, id } = job
     const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
 
     let createdAt: any = moment(created_at)
@@ -40,7 +40,8 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
             // onClick={() => console.log('clicked')}
         >
             <Link
-                href={job.id.toString()}
+                href={id.toString()}
+                target='_blank'
             >
 
                 <CardContent className='py-4 px-6'>

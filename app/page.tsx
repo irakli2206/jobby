@@ -33,9 +33,7 @@ export const Home = async() => {
 
   return (
     <main className="flex h-[calc(100vh-64px)] w-full justify-between ">
-      <JobsView
-
-      />
+      <JobsView  />
     </main>
   );
 }

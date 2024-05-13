@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MutableRefObject, Ref, useEffect, useRef } from 'react'
 import { Button } from './ui/button'
 import JobCard from './job-card'
 import { Job } from '@/app/page'
@@ -15,6 +15,7 @@ import {
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { Delete, DeleteIcon, Plus, Trash } from 'lucide-react';
 import classNames from 'classnames'
+import { useInView } from "react-intersection-observer";
 
 export type Props = {
     filterJobs: Function
@@ -29,19 +30,30 @@ export type Props = {
     jobsData: Job[]
     locateJob: (job: Job | null) => void
     locatedJob: Job | null
+    getNextPage: Function
+    jobsCount: number
 }
 
 const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარა"]
 const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
 
-const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+    const lastJobRef = useRef<HTMLDivElement>()
+    const { ref, inView, entry } = useInView({
+        /* Optional options */
+        threshold: 0,
+    });
 
+    useEffect(() => {
+        if (inView) getNextPage()
+    }, [inView])
+    console.log(inView)
     return (
         <div className='w-full h-full flex flex-col p-4 '>
             <header className="flex justify-between gap-8">
                 <div className="flex flex-col gap-4  pb-2">
                     <h1 className='text-3xl font-medium'>Jobby.ge</h1>
-                    <p className='text-muted-foreground '>საუკეთესო ადგული ქართულ ვებ სივრცეში სამსახურის საპოვნელად</p>
+                    <p className='text-muted-foreground '>საუკეთესო ადგილი ქართულ ვებ სივრცეში სამსახურის საპოვნელად</p>
                 </div>
                 {/* <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button> */}
             </header>
@@ -116,7 +128,7 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, 
                     </div>
                 </div>
                 <div className="flex flex-col w-full gap-2 mt-2">
-                    <Button onClick={() => filterJobs()} className={classNames('w-full', {
+                    <Button type='submit' onClick={() => filterJobs()} className={classNames('w-full', {
                         'animate-pulse': filtersChanged
                     })}>
                         <MagnifyingGlassIcon className='mr-2' />
@@ -133,26 +145,38 @@ const Sidebar = ({ filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, 
             </main>
 
             <footer className='flex flex-col gap-4 py-8 overflow-y-scroll no-scrollbar'>
-                <Select value={sortBy}
-                    onValueChange={(e) => {
-                        setSortBy(e as "created_at" | "views")
-                    }}
-                    defaultValue='created_at'>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="დალაგება" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value="created_at">ახალი</SelectItem>
-                            <SelectItem value="views">მონახულებები</SelectItem>
+                <div className="flex justify-between  items-end">
+                    <Select value={sortBy}
+                        onValueChange={(e) => {
+                            setSortBy(e as "created_at" | "views")
+                        }}
+                        defaultValue='created_at'>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="დალაგება" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="created_at">ახალი</SelectItem>
+                                <SelectItem value="views">მონახულებები</SelectItem>
 
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
+                    {jobsCount ? <p className='text-muted-foreground text-sm'>{jobsCount} შედეგი</p> : null}
+
+                </div>
                 <>
-                    {jobsData.length ? jobsData.map(job => {
-
-                        return <JobCard key={JSON.stringify(job.coordinates)} job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                    {jobsData.length ? jobsData.map((job, i, arr) => {
+                        //Last job for automatic pagination
+                        if (arr.length - 1 === i) return (
+                            <div ref={ref}>
+                                <JobCard key={job.id} job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                            </div>
+                        )
+                        else return <div >
+                            <JobCard key={job.id} job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                        </div>
                     })
                         :
                         // <p className='mx-auto mt-8'>მითითებული განცხადებები ვერ მოიძებნა</p>

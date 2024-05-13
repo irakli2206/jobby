@@ -130,8 +130,8 @@ const Row = ({ job }: RowProps) => {
                         <DropdownMenuItem asChild>
                             <Link href={`/dashboard/job/${job.id}`}>ნახვა</Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                        <Link href={`/dashboard/job/${job.id}/edit`}>შეცვლა</Link>
+                        <DropdownMenuItem asChild>
+                            <Link href={`/dashboard/job/${job.id}/edit`}>შეცვლა</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
                             changeJobVisibility(job.id, !job.hidden)
