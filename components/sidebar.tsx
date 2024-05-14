@@ -170,12 +170,12 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                     {jobsData.length ? jobsData.map((job, i, arr) => {
                         //Last job for automatic pagination
                         if (arr.length - 1 === i) return (
-                            <div ref={ref}>
+                            <div key={job.id} ref={ref}>
                                 <JobCard key={job.id} job={job} locateJob={locateJob} locatedJob={locatedJob} />
                             </div>
                         )
-                        else return <div >
-                            <JobCard key={job.id} job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                        else return <div key={job.id}>
+                            <JobCard  job={job} locateJob={locateJob} locatedJob={locatedJob} />
                         </div>
                     })
                         :

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Map, { MapRef, Marker, Popup, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import Sidebar from "@/components/sidebar";
-import { createRef, useEffect, useRef, useState } from "react";
+import { Fragment, createRef, useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import { BsBriefcaseFill } from "react-icons/bs";
 import { getFilteredJobs, getJobById, getMapJobs } from "./action";
@@ -79,6 +79,11 @@ const JobsView = () => {
   })
   const [popupData, setPopupData] = useState<any>()
   const [popupLoadingData, setPopupLoadingData] = useState<any>()
+
+  const isMapLoading = useMemo(() => {
+
+    return jobsData.length !== mapData.length
+  }, [jobsData, mapData])
 
   useEffect(() => {
     const handleResize = () => {
@@ -190,7 +195,8 @@ const JobsView = () => {
 
       }
       else {
-
+        setPopupData(null)
+        setPopupLoadingData(null)
         const jobCoordinates = job!.coordinates
 
         mapRef.current.flyTo({
@@ -230,7 +236,6 @@ const JobsView = () => {
     setFilters({ ...filters, [key]: value })
   }
 
-  console.log(popupLoadingData)
 
   return (
     <>
@@ -243,8 +248,9 @@ const JobsView = () => {
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel maxSize={55} defaultSize={55} >
+
                 <Map
-                  key={'map'}
+
                   ref={mapRef}
                   minZoom={7}
                   reuseMaps
@@ -282,7 +288,7 @@ const JobsView = () => {
                     </Popup>
                   }
                   {popupData && (
-                    <Popup key={`popup`} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
+                    <Popup key={crypto.randomUUID()} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
                       anchor="bottom"
                       className='pb-6 w-fit'
                       onClose={() => {
@@ -290,7 +296,7 @@ const JobsView = () => {
                         setLocatedJob(null)
                       }}>
                       <Button asChild variant='ghost' className="" >
-                        <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4 focus-visible:ring-0">
+                        <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4 focus-visible:!ring-0">
                           <div className="flex gap-4 items-center">
                             <Image
                               src={popupData.company_logo}
@@ -302,7 +308,7 @@ const JobsView = () => {
                             />
                             <div className="space-y-1">
                               <p className="font-semibold  whitespace-pre-wrap" >{popupData.title}</p>
-                              <p className="flex items-center text-green-600 "><TbCurrencyLari /> {popupData.salary ? `${popupData.salary[0]}-${popupData.salary[1]}` : 'შეთანხმებით'}</p>
+                              <p className="flex items-center text-green-500 "><TbCurrencyLari /> {popupData.salary ? `${popupData.salary[0]}-${popupData.salary[1]}` : 'შეთანხმებით'}</p>
                             </div>
                           </div>
                         </Link>
@@ -312,9 +318,8 @@ const JobsView = () => {
                     const { id, coordinates } = job
                     const isLocated = locatedJob ? locatedJob.id == id : false
                     return (
-                      <>
+                      <Fragment key={id} >
                         {coordinates ? <Marker
-                          key={id}
                           latitude={coordinates[0]}
                           longitude={coordinates[1]}
                           onClick={() => {
@@ -334,12 +339,14 @@ const JobsView = () => {
                           :
                           null
                         }
-                      </>
+                      </Fragment>
 
                     )
                   })}
 
                 </Map>
+
+
               </ResizablePanel>
             </ResizablePanelGroup>
             :

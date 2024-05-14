@@ -52,7 +52,7 @@ const DashboardView = ({ user, jobs, freeSlots }: Props) => {
 
 
 
-            <div className="container mx-auto px-0 py-10">
+            <div className="container mx-auto px-0 py-4">
                 <JobsTable user={user} data={jobs} freeSlots={freeSlots} />
 
                 <div className="flex flex-col divide-y border-t">

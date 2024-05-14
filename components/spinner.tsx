@@ -1,10 +1,17 @@
+import classNames from 'classnames'
 import { Loader } from 'lucide-react'
 import React from 'react'
 
-const Spinner = () => {
+type Props = {
+    size?: 'sm' | 'md' | 'lg'
+}
+
+const Spinner = ({ size = 'md' }: Props) => {
     return (
         <>
-            <Loader className='h-12 w-12 animate-spin ' />
+            <Loader className={classNames('h-12 w-12 animate-spin ', {
+                'h-18 w-18': size === 'lg'
+            })} />
         </>
     )
 }
