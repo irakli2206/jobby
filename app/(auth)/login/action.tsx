@@ -1,9 +1,9 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server"
-import { LoginFormValues } from "./page"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import { LoginFormValues } from "./view"
 
 
 
@@ -18,7 +18,7 @@ export async function login({ email, password }: LoginFormValues) {
 
 
     if (error) {
-        return { error: error.message }
+        if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
     }
     const { data: profile, error: profileError } = await supabase.from('profiles').select().eq('id', data.user.id).maybeSingle()
 

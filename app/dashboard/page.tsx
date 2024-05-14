@@ -30,6 +30,7 @@ import {
 import moment from 'moment'
 
 import JobsTable from './components/jobs-table'
+import DashboardView from './view'
 
 
 
@@ -39,39 +40,17 @@ const Dashboard = async () => {
   const jobs = await getJobsByUser(user.id)
 
 
-  const freeSlots = user.job_limit - jobs.length
+  const freeSlots = user.job_limit - jobs!.length
 
 
   return (
-    <div className='max-w-7xl py-12 mx-auto w-full'>
-      <div className="flex justify-between mb-4 items-center">
-        <h1 className='text-xl font-semibold'>შენი განცხადებები</h1>
-        <div className='text-sm flex gap-2 items-center'>
-          <p>განთავსებადი განცხადება: {user.job_limit}</p>
-          <Button variant='ghost' className='text-muted-foreground' asChild >
-            <Link href='pricing'><Plus size={16} className='mr-1' />ზღვრის გაზრდა</Link>
-          </Button>
-        </div>
-      </div>
-
-
-
-      <div className="container mx-auto px-0 py-10">
-        <JobsTable data={jobs} />
-
-        <div className="flex flex-col divide-y border-t">
-          {Array.from({ length: freeSlots }).map(slot => {
-            return (
-              <Button asChild variant='ghost' className="w-full h-20 hover:bg-gray-50 text-muted-foreground">
-                <Link href='/dashboard/job/create' className='flex items-center text-sm'><Plus size={14} className='mr-1' /> დაამატე განცხადება</Link>
-              </Button>
-            )
-          })}
-        </div>
-      </div>
-
-
-    </div>
+    <>
+      <DashboardView
+        freeSlots={freeSlots}
+        jobs={jobs!}
+        user={user}
+      />
+    </>
   )
 }
 

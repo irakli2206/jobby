@@ -53,7 +53,7 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
             <header className="flex justify-between gap-8">
                 <div className="flex flex-col gap-4  pb-2">
                     <h1 className='text-3xl font-medium'>Jobby.ge</h1>
-                    <p className='text-muted-foreground '>საუკეთესო ადგილი ქართულ ვებ სივრცეში სამსახურის საპოვნელად</p>
+                    <p className='text-muted-foreground '>საუკეთესო ქართული პორტალი სამსახურის ძიებისთვის</p>
                 </div>
                 {/* <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button> */}
             </header>

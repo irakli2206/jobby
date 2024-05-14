@@ -38,10 +38,10 @@ import {
 
 
 const formSchema = z.object({
-    firstName: z.string().min(1, "Required field"),
-    lastName: z.string().min(1, "Required field"),
-    email: z.string().min(1, "Required field").email(),
-    password: z.string().min(6, "Must be at least 6 characters")
+    firstName: z.string().min(1, "საჭირო ველი"),
+    lastName: z.string().min(1, "საჭირო ველი"),
+    email: z.string().min(1, "საჭირო ველი").email("ელ-ფოსტის არასწორი ფორმატი"),
+    password: z.string().min(6, "უნდა იყოს 6 სიმბოლო ან მეტი")
 })
 
 export type SignupFormValues = z.infer<typeof formSchema>
@@ -76,7 +76,7 @@ const SignupView = () => {
             if (data && data.error) throw Error(data.error)
         } catch (e: any) {
             toast({
-                title: "Error",
+                title: "შეცდომა",
                 description: e.message,
                 duration: 5000,
                 variant: 'destructive'

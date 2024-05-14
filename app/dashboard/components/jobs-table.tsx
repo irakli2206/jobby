@@ -2,7 +2,7 @@
 
 
 import Image from "next/image"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Plus } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -35,44 +35,55 @@ import Link from "next/link"
 import { changeJobVisibility } from "../action"
 
 type Props = {
+    user: any
     data: any[]
+    freeSlots: number
 }
 
-export default function JobsTable({ data }: Props) {
+export default function JobsTable({ user, freeSlots, data }: Props) {
+    const createEndpoint = freeSlots ? '/dashboard/job/create' : '/pricing'
     // console.log(data)
     return (
+        <>
+            {data.length ?
+                <Table className="">
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="hidden w-[100px] sm:table-cell">
+                                <span className="sr-only">Image</span>
+                            </TableHead>
+                            <TableHead>სახელწოდება</TableHead>
+                            <TableHead>კომპანია</TableHead>
+                            <TableHead>ანაზღაურება</TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                მონახულება
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                ხილვადობა
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">შექმნის დრო</TableHead>
+                            <TableHead>
+                                <span className="sr-only">Actions</span>
+                            </TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map(job => {
+                            return (
+                                < Row job={job} />
+                            )
+                        })}
 
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className="hidden w-[100px] sm:table-cell">
-                        <span className="sr-only">Image</span>
-                    </TableHead>
-                    <TableHead>სახელწოდება</TableHead>
-                    <TableHead>კომპანია</TableHead>
-                    <TableHead>ანაზღაურება</TableHead>
-                    <TableHead className="hidden md:table-cell">
-                        მონახულება
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                        ხილვადობა
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">შექმნის დრო</TableHead>
-                    <TableHead>
-                        <span className="sr-only">Actions</span>
-                    </TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {data.map(job => {
-                    return (
-                        < Row job={job} />
-                    )
-                })}
 
+                    </TableBody>
+                </Table>
+                :
+                <Button asChild variant='ghost' className="w-full h-20 hover:bg-gray-50 text-muted-foreground border-t">
+                    <Link href={createEndpoint} className='flex items-center text-sm'><Plus size={14} className='mr-1' /> შექმენი შენი პირველი განცხადება</Link>
+                </Button>
+            }
+        </>
 
-            </TableBody>
-        </Table>
 
     )
 }

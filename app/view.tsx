@@ -228,6 +228,7 @@ const JobsView = () => {
                 >
                   {jobsData.map((job) => {
                     const { coordinates } = job
+                    console.log(coordinates)
                     const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
                     return (
                       <>

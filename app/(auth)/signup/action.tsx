@@ -22,7 +22,7 @@ export async function signup({ email, password, firstName, lastName }: SignupFor
     })
 
     if (error) {
-        return { error: error.message }
+        if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
     }
 
     const { data: profileData, error: profileError } = await supabase

@@ -58,7 +58,7 @@ export async function incrementJobViews(job: Object) {
 
 export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined, industryFilter?: string | undefined, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
     const supabase = createClient()
-    let query = supabase.from('jobs').select('id, title, company_name, company_logo, salary, views, created_at', { count: 'exact' })
+    let query = supabase.from('jobs').select('id, title, company_name, coordinates, company_logo, salary, views, created_at', { count: 'exact' })
     query.eq('hidden', false)
     if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
     if (regionFilter) query = query.eq('region', regionFilter)
@@ -66,7 +66,7 @@ export async function getFilteredJobs(titleFilter?: string, regionFilter?: strin
 
     const { count } = await query
     //Pagination in the end to avoid missing certain items
-    query.range(0, (currentPage + 1) * 9)
+    query.range(0, (currentPage + 1) * 39)
     const { data, error } = await query.order(sort, { ascending: false })
     if (error) return { data: null, error: error.message }
 
