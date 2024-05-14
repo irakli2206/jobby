@@ -15,6 +15,10 @@ import {
 import React from 'react'
 import Spinner from "@/components/spinner";
 import MapboxLanguage from '@mapbox/mapbox-gl-language';
+import { Skeleton } from "@/components/ui/skeleton";
+import { TbCurrencyLari } from "react-icons/tb";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export type Coordinates = [number, number]
 
@@ -82,7 +86,7 @@ const JobsView = () => {
     // }
   })
   const [popupData, setPopupData] = useState<any>()
-
+  const [popupLoadingData, setPopupLoadingData] = useState<any>()
 
   useEffect(() => {
     const handleResize = () => {
@@ -172,7 +176,11 @@ const JobsView = () => {
 
   useEffect(() => {
     //To turn off popup
-    if(!locatedJob) setPopupData(null)
+    if (!locatedJob) {
+      setPopupData(null)
+      // setPopupLoadingData(null)
+    }
+
   }, [locatedJob])
 
   const locateJob = async (job: Job | null, mapClick: boolean = false) => {
@@ -184,10 +192,11 @@ const JobsView = () => {
       if (mapClick) {
         try {
           const jobData = await getJobById(job.id)
+          setPopupLoadingData(null)
           setPopupData(jobData)
           setLocatedJob(jobData)
         } finally {
-           
+
 
         }
 
@@ -212,7 +221,6 @@ const JobsView = () => {
     }
   }
 
-  console.log(popupData)
 
   const getNextPage = async () => {
     if (jobsCount === jobsData.length) return
@@ -233,6 +241,8 @@ const JobsView = () => {
   const handleFilterChange = (key: string, value: string | undefined) => {
     setFilters({ ...filters, [key]: value })
   }
+
+  console.log(popupLoadingData)
 
   return (
     <>
@@ -263,25 +273,58 @@ const JobsView = () => {
                   style={{ width: '100%', height: '100%' }}
                   mapStyle="mapbox://styles/mapbox/light-v11"
                 >
+                  {popupLoadingData &&
+                    <Popup key={crypto.randomUUID()} latitude={popupLoadingData.coordinates[0]} longitude={popupLoadingData.coordinates[1]}
+                      anchor="bottom"
+                      className='pb-6 '
+                      onClose={() => {
+                        setPopupData(null)
+                        setLocatedJob(null)
+                      }}>
+
+                      <div className="w-full h-full bg-whiterounded-sm border p-4">
+                        <div className="flex flex-row gap-3 items-center">
+                          <Skeleton className="h-[40px] w-[40px] rounded-none " />
+                          <div className="space-y-2">
+                            <Skeleton className="h-2 w-24" />
+                            <Skeleton className="h-2 w-24" />
+                          </div>
+                        </div>
+                      </div>
+                    </Popup>
+                  }
+                  {popupData && (
+                    <Popup key={`popup`} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
+                      anchor="bottom"
+                      className='pb-6 w-fit'
+                      onClose={() => {
+                        setPopupData(null)
+                        setLocatedJob(null)
+                      }}>
+                      <Button asChild variant='ghost' className="" >
+                        <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4">
+                          <div className="flex gap-4 items-center">
+                            <Image
+                              src={popupData.company_logo}
+                              width={50}
+                              height={1}
+                              alt=''
+                              className="h-[40px] w-[40px]  object-contain rounded-none "
+
+                            />
+                            <div className="space-y-1">
+                              <p className="font-semibold  whitespace-pre-wrap" >{popupData.title}</p>
+                              <p className="flex items-center text-green-600 "><TbCurrencyLari /> {popupData.salary ? `${popupData.salary[0]}-${popupData.salary[1]}` : 'შეთანხმებით'}</p>
+                            </div>
+                          </div>
+                        </Link>
+                      </Button>
+                    </Popup>)}
                   {mapData.map((job) => {
                     const { id, coordinates } = job
                     const isLocated = locatedJob ? locatedJob.id == id : false
                     return (
                       <>
-                        {popupData && (
-                          <Popup key={`${popupData.id}-popup`} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
-                            anchor="bottom"
-                            className='pb-6'
-                            onClose={() => {
-                              setPopupData(null)
-                              setLocatedJob(null)
-                            }}>
-                            <div className="w-full h-full bg-white rounded-sm border p-4">
-                              { popupData.id}
-                            </div>
-
-                          </Popup>)}
-
                         {coordinates ? <Marker
                           key={id}
                           latitude={coordinates[0]}
@@ -289,7 +332,7 @@ const JobsView = () => {
                           onClick={() => {
 
                             console.log('reached')
-                            
+                            setPopupLoadingData({ id, coordinates })
                             locateJob(job, true)
                           }}
                         >
