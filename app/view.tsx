@@ -181,13 +181,15 @@ const JobsView = () => {
   }
 
   const getNextPage = async () => {
+    if(jobsCount === jobsData.length) return
+
     const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy, currentPage)
-    if (jobs.error) throw new Error(jobs.error.message)
+    if (jobs.error) throw new Error(jobs.error)
 
     if (jobs.data?.length) {
       const nextPage = currentPage + 1
       setCurrentPage(nextPage)
-      setJobsData([...jobsData, ...jobs.data!])
+      setJobsData([...jobs.data!])
       // window.sessionStorage.setItem('currentPage', String(nextPage))
 
     }
