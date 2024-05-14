@@ -13,6 +13,8 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import React from 'react'
+import Spinner from "@/components/spinner";
+import MapboxLanguage from '@mapbox/mapbox-gl-language';
 
 export type Coordinates = [number, number]
 
@@ -115,6 +117,11 @@ const JobsView = () => {
   }, [sortBy])
 
   useEffect(() => {
+    // if (mapRef.current) {
+    //   mapRef.current.addControl(new MapboxLanguage({ defaultLanguage: 'ka' }))
+    // }
+
+
     const getMapData = async () => {
       const mapDataRes = await getMapJobs()
 
@@ -163,10 +170,10 @@ const JobsView = () => {
     }
   }
 
-
-  const handleFilterChange = (key: string, value: string | undefined) => {
-    setFilters({ ...filters, [key]: value })
-  }
+  useEffect(() => {
+    //To turn off popup
+    if(!locatedJob) setPopupData(null)
+  }, [locatedJob])
 
   const locateJob = async (job: Job | null, mapClick: boolean = false) => {
     if (mapRef) {
@@ -175,9 +182,15 @@ const JobsView = () => {
       }
 
       if (mapClick) {
-        const jobData = await getJobById(job.id)
-        setPopupData(jobData)
-        setLocatedJob(jobData)
+        try {
+          const jobData = await getJobById(job.id)
+          setPopupData(jobData)
+          setLocatedJob(jobData)
+        } finally {
+           
+
+        }
+
       }
       else {
 
@@ -196,12 +209,10 @@ const JobsView = () => {
 
       }
 
-
-
     }
   }
 
-
+  console.log(popupData)
 
   const getNextPage = async () => {
     if (jobsCount === jobsData.length) return
@@ -218,6 +229,10 @@ const JobsView = () => {
     }
   }
 
+
+  const handleFilterChange = (key: string, value: string | undefined) => {
+    setFilters({ ...filters, [key]: value })
+  }
 
   return (
     <>
@@ -250,22 +265,23 @@ const JobsView = () => {
                 >
                   {mapData.map((job) => {
                     const { id, coordinates } = job
-                    const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
+                    const isLocated = locatedJob ? locatedJob.id == id : false
                     return (
                       <>
                         {popupData && (
-                          <Popup key={`${popupData.id}-popup`} longitude={popupData.coordinates[1]} latitude={popupData.coordinates[0]}
+                          <Popup key={`${popupData.id}-popup`} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
                             anchor="bottom"
-                            className='pb-8'
+                            className='pb-6'
                             onClose={() => {
                               setPopupData(null)
                               setLocatedJob(null)
                             }}>
                             <div className="w-full h-full bg-white rounded-sm border p-4">
-                              {popupData.id}
+                              { popupData.id}
                             </div>
 
                           </Popup>)}
+
                         {coordinates ? <Marker
                           key={id}
                           latitude={coordinates[0]}
@@ -273,6 +289,7 @@ const JobsView = () => {
                           onClick={() => {
 
                             console.log('reached')
+                            
                             locateJob(job, true)
                           }}
                         >
