@@ -80,10 +80,12 @@ const JobsView = () => {
   const [popupData, setPopupData] = useState<any>()
   const [popupLoadingData, setPopupLoadingData] = useState<any>()
 
-  const isMapLoading = useMemo(() => {
+  // const isMapLoading = useMemo(() => {
 
-    return jobsData.length !== mapData.length
-  }, [jobsData, mapData])
+  //   return jobsData.length !== mapData.length
+  // }, [jobsData, mapData])
+
+  // console.log(isMapLoading)
 
   useEffect(() => {
     const handleResize = () => {
@@ -158,6 +160,7 @@ const JobsView = () => {
         region: "",
         title: ""
       }
+      prevFilters.current = emptyFilters
       setFilters(emptyFilters)
       const jobs = await getFilteredJobs("", "", "", sortBy)
       //@ts-ignore
@@ -165,7 +168,7 @@ const JobsView = () => {
 
       setCurrentPage(1)
       setJobsData(jobs.data!)
-      prevFilters.current = emptyFilters
+      
 
     } catch (e) {
       console.log(e)
