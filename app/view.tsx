@@ -119,13 +119,14 @@ const JobsView = () => {
 
 
     const getMapData = async () => {
-      const mapDataRes = await getMapJobs()
+      const ids = jobsData.map(j => j.id)
+      const mapDataRes = await getMapJobs(ids)
 
       if (!mapDataRes.error) setMapData(mapDataRes.data!)
 
     }
     getMapData()
-  }, [])
+  }, [jobsData])
 
 
   const filterJobs = async () => {
