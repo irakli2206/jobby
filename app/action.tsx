@@ -66,9 +66,17 @@ export async function getFilteredJobs(titleFilter?: string, regionFilter?: strin
 
     const { count } = await query
     //Pagination in the end to avoid missing certain items
-    query.range(0, (currentPage + 1) * 39)
+    query.range(0, (currentPage + 1) * 15)
     const { data, error } = await query.order(sort, { ascending: false })
     if (error) return { data: null, error: error.message }
 
     return { data, count: count!, error: null }
+}
+
+export async function getMapJobs() {
+    const supabase = createClient()
+    let { data, error } = await supabase.from('jobs').select('id, coordinates')
+    if (error) return { data: null, error: error.message }
+
+    return { data, error: null }
 }

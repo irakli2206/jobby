@@ -47,7 +47,7 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
     useEffect(() => {
         if (inView) getNextPage()
     }, [inView])
-    console.log(inView)
+
     return (
         <div className='w-full h-full flex flex-col p-4 '>
             <header className="flex justify-between gap-8">

@@ -1,12 +1,12 @@
 'use client'
 
 import Image from "next/image";
-import Map, { MapRef, Marker, ViewState, ViewStateChangeEvent } from 'react-map-gl';
+import Map, { MapRef, Marker, Popup, ViewState, ViewStateChangeEvent } from 'react-map-gl';
 import Sidebar from "@/components/sidebar";
 import { createRef, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { BsBriefcaseFill } from "react-icons/bs";
-import { getFilteredJobs } from "./action";
+import { getFilteredJobs, getJobById, getMapJobs } from "./action";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -62,6 +62,7 @@ const JobsView = () => {
   const filtersChanged = !isEqual(filters, prevFilters.current)
   const [currentPage, setCurrentPage] = useState(1)
   const [jobsData, setJobsData] = useState<any[]>([])
+  const [mapData, setMapData] = useState<any[]>([])
   const [jobsCount, setJobsCount] = useState<number | undefined>()
   const [locatedJob, setLocatedJob] = useState<Job | null>(null)
   const [sortBy, setSortBy] = useState<"created_at" | "views">('created_at')
@@ -78,6 +79,7 @@ const JobsView = () => {
     //   left: 0
     // }
   })
+  const [popupData, setPopupData] = useState<any>()
 
 
   useEffect(() => {
@@ -112,6 +114,16 @@ const JobsView = () => {
     getJobsData()
   }, [sortBy])
 
+  useEffect(() => {
+    const getMapData = async () => {
+      const mapDataRes = await getMapJobs()
+
+      if (!mapDataRes.error) setMapData(mapDataRes.data!)
+
+    }
+    getMapData()
+  }, [])
+
 
   const filterJobs = async () => {
     try {
@@ -138,7 +150,7 @@ const JobsView = () => {
         title: ""
       }
       setFilters(emptyFilters)
-      const jobs = await getFilteredJobs("", "", "")
+      const jobs = await getFilteredJobs("", "", "", sortBy)
       //@ts-ignore
       if (jobs.error) throw new Error(jobs.error.message)
 
@@ -156,32 +168,43 @@ const JobsView = () => {
     setFilters({ ...filters, [key]: value })
   }
 
-  const locateJob = (job: Job | null) => {
-
+  const locateJob = async (job: Job | null, mapClick: boolean = false) => {
     if (mapRef) {
-      if (JSON.stringify(job) === JSON.stringify(locatedJob)) {
-        setLocatedJob(null)
+      if (locatedJob && (job.id === locatedJob.id)) {
+        return setLocatedJob(null)
+      }
+
+      if (mapClick) {
+        const jobData = await getJobById(job.id)
+        setPopupData(jobData)
+        setLocatedJob(jobData)
       }
       else {
+
         const jobCoordinates = job!.coordinates
 
         mapRef.current.flyTo({
           center: [jobCoordinates[1], jobCoordinates[0]],
-          zoom: 12,
+          zoom: 10,
           duration: 1000,
           essential: true,
 
         })
 
         setLocatedJob(job)
+
+
       }
+
 
 
     }
   }
 
+
+
   const getNextPage = async () => {
-    if(jobsCount === jobsData.length) return
+    if (jobsCount === jobsData.length) return
 
     const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy, currentPage)
     if (jobs.error) throw new Error(jobs.error)
@@ -195,7 +218,6 @@ const JobsView = () => {
     }
   }
 
-  console.log(jobsData)
 
   return (
     <>
@@ -226,18 +248,32 @@ const JobsView = () => {
                   style={{ width: '100%', height: '100%' }}
                   mapStyle="mapbox://styles/mapbox/light-v11"
                 >
-                  {jobsData.map((job) => {
-                    const { coordinates } = job
-                    console.log(coordinates)
+                  {mapData.map((job) => {
+                    const { id, coordinates } = job
                     const isLocated = locatedJob ? JSON.stringify(locatedJob.coordinates) == JSON.stringify(coordinates) : false
                     return (
                       <>
+                        {popupData && (
+                          <Popup key={`${popupData.id}-popup`} longitude={popupData.coordinates[1]} latitude={popupData.coordinates[0]}
+                            anchor="bottom"
+                            className='pb-8'
+                            onClose={() => {
+                              setPopupData(null)
+                              setLocatedJob(null)
+                            }}>
+                            <div className="w-full h-full bg-white rounded-sm border p-4">
+                              {popupData.id}
+                            </div>
+
+                          </Popup>)}
                         {coordinates ? <Marker
-                          key={job.id}
+                          key={id}
                           latitude={coordinates[0]}
                           longitude={coordinates[1]}
                           onClick={() => {
-                            locateJob(job)
+
+                            console.log('reached')
+                            locateJob(job, true)
                           }}
                         >
                           {/* <div className={classNames(`w-20  bg-white px-1 py-2 rounded-lg shadow`, {
@@ -268,7 +304,7 @@ const JobsView = () => {
               </ResizablePanel>
             </ResizablePanelGroup>
             :
-            <Sidebar getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+            <Sidebar jobsCount={jobsCount!} getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
 
 
         }
