@@ -76,14 +76,6 @@ const JobsView = () => {
     longitude: 44,
     latitude: 42,
     zoom: 6,
-    // bearing: 0,
-    // pitch: 0,
-    // padding: {
-    //   bottom: 0,
-    //   top: 0,
-    //   right: 0,
-    //   left: 0
-    // }
   })
   const [popupData, setPopupData] = useState<any>()
   const [popupLoadingData, setPopupLoadingData] = useState<any>()
@@ -174,19 +166,14 @@ const JobsView = () => {
     }
   }
 
-  useEffect(() => {
-    //To turn off popup
-    if (!locatedJob) {
-      setPopupData(null)
-      // setPopupLoadingData(null)
-    }
-
-  }, [locatedJob])
 
   const locateJob = async (job: Job | null, mapClick: boolean = false) => {
     if (mapRef) {
       if (locatedJob && (job.id === locatedJob.id)) {
-        return setLocatedJob(null)
+        setPopupData(null)
+        setLocatedJob(null)
+        setPopupLoadingData(null)
+        return
       }
 
       if (mapClick) {
@@ -302,7 +289,7 @@ const JobsView = () => {
                         setLocatedJob(null)
                       }}>
                       <Button asChild variant='ghost' className="" >
-                        <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4">
+                        <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4 focus-visible:ring-0">
                           <div className="flex gap-4 items-center">
                             <Image
                               src={popupData.company_logo}
@@ -336,16 +323,7 @@ const JobsView = () => {
                             locateJob(job, true)
                           }}
                         >
-                          {/* <div className={classNames(`w-20  bg-white px-1 py-2 rounded-lg shadow`, {
-              'w-10': viewState.zoom < 8
-            })}>
-              <Image
-                src={companyLogo}
-                width={100}
-                height={1}
-                className=' w-full h-full'
-              />
-            </div> */}
+
                           <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center text-white bg-primary rounded-full `, {
                             '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)]': isLocated
                           })}>
@@ -365,8 +343,6 @@ const JobsView = () => {
             </ResizablePanelGroup>
             :
             <Sidebar jobsCount={jobsCount!} getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
-
-
         }
       </>
         :
