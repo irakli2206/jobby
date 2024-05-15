@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import classNames from 'classnames';
 import { randomUUID } from 'crypto';
-import { Delete, DeleteIcon, Plus, Trash } from 'lucide-react';
+import { Delete, DeleteIcon, Plus, RefreshCw, Trash } from 'lucide-react';
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { BsBriefcaseFill } from 'react-icons/bs';
@@ -436,7 +436,10 @@ const CreateJob = () => {
                 </dl>
             </div>
 
-            <Button size={'lg'} className='my-12 w-full' onClick={handleSave}>შენახვა</Button>
+            <Button disabled={loading} size={'lg'} className='my-12 w-full' onClick={handleSave}>
+                {loading && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
+                შენახვა
+            </Button>
         </div>
     )
 }
