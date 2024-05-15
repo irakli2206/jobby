@@ -98,7 +98,7 @@ const Row = ({ job }: RowProps) => {
 
 
     return (
-        <TableRow >
+        <TableRow > 
 
             <TableCell className="hidden sm:table-cell">
                 <Image
