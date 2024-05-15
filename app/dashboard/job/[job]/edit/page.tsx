@@ -449,7 +449,7 @@ const Edit = () => {
                                         ...jobData,
                                         application_instruction: e.target.value
                                     })
-                                }}
+                                }} 
 
                             />
                         </dd>
