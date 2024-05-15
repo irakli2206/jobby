@@ -40,7 +40,7 @@ type Props = {
     freeSlots: number
 }
 
-export default function JobsTable({ user, freeSlots, data }: Props) {
+export const JobsTable = ({ user, freeSlots, data }: Props) => {
     const createEndpoint = freeSlots ? '/dashboard/job/create' : '/pricing'
     // console.log(data)
     return (
@@ -70,7 +70,7 @@ export default function JobsTable({ user, freeSlots, data }: Props) {
                     <TableBody>
                         {data.map(job => {
                             return (
-                                < Row job={job} />
+                                < Row key={job.id} job={job} />
                             )
                         })}
 
@@ -103,9 +103,9 @@ const Row = ({ job }: RowProps) => {
             <TableCell className="hidden sm:table-cell">
                 <Image
                     alt="Product image"
-                    className="aspect-square object-cover"
+                    className="aspect-square object-contain"
                     height="64"
-                    src={job.company_logo}
+                    src={job.company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                     width="64"
                 />
             </TableCell>
@@ -153,3 +153,6 @@ const Row = ({ job }: RowProps) => {
         </TableRow>
     )
 }
+
+
+export default JobsTable

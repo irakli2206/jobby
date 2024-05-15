@@ -69,7 +69,7 @@ const CreateJob = () => {
         if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary.length || !jobData.region || !jobData.application_instruction) {
             throw new Error("შეავსე ცარიელი ველები")
         }
-        else if (jobData.salary[1] > jobData.salary[0]) {
+        else if (jobData.salary[1] < jobData.salary[0]) {
             throw new Error("შეიყვანე სწორი ანაზღაურება")
         }
     }
@@ -79,18 +79,25 @@ const CreateJob = () => {
         try {
             validateFields()
             setLoading(true)
-            const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('jobs').upload(`logos/${crypto.randomUUID()}`, logo as File, {
-                upsert: true,
-                contentType: 'image/*'
-            })
-            if (imageUploadError) throw new Error(imageUploadError.message)
+
+            let imagePath
+            if (logo) {
+                const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('jobs').upload(`logos/${crypto.randomUUID()}`, logo as File, {
+                    upsert: true,
+                    contentType: 'image/*'
+                })
+                if (imageUploadError) throw new Error(imageUploadError.message)
+                imagePath = imageUpload
+            }
+
 
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
+            if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
+
             const { error, status } = await supabase.from('jobs').insert({
                 ...formattedJobData,
-                company_logo: `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imageUpload.path}`
             })
 
             if (error) throw new Error(error.message)
