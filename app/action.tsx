@@ -17,12 +17,22 @@ export async function getProfile() {
 
     if (!data.user) return null
 
-    const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id).maybeSingle()
+    const { data: profile, error: profileError } = await supabase.from('profiles').select('*').eq('id', data.user?.id).single()
 
 
     if (profileError) return { error: profileError.message }
 
     return profile
+}
+
+export async function getProfileByID(id: string) {
+    const supabase = createClient()
+
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single()
+
+    if (error) throw Error("No profile found")
+ 
+    return data
 }
 
 

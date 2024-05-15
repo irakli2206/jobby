@@ -39,7 +39,7 @@ type Props = {
 
 const DashboardView = ({ user, jobs, freeSlots }: Props) => {
     return (
-        <div className='max-w-7xl py-12 mx-auto w-full'>
+        <div className='max-w-7xl py-12 mx-auto w-full px-2 md:px-4'>
             <div className="flex justify-between mb-4 items-center">
                 <h1 className='text-xl font-semibold'>შენი განცხადებები</h1>
                 <div className='text-sm flex gap-2 items-center'>
