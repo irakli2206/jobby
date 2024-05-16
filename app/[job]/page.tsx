@@ -31,7 +31,7 @@ const Job = async ({ params }: Props) => {
 
                 <div className='w-40 h-20 relative mb-2'>
                     <Image
-                        src={job.company_logo}
+                        src={job.company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                         alt=''
                         fill
                         className='object-contain '
