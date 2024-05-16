@@ -19,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TbCurrencyLari } from "react-icons/tb";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Loader } from "lucide-react";
 
 export type Coordinates = [number, number]
 
@@ -79,6 +80,7 @@ const JobsView = () => {
   })
   const [popupData, setPopupData] = useState<any>()
   const [popupLoadingData, setPopupLoadingData] = useState<any>()
+  const [mapLoading, setMapLoading] = useState(true)
 
   // const isMapLoading = useMemo(() => {
 
@@ -129,8 +131,10 @@ const JobsView = () => {
       const ids = jobsData.map(j => j.id)
       const mapDataRes = await getMapJobs(ids)
 
-      if (!mapDataRes.error) setMapData(mapDataRes.data!)
-
+      if (!mapDataRes.error) {
+        setMapData(mapDataRes.data!)
+        setMapLoading(false)
+      }
     }
     getMapData()
   }, [jobsData])
@@ -253,7 +257,7 @@ const JobsView = () => {
               <ResizablePanel maxSize={55} defaultSize={55} >
 
                 <Map
-
+                  id='home-map'
                   ref={mapRef}
                   minZoom={7}
                   reuseMaps
@@ -270,6 +274,11 @@ const JobsView = () => {
                   style={{ width: '100%', height: '100%' }}
                   mapStyle="mapbox://styles/mapbox/light-v11"
                 >
+                  {mapLoading && <div className="relative w-full h-full flex items-center justify-center bg-white/50">
+                    <Loader className={classNames('h-20 w-20 animate-spin ')} />
+                  </div>
+                  }
+
                   {popupLoadingData &&
                     <Popup key={crypto.randomUUID()} latitude={popupLoadingData.coordinates[0]} longitude={popupLoadingData.coordinates[1]}
                       anchor="bottom"

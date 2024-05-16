@@ -44,26 +44,26 @@ const Job = async ({ params }: Props) => {
                         <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
                     </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    {job.responsibilities && <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc list-inside'>
-                                {job.responsibilities && job.responsibilities.map(r => {
+                                {job.responsibilities.map(r => {
                                     return <li>{r}</li>
                                 })}
                             </ol>
                         </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    </div>}
+                    {job.required_experiences && <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">საჭირო გამოცდილება</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc list-inside'>
-                                {job.required_experiences && job.required_experiences.map(e => {
+                                {job.required_experiences.map(e => {
                                     return <li>{e}</li>
                                 })}
                             </ol>
                         </dd>
-                    </div>
+                    </div>}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.salary ? `${job.salary[0]}-${job.salary[1]} ლარი` : "შეთანხმებით"}</dd>
