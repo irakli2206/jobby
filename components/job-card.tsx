@@ -63,7 +63,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                     <h2 className="font-semibold text-lg">{title}</h2>
                                 </div>
                                 <Button variant='outline' size='icon'
-                                    className={classNames('transition', {
+                                    className={classNames('hidden xl:flex transition', {
                                         'border-green-300 bg-green-50 text-green-500 hover:text-green-500 hover:bg-green-50 hover:border-green-300 hover:opacity-75': isLocated
                                     })}
                                     onClick={(e) => {
@@ -92,8 +92,8 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                     {salary ? `${salary[0]}-${salary[1]}` : "შეთანხმებით"}
 
                                 </div>
-                                <DotFilledIcon className=' ' orientation='vertical' />
-                                <div className="flex gap-1 items-center ">
+                                <DotFilledIcon className='hidden sm:block' orientation='vertical' />
+                                <div className="hidden sm:flex gap-1 items-center ">
                                     <MousePointerClick size={16} />
                                     {views} მონახულება
 

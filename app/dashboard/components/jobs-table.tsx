@@ -137,7 +137,7 @@ const Row = ({ job }: RowProps) => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>ქმედებები</DropdownMenuLabel>
+                        {/* <DropdownMenuLabel>ქმედებები</DropdownMenuLabel> */}
                         <DropdownMenuItem asChild>
                             <Link href={`/dashboard/job/${job.id}`}>ნახვა</Link>
                         </DropdownMenuItem>

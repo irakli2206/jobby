@@ -69,7 +69,7 @@ const PricingView = ({ user }: Props) => {
                                 </p>
                                 <p className='flex items-center gap-2'>
                                     <CheckCircledIcon />
-                                    განცხადების ნახვების რაოდენობა
+                                    მონახულებების რაოდენობა
                                 </p>
                             </div>
                         </CardContent>

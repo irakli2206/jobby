@@ -248,7 +248,7 @@ const JobsView = () => {
     <>
       {windowWidth ? <>
         {
-          windowWidth > 1264 ?
+          windowWidth > 1280 ?
             <ResizablePanelGroup direction="horizontal">
               <ResizablePanel maxSize={55} defaultSize={45}>
                 <Sidebar getNextPage={getNextPage} jobsCount={jobsCount!} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
