@@ -168,7 +168,7 @@ const JobsView = () => {
 
       setCurrentPage(1)
       setJobsData(jobs.data!)
-      
+
 
     } catch (e) {
       console.log(e)
@@ -302,7 +302,7 @@ const JobsView = () => {
                         <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4 focus-visible:!ring-0">
                           <div className="flex gap-4 items-center">
                             <Image
-                              src={popupData.company_logo}
+                              src={popupData.company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                               width={50}
                               height={1}
                               alt=''
