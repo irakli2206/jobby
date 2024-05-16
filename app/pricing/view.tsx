@@ -37,7 +37,7 @@ const PricingView = ({ user }: Props) => {
     return (
         <div className='max-w-7xl py-12 px-2 mx-auto w-full '>
             <div className="h-full w-full flex flex-col gap-12 items-center">
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-4">
                     <Badge variant="outline" className='w-fit mx-auto'>ფასი</Badge>
                     <h1 className='text-3xl sm:text-4xl font-semibold text-center '>პირდაპირი და მარტივი გადახდა</h1>
                 </div>
