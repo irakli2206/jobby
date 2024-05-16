@@ -38,6 +38,7 @@ import { useEffect, useState } from "react"
 import { getUser, signout } from "@/app/action"
 import { ExitIcon } from '@radix-ui/react-icons'
 import { createClient } from "@/utils/supabase/client"
+import Image from "next/image"
 
 type Props = {
   user: any
@@ -52,9 +53,15 @@ const Header = ({ user }: Props) => {
       <nav className="hidden max-w-7xl w-full mx-auto flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+          className="flex w-11 h-11 items-center gap-2 text-lg font-semibold md:text-base relative"
         >
-          <Package2 className="h-6 w-6" />
+          {/* < FaReact className="h-8 w-8" /> */}
+          <Image
+            src='/logo.svg'
+            alt=''
+            fill
+          // className='h-6 w-auto'
+          />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <div className="mx-auto flex gap-8">
@@ -86,7 +93,7 @@ const Header = ({ user }: Props) => {
             null
           }
           <Button asChild className=' ' >
-            <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2"/> განათავსე განცხადება </Link>
+            <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2" /> განათავსე განცხადება </Link>
           </Button>
 
         </div>
