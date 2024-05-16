@@ -5,7 +5,6 @@ import { buffer } from 'micro'
 import Stripe from "stripe"
 import { createClient } from "@/utils/supabase/server";
 import { getProfileByID } from "@/app/action";
-import { Profile } from "@/types/database.types";
 
 
 
@@ -52,7 +51,7 @@ export async function POST(
 
         const { data: profile, error: profileError } = await supabase.from('profiles').select().eq('id', userId).single()
         console.log('profile', profile)
-        const { data, error }: { data: Profile | null, error: any } = await supabase.from('profiles').update({
+        const { data, error }: { data: any | null, error: any } = await supabase.from('profiles').update({
             stripe_customer_id: fullSession.customer as string,
             job_limit: profile.job_limit + quantityPurchased
         }).eq('id', userId)
