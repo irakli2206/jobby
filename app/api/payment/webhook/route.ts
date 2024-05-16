@@ -26,14 +26,14 @@ export async function POST(
 
     let event: Stripe.Event
 
-    try {
-        const webhookEndpoint = await stripe.webhookEndpoints.create({
-            enabled_events: ['checkout.session.completed'],
-            url: 'https://jobby.ge/api/payment/webhook',
-        });
-    } catch(error: any) {
-        return new Response(`Webhook Endpoint Error: ${error.message}`, { status: 400 })
-    }
+    // try {
+    //     const webhookEndpoint = await stripe.webhookEndpoints.create({
+    //         enabled_events: ['checkout.session.completed'],
+    //         url: 'https://jobby.ge/api/payment/webhook',
+    //     });
+    // } catch(error: any) {
+    //     return new Response(`Webhook Endpoint Error: ${error.message}`, { status: 400 })
+    // }
 
 
     try {
