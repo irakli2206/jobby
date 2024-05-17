@@ -124,7 +124,7 @@ const Header = ({ user }: Props) => {
 
           </div>
         </nav>
-        {isBannerVisible && <div className="fixed top-16 border-b left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+        {isBannerVisible && <div className="fixed top-16 border-b left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-1.5 sm:px-3.5 sm:before:flex-1">
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p className="text-sm leading-6 text-gray-900">
@@ -137,10 +137,10 @@ const Header = ({ user }: Props) => {
             <Button
               variant='default'
               asChild
-
-              className="flex-none rounded-full bg-primary px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+              size='sm'
+              className="flex-none rounded-full bg-primary text-sm  text-white shadow-sm "
             >
-              <Link href='/signup' >
+              <Link href='/signup'  >
                 ანგარიშის შექმნა <MoveRight className="ml-2" size={20} />  
               </Link>
             </Button>
