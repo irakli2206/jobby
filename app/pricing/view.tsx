@@ -18,14 +18,19 @@ import { useRouter } from 'next/navigation';
 
 type Props = {
     user: any
+    freeJobsLeft: number
 }
 
-const formSchema = z.object({
-    quantity: z.coerce.number().min(1, "აირჩიეთ 0-ზე დიდი რიცხვი"),
-})
 
 
-const PricingView = ({ user }: Props) => {
+
+const PricingView = ({ user, freeJobsLeft }: Props) => {
+    const isFree = freeJobsLeft > 0
+
+    const formSchema = z.object({
+        quantity: z.coerce.number().min(1, "აირჩიეთ 0-ზე დიდი რიცხვი"),
+    })
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -42,12 +47,45 @@ const PricingView = ({ user }: Props) => {
                     <h1 className='text-3xl sm:text-4xl font-semibold text-center '>პირდაპირი და მარტივი გადახდა</h1>
                 </div>
 
-                <div className="flex px-2">
-                    <Card className='md:min-w-[400px]'>
+                <div className="flex px-2 gap-8">
+                    {/* <Card className='md:min-w-[400px] flex flex-col'>
+
+                        <CardHeader className='gap-4'>
+                            <Badge variant='outline' className='w-fit'>უფასო</Badge>
+                            <div className="flex flex-row items-end gap-2">
+                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari />44</h1>
+                                <p className='text-muted-foreground text-sm'>/განცხადება</p>
+                            </div>
+                            <p className='text-sm font-medium'>ყველა ფუნქცია ერთ ფასში, მარტივად და საგაგებად.</p>
+                        </CardHeader>
+                        <CardContent>
+                            <h1 className='font-semibold mb-3'>რა შედის</h1>
+                            <div className="flex flex-col gap-3 text-sm ">
+                                <p className='flex items-center gap-2'>
+                                    <CheckCircledIcon />
+                                    ზოგადი აღწერა
+                                </p>
+                                <p className='flex items-center gap-2'>
+                                    <CheckCircledIcon />
+                                    კომპანიის ლოგო
+                                </p>
+                                <p className='flex items-center gap-2'>
+                                    <CheckCircledIcon />
+                                    ზუსტი ადგილმდებარეობა
+                                </p>
+
+                            </div>
+                        </CardContent>
+
+                    </Card> */}
+
+                    <Card className='md:min-w-[400px] border-primary '>
+                        <div className="w-full p-2 flex justify-center text-sm bg-primary rounded-t-lg text-white mb-2">პირველი განცხადება უფასოდ!</div>
+
                         <CardHeader className='gap-4'>
                             <Badge variant='outline' className='w-fit'>სტანდარტული</Badge>
                             <div className="flex flex-row items-end gap-2">
-                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari />44</h1>
+                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari /> 44 </h1>
                                 <p className='text-muted-foreground text-sm'>/განცხადება</p>
                             </div>
                             <p className='text-sm font-medium'>ყველა ფუნქცია ერთ ფასში, მარტივად და საგაგებად.</p>

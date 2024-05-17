@@ -1,12 +1,13 @@
 
 
 
-import { getUser } from '../action';
+import { getFreeJobsLeft, getUser } from '../action';
 import PricingView from './view';
 
 
 const Pricing = async () => {
   const user = await getUser()
+  const  freeJobsLeft = await getFreeJobsLeft()
   // const router = useRouter()
 
 
@@ -21,7 +22,7 @@ const Pricing = async () => {
 
   return (
    <>
-    <PricingView user={user} />
+    <PricingView user={user} freeJobsLeft={freeJobsLeft} />
    </>
   )
 }

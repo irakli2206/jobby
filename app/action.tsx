@@ -25,13 +25,22 @@ export async function getProfile() {
     return profile
 }
 
+export async function getFreeJobsLeft() {
+    const supabase = createClient()
+    const { count } = await supabase.from('jobs').select('*', { count: 'exact' })
+    const initialFreeJobsCount = 100
+    const freeJobsLeft = initialFreeJobsCount - (count ?? 0)
+
+    return freeJobsLeft
+}
+
 export async function getProfileByID(id: string) {
     const supabase = createClient()
 
     const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single()
 
     if (error) throw Error("No profile found")
- 
+
     return data
 }
 

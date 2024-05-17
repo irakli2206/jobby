@@ -5,7 +5,7 @@ import { z } from "zod";
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from "next/navigation";
 import { SignupSchema } from "@/utils/schemas";
-import { SignupFormValues } from "./page";
+import { SignupFormValues } from "./view";
 
 export async function signup({ email, password, firstName, lastName }: SignupFormValues) {
     const supabase = createClient()
@@ -22,8 +22,11 @@ export async function signup({ email, password, firstName, lastName }: SignupFor
     })
 
     if (error) {
+        if (error.message === 'User already registered') return { error: 'ასეთი მომხმარებელი უკვე არსებობს' }
         if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
     }
+
+    console.log('userdata', data)
 
     const { data: profileData, error: profileError } = await supabase
         .from('profiles')
@@ -37,7 +40,8 @@ export async function signup({ email, password, firstName, lastName }: SignupFor
         .select()
 
     if (profileError) {
-        redirect('/error')
+        return { error: profileError.message }
+        // redirect('/error')
     }
 
 
