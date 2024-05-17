@@ -54,16 +54,16 @@ const Header = ({ user }: Props) => {
   const [isBannerVisible, setIsBannerVisible] = useState(false)
 
   useEffect(() => {
-    const isBannerVisibleS = sessionStorage.getItem('isBannerVisible');
+    const isBannerVisibleS = localStorage.getItem('isBannerVisible');
     if (isBannerVisibleS == null) {
-      sessionStorage.setItem('isBannerVisible', 'true');
-      return true;
+      localStorage.setItem('isBannerVisible', 'true');
+      setIsBannerVisible(true)
     }
     setIsBannerVisible(isBannerVisibleS === 'true');
   }, [])
 
   const onBannerClose = () => {
-    sessionStorage.setItem('isBannerVisible', 'false');
+    localStorage.setItem('isBannerVisible', 'false');
     setIsBannerVisible(false);
   };
 
@@ -139,6 +139,9 @@ const Header = ({ user }: Props) => {
               asChild
               size='sm'
               className="flex-none rounded-full  text-sm  shadow-sm "
+              onClick={() => {
+                onBannerClose()
+              }}
             >
               <Link href='/signup'  >
                 ანგარიშის შექმნა <MoveRight className="ml-2" size={20} />  
