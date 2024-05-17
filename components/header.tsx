@@ -124,10 +124,10 @@ const Header = ({ user }: Props) => {
 
           </div>
         </nav>
-        {isBannerVisible && <div className="fixed top-16 border-b left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-1.5 sm:px-3.5 sm:before:flex-1">
+        {isBannerVisible && <div className="fixed top-16  left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-primary text-white px-6 py-1.5 sm:px-3.5 sm:before:flex-1">
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <p className="text-sm leading-6 text-gray-900">
+            <p className="text-sm leading-6 ">
               <strong className="font-semibold">პირველი განცხადება უფასოა!</strong>
               <svg viewBox="0 0 2 2" className="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
                 <circle cx={1} cy={1} r={1} />
@@ -135,10 +135,10 @@ const Header = ({ user }: Props) => {
               შექმენი ანგარიში და განათავსე განცხადება უფასოდ
             </p>
             <Button
-              variant='default'
+              variant='secondary'
               asChild
               size='sm'
-              className="flex-none rounded-full bg-primary text-sm  text-white shadow-sm "
+              className="flex-none rounded-full  text-sm  shadow-sm "
             >
               <Link href='/signup'  >
                 ანგარიშის შექმნა <MoveRight className="ml-2" size={20} />  
@@ -148,7 +148,7 @@ const Header = ({ user }: Props) => {
           <div className="flex flex-1 justify-end">
             <button onClick={onBannerClose} type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
               <span className="sr-only">Dismiss</span>
-              <XMarkIcon className="h-5 w-5 text-gray-900" aria-hidden="true" />
+              <XMarkIcon className="h-5 w-5 text-white" aria-hidden="true" />
             </button>
           </div>
         </div>}
