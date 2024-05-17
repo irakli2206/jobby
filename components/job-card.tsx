@@ -62,7 +62,7 @@ const JobCard = ({ job, locateJob, locatedJob }: Props) => {
                                     <p className="font-semibold text-sm text-muted-foreground">{company_name}</p>
                                     <h2 className="font-semibold text-lg">{title}</h2>
                                 </div>
-                                <Button variant='outline' size='icon'
+                                <Button aria-label='locate-btn' aria-labelledby='locate-btn' variant='outline' size='icon'
                                     className={classNames('hidden xl:flex transition', {
                                         'border-green-300 bg-green-50 text-green-500 hover:text-green-500 hover:bg-green-50 hover:border-green-300 hover:opacity-75': isLocated
                                     })}
