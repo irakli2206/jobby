@@ -8,6 +8,7 @@ import Loading from "./loading";
 import { getUser } from "./action";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
+import { Analytics } from "@vercel/analytics/react"
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -37,7 +38,10 @@ export default async function RootLayout({
           </section>
           <Footer />
         </div>
+
+        {/* Providers */}
         <Toaster />
+        <Analytics />
       </body>
     </html>
   );

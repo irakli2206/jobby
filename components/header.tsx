@@ -9,6 +9,7 @@ import {
   DollarSign,
   FilePlus2,
   Menu,
+  MoveRight,
   Package2,
   Search,
   Users,
@@ -39,6 +40,8 @@ import { getUser, signout } from "@/app/action"
 import { ExitIcon } from '@radix-ui/react-icons'
 import { createClient } from "@/utils/supabase/client"
 import Image from "next/image"
+import { XMarkIcon } from '@heroicons/react/20/solid'
+import { ArrowRightIcon } from "lucide-react"
 
 type Props = {
   user: any
@@ -48,7 +51,22 @@ const Header = ({ user }: Props) => {
   const path = usePathname()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  
+  const [isBannerVisible, setIsBannerVisible] = useState(false)
+
+  useEffect(() => {
+    const isBannerVisibleS = sessionStorage.getItem('isBannerVisible');
+    if (isBannerVisibleS == null) {
+      sessionStorage.setItem('isBannerVisible', 'true');
+      return true;
+    }
+    setIsBannerVisible(isBannerVisibleS === 'true');
+  }, [])
+
+  const onBannerClose = () => {
+    sessionStorage.setItem('isBannerVisible', 'false');
+    setIsBannerVisible(false);
+  };
+
   useEffect(() => {
     setIsMenuOpen(false)
   }, [path])
@@ -57,54 +75,85 @@ const Header = ({ user }: Props) => {
     <header className={classNames("sticky z-[50] backdrop-blur-sm top-0 flex h-16 items-center gap-4 border-b bg-background/50 px-4 md:px-6", {
 
     })}>
-      <nav className="hidden max-w-7xl w-full mx-auto flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-        <Link
-          href="/"
-          className="flex w-11 h-11 items-center gap-2 text-lg font-semibold md:text-base relative"
-        >
-          {/* < FaReact className="h-8 w-8" /> */}
-          <Image
-            src='/logo.svg'
-            alt=''
-            fill
-          // className='h-6 w-auto'
-          />
-          <span className="sr-only">Jobby.ge</span>
-        </Link>
-        <div className="mx-auto flex gap-8">
+      <nav className="w-full">
+        <nav className="hidden max-w-7xl w-full mx-auto flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
-            href="/pricing"
-            className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-              "!text-black": path.includes('pricing')
-            })}
+            href="/"
+            className="flex w-11 h-11 items-center gap-2 text-lg font-semibold md:text-base relative"
           >
-            ფასი
+            {/* < FaReact className="h-8 w-8" /> */}
+            <Image
+              src='/logo.svg'
+              alt=''
+              fill
+            // className='h-6 w-auto'
+            />
+            <span className="sr-only">Jobby.ge</span>
           </Link>
-          <Link
-            href="/faq"
-            className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
-              "!text-black": path.includes('faq')
-            })}
-          >
-            კითხვები
-          </Link>
-        </div>
-        <div className="flex justify-self-end items-center gap-4  md:gap-2 lg:gap-4">
-          {user ?
-            <Button variant='outline' className='' onClick={() => {
-              signout()
-            }} >
-              <ExitIcon className="rotate-180 mr-2" /> გამოსვლა
+          <div className="mx-auto flex gap-8">
+            <Link
+              href="/pricing"
+              className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
+                "!text-black": path.includes('pricing')
+              })}
+            >
+              ფასი
+            </Link>
+            <Link
+              href="/faq"
+              className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
+                "!text-black": path.includes('faq')
+              })}
+            >
+              კითხვები
+            </Link>
+          </div>
+          <div className="flex justify-self-end items-center gap-4  md:gap-2 lg:gap-4">
+            {user ?
+              <Button variant='outline' className='' onClick={() => {
+                signout()
+              }} >
+                <ExitIcon className="rotate-180 mr-2" /> გამოსვლა
+              </Button>
+              :
+              null
+            }
+            <Button asChild className=' ' >
+              <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2" /> განათავსე განცხადება </Link>
             </Button>
-            :
-            null
-          }
-          <Button asChild className=' ' >
-            <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2" /> განათავსე განცხადება </Link>
-          </Button>
 
-        </div>
+          </div>
+        </nav>
+        {isBannerVisible && <div className="fixed top-16 border-b left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <p className="text-sm leading-6 text-gray-900">
+              <strong className="font-semibold">პირველი განცხადება უფასოა!</strong>
+              <svg viewBox="0 0 2 2" className="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
+                <circle cx={1} cy={1} r={1} />
+              </svg>
+              შექმენი ანგარიში და განათავსე განცხადება უფასოდ
+            </p>
+            <Button
+              variant='default'
+              asChild
+
+              className="flex-none rounded-full bg-primary px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+            >
+              <Link href='/signup' >
+                ანგარიშის შექმნა <MoveRight className="ml-2" size={20} />  
+              </Link>
+            </Button>
+          </div>
+          <div className="flex flex-1 justify-end">
+            <button onClick={onBannerClose} type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
+              <span className="sr-only">Dismiss</span>
+              <XMarkIcon className="h-5 w-5 text-gray-900" aria-hidden="true" />
+            </button>
+          </div>
+        </div>}
       </nav>
+
 
       <nav className="flex md:hidden max-w-7xl w-full mx-auto flex-col gap-6 text-sm font-medium ">
 
@@ -172,6 +221,7 @@ const Header = ({ user }: Props) => {
         </Sheet>
 
       </nav>
+
     </header>
   )
 }
