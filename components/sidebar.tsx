@@ -57,7 +57,9 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                 </div>
                 {/* <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button> */}
             </header>
-            <main className="flex flex-col gap-2 justify-between pt-4 pb-2 ">
+            <form onSubmit={(e) => {
+                e.preventDefault()
+            }} className="flex flex-col gap-2 justify-between pt-4 pb-2 ">
                 <div className="flex-col w-full flex gap-2">
                     <Input
                         placeholder='სამსახურის დასახელება'
@@ -142,7 +144,7 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                 </div>
 
 
-            </main>
+            </form>
 
             <footer className='flex flex-col gap-4 py-8 overflow-y-scroll no-scrollbar'>
                 <div className="flex justify-between  items-end">
@@ -175,7 +177,7 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                             </div>
                         )
                         else return <div key={job.id}>
-                            <JobCard  job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                            <JobCard job={job} locateJob={locateJob} locatedJob={locatedJob} />
                         </div>
                     })
                         :
