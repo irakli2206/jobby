@@ -75,8 +75,8 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                                 handleFilterChange('region', e)
                             }}
                         >
-                            <SelectTrigger className=" ">
-                                <SelectValue placeholder="მხარე" />
+                            <SelectTrigger aria-label='region' aria-labelledby='region' className=" ">
+                                <SelectValue aria-label='region' aria-labelledby='region' placeholder="მხარე" />
                             </SelectTrigger>
                             <SelectContent >
                                 <Button
@@ -105,8 +105,8 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                                 handleFilterChange('industry', e)
                             }}
                         >
-                            <SelectTrigger className=" ">
-                                <SelectValue placeholder="კატეგორია" />
+                            <SelectTrigger aria-label='category' aria-labelledby='category' className=" ">
+                                <SelectValue aria-label='category' aria-labelledby='category' placeholder="კატეგორია" />
                             </SelectTrigger>
                             <SelectContent >
                                 <Button
@@ -153,8 +153,8 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                             setSortBy(e as "created_at" | "views")
                         }}
                         defaultValue='created_at'>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="დალაგება" />
+                        <SelectTrigger aria-label='sort_by' aria-labelledby='sort_by' className="w-[180px]">
+                            <SelectValue aria-label='sort_by' aria-labelledby='sort_by' placeholder="დალაგება" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
