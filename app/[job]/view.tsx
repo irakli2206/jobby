@@ -25,7 +25,7 @@ const JobView = ({ profile, job }: Props) => {
 
     const { toast } = useToast()
 
- 
+
 
     console.log('applied?', isAlreadyApplied)
 
@@ -153,7 +153,7 @@ const JobView = ({ profile, job }: Props) => {
                             :
                             <div className='flex items-center gap-4 justify-center text-green-500'>
                                 <FileCheck2 />
-                               <h1 className='text-lg'> უკვე გაგზავნე</h1>
+                                <h1 className='text-lg'>გაგზავნილია</h1>
                             </div>
                         }
                     </div>
