@@ -10,7 +10,7 @@ import MapView from './map';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { File, FileUp } from 'lucide-react';
+import { File, FileCheck2, FileUp } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 type Props = {
@@ -20,18 +20,12 @@ type Props = {
 
 const JobView = ({ profile, job }: Props) => {
     const [resume, setResume] = useState<File | undefined>()
-    const [isAlreadyApplied, setisAlreadyApplied] = useState(false)
+    const isAlreadyApplied = profile.applied_jobs.includes(job.id)
     const fileInputRef = useRef(null);
 
     const { toast } = useToast()
 
-    useEffect(() => {
-        if (profile) {
-            if (profile.applied_jobs.includes(job.id)) {
-                setisAlreadyApplied(true)
-            }
-        }
-    }, [isAlreadyApplied])
+ 
 
     console.log('applied?', isAlreadyApplied)
 
@@ -157,7 +151,10 @@ const JobView = ({ profile, job }: Props) => {
                             <Button className='w-full ' size={'lg'} onClick={handleSendResume} >გაგზავნა</Button>
                         </>
                             :
-                            null
+                            <div className='flex items-center gap-4 justify-center text-green-500'>
+                                <FileCheck2 />
+                               <h1 className='text-lg'> უკვე გაგზავნე</h1>
+                            </div>
                         }
                     </div>
 

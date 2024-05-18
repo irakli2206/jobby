@@ -25,7 +25,7 @@ const Job = async ({ params }: Props) => {
 
     return (
         <>
-            <JobView profile={profile} job={job} />
+            <JobView profile={profile} job={job}  />
         </>
     )
 }
