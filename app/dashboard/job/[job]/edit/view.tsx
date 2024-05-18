@@ -21,55 +21,48 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { clearCache, getUser } from '@/app/action';
+import { clearCache, getJobById, getUser } from '@/app/action';
 import { createClient } from '@/utils/supabase/client';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
 
-const CreateJob = () => {
+type Props = {
+    jobDataDTO: any
+}
+
+const EditView = ({ jobDataDTO }: Props) => {
     const supabase = createClient()
     const router = useRouter()
+    const params = useParams()
     const [loading, setLoading] = useState(false)
     const [noSalary, setNoSalary] = useState(false)
-    const [jobData, setJobData] = useState<any>({
-        id: crypto.randomUUID(),
-        profile_id: "",
-        title: "",
-        company_name: "",
-        description: "",
-        responsibilities: [],
-        required_experiences: [],
-        salary: [],
-        region: "",
-        coordinates: [],
-        application_instruction: ""
-    })
+    const [jobData, setJobData] = useState<any>(jobDataDTO)
     const [logo, setLogo] = useState<File | undefined>()
 
     const { toast } = useToast()
 
     useEffect(() => {
+        if (!jobData.salary.length) setNoSalary(true)
+
+    }, [])
+
+    console.log('test', noSalary)
+
+    useEffect(() => {
         if (noSalary) {
             setJobData({ ...jobData, salary: [] })
         }
+     
     }, [noSalary])
 
-    useEffect(() => {
-        const getUserData = async () => {
-            const userData = await getUser()
-            if (userData) setJobData({
-                ...jobData,
-                profile_id: userData.id
-            })
-        }
-        getUserData()
-    }, [])
+    console.log(jobDataDTO)
+
 
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary.length || !jobData.region ) {
+        if (!jobData.title || !jobData.company_name || !jobData.description || jobData.salary.length === 1 || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.region ) {
             throw new Error("შეავსე ცარიელი ველები")
         }
-        else if (jobData.salary[1] < jobData.salary[0]) {
+        else if ((jobData.salary[1] < jobData.salary[0]) || jobData.salary[0] < 0 || jobData.salary[1] < 0) {
             throw new Error("შეიყვანე სწორი ანაზღაურება")
         }
     }
@@ -84,27 +77,25 @@ const CreateJob = () => {
             if (logo) {
                 const { data: imageUpload, error: imageUploadError } = await supabase.storage.from('jobs').upload(`logos/${crypto.randomUUID()}`, logo as File, {
                     upsert: true,
-                    contentType: 'image/*'
+                    contentType: 'image/webp'
                 })
                 if (imageUploadError) throw new Error(imageUploadError.message)
                 imagePath = imageUpload
             }
 
-
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
+            formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
             if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
-
-            const { error, status } = await supabase.from('jobs').insert({
+            const { error, status } = await supabase.from('jobs').upsert({
                 ...formattedJobData,
             })
-
             if (error) throw new Error(error.message)
 
             toast({
                 title: "წარმატება",
-                description: "ახალი სამსახური წარმატებით იქნა დამატებული",
+                description: "სამსახურის აღწერა განახლდა",
                 duration: 3000,
             })
 
@@ -113,6 +104,7 @@ const CreateJob = () => {
             router.push('/dashboard')
 
         } catch (e) {
+            console.log(e)
             toast({
                 title: "შეცდომა",
                 description: e.message,
@@ -124,6 +116,7 @@ const CreateJob = () => {
         }
 
     }
+
 
     return (
         <div className='py-12 px-4 max-w-7xl w-full mx-auto'>
@@ -223,24 +216,24 @@ const CreateJob = () => {
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
-                                    jobData.responsibilities.map((responsibility: any, i) => {
+                                    jobData.responsibilities.map((responsibility: any, i: number) => {
                                         return <div key={responsibility.id} className='flex gap-2 items-center'>
                                             <Input
 
-                                                value={responsibility[i]}
+                                                value={responsibility.text}
                                                 onChange={(e) => {
                                                     let updatedResponsibilities = [...jobData.responsibilities]
                                                     updatedResponsibilities[i].text = e.target.value
-                                                    setJobData(prevState => ({
+                                                    setJobData((prevState: any) => ({
                                                         ...prevState,
                                                         responsibilities: updatedResponsibilities
                                                     }))
                                                 }}
                                             />
                                             <Button onClick={() => {
-                                                setJobData(prevState => ({
+                                                setJobData((prevState: any) => ({
                                                     ...prevState,
-                                                    responsibilities: prevState.responsibilities.filter((r) => r.id !== responsibility.id)
+                                                    responsibilities: prevState.responsibilities.filter((r: any) => r.id !== responsibility.id)
                                                 }))
                                             }} variant='ghost' size='icon'>
                                                 <Trash size={20} />
@@ -252,7 +245,7 @@ const CreateJob = () => {
                                 <Button variant='ghost' className='w-fit'
                                     onClick={() => {
                                         const id = crypto.randomUUID()
-                                        setJobData(jobData => ({
+                                        setJobData((jobData: any) => ({
                                             ...jobData,
                                             responsibilities: [...jobData.responsibilities, {
                                                 id,
@@ -261,7 +254,7 @@ const CreateJob = () => {
                                         }))
                                     }}
                                 >
-                                    <Plus size={16} className='mr-1' /> Add
+                                    <Plus size={16} className='mr-1' /> დამატება
                                 </Button>
                             </ol>
                         </dd>
@@ -271,24 +264,24 @@ const CreateJob = () => {
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
-                                    jobData.required_experiences.map((experience: any, i) => {
+                                    jobData.required_experiences.map((experience: any, i: number) => {
                                         return <div key={experience.id} className='flex gap-2 items-center'>
                                             <Input
 
-                                                value={experience[i]}
+                                                value={experience.text}
                                                 onChange={(e) => {
                                                     let updatedResponsibilities = [...jobData.required_experiences]
                                                     updatedResponsibilities[i].text = e.target.value
-                                                    setJobData(prevState => ({
+                                                    setJobData((prevState: any) => ({
                                                         ...prevState,
                                                         required_experiences: updatedResponsibilities
                                                     }))
                                                 }}
                                             />
                                             <Button onClick={() => {
-                                                setJobData(prevState => ({
+                                                setJobData((prevState: any) => ({
                                                     ...prevState,
-                                                    required_experiences: prevState.required_experiences.filter((e) => e.id !== experience.id)
+                                                    required_experiences: prevState.required_experiences.filter((e: any) => e.id !== experience.id)
                                                 }))
                                             }} variant='ghost' size='icon'>
                                                 <Trash size={20} />
@@ -300,7 +293,7 @@ const CreateJob = () => {
                                 <Button variant='ghost' className='w-fit'
                                     onClick={() => {
                                         const id = crypto.randomUUID()
-                                        setJobData(required_experiences => ({
+                                        setJobData((required_experiences: any[]) => ({
                                             ...required_experiences,
                                             required_experiences: [...jobData.required_experiences, {
                                                 id,
@@ -309,15 +302,16 @@ const CreateJob = () => {
                                         }))
                                     }}
                                 >
-                                    <Plus size={16} className='mr-1' /> Add
+                                    <Plus size={16} className='mr-1' /> დამატება
                                 </Button>
                             </ol>
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება</dt>
+                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
-                            <div className="flex gap-2">
+
+                            {jobData.salary && <div className="flex gap-2 items-center">
                                 <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.salary.length ? jobData.salary[0] : ''} onChange={(e) => {
                                     const newSalary = [...jobData.salary]
                                     newSalary[0] = e.target.valueAsNumber
@@ -326,6 +320,7 @@ const CreateJob = () => {
                                         salary: newSalary
                                     })
                                 }} />
+                                <span>-</span>
                                 <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.salary.length ? jobData.salary[1] : ''} onChange={(e) => {
                                     const newSalary = [...jobData.salary]
                                     newSalary[1] = e.target.valueAsNumber
@@ -334,7 +329,7 @@ const CreateJob = () => {
                                         salary: newSalary
                                     })
                                 }} />
-                            </div>
+                            </div>}
                             <div className="flex items-center space-x-2">
                                 <Checkbox id="terms" checked={noSalary} onCheckedChange={() => setNoSalary(!noSalary)} />
                                 <label
@@ -344,6 +339,18 @@ const CreateJob = () => {
                                     შეთანხმებით
                                 </label>
                             </div>
+                            {/* <Textarea
+                        maxLength={128}
+                        placeholder='1500-2500 ლარი გამოცდილების მიხედვით'
+                        value={jobData.salary}
+                        onChange={(e) => {
+                            setJobData({
+                                ...jobData,
+                                salary: e.target.value
+                            })
+                        }}
+
+                    /> */}
                         </dd>
                     </div>
 
@@ -401,7 +408,7 @@ const CreateJob = () => {
                                 style={{ width: '100%', height: 400 }}
                                 mapStyle="mapbox://styles/mapbox/light-v11"
                             >
-                                {jobData.coordinates.length &&
+                                {jobData.coordinates && jobData.coordinates.length &&
                                     <Marker
                                         latitude={jobData.coordinates[0]}
                                         longitude={jobData.coordinates[1]}
@@ -436,12 +443,11 @@ const CreateJob = () => {
                 </dl>
             </div>
 
-            <Button disabled={loading} size={'lg'} className='my-12 w-full' onClick={handleSave}>
+            <Button disabled={loading} size={'lg'} className='my-12 w-full' onClick={() => handleSave()}>
                 {loading && <RefreshCw className="mr-2 h-4 w-4 animate-spin" />}
-                შენახვა
-            </Button>
+                შენახვა</Button>
         </div>
     )
 }
 
-export default CreateJob
+export default EditView

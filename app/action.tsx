@@ -74,6 +74,25 @@ export async function incrementJobViews(job: Object) {
     return null
 }
 
+export async function updateProfile(profileId: string, updatedProfile: any) {
+    const supabase = createClient()
+    const { data, error } = await supabase.from('profiles').update(updatedProfile).eq('id', profileId)
+
+    if (error) return { error: error.message }
+
+    return null
+}
+
+export async function updateProfileAttribute(profileId: string, key: string, value: any) {
+    const supabase = createClient()
+    const { data, error } = await supabase.from('profiles').update({ [key]: value }).eq('id', profileId)
+
+    if (error) return { error: error.message }
+
+    revalidatePath('/')
+    return null
+}
+
 
 export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined, industryFilter?: string | undefined, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
     const supabase = createClient()
@@ -96,6 +115,26 @@ export async function getMapJobs(ids: string[]) {
     const supabase = createClient()
     let { data, error } = await supabase.from('jobs').select('id, coordinates').in('id', ids)
     if (error) return { data: null, error: error.message }
+
+    return { data, error: null }
+}
+
+
+//Doesn't work, can't pass File to server actions
+export async function sendResume(jobId: string, resume: FormData) {
+    const file = resume.get('file')
+    const fileName = resume.get('fileName')
+    console.log(fileName)
+    const supabase = createClient()
+    // const filePath = `/resumes/${jobId}/${fileName}-${crypto.randomUUID().slice(0, 8)}.pdf`
+    const filePath = `/resumes/${jobId}/${crypto.randomUUID().slice(0, 4)}-${fileName}`
+    const { data, error } = await supabase.storage.from('jobs').upload(filePath, resume, { contentType: 'application/pdf',  })
+
+    if (error) {
+        if (error.message === 'The resource already exists')
+            console.log(error)
+        return { data: null, error: 'უკვე გაგზავნილი გაქვს' }
+    }
 
     return { data, error: null }
 }

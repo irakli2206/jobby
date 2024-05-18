@@ -88,7 +88,7 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                                 <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari /> 44 </h1>
                                 <p className='text-muted-foreground text-sm'>/განცხადება</p>
                             </div>
-                            <p className='text-sm font-medium'>ყველა ფუნქცია ერთ ფასში, მარტივად და საგაგებად.</p>
+                            <p className='text-sm font-medium'>ყველა ფუნქცია ერთ ფასში, მარტივად და გასაგებად.</p>
                         </CardHeader>
                         <CardContent>
                             <h1 className='font-semibold mb-3'>რა შედის</h1>
@@ -108,6 +108,10 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                                 <p className='flex items-center gap-2'>
                                     <CheckCircledIcon />
                                     მონახულებების რაოდენობა
+                                </p>
+                                <p className='flex items-center gap-2'>
+                                    <CheckCircledIcon />
+                                    რეზიუმეების მართვა
                                 </p>
                             </div>
                         </CardContent>

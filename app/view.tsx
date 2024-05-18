@@ -340,10 +340,11 @@ const JobsView = () => {
                             setPopupLoadingData({ id, coordinates })
                             locateJob(job, true)
                           }}
+                          style={{ zIndex: isLocated ? 1 : 0 }}
                         >
 
-                          <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center text-white bg-primary rounded-full `, {
-                            '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)]': isLocated
+                          <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center relative text-white bg-primary rounded-full `, {
+                            '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)] ': isLocated
                           })}>
                             <BsBriefcaseFill size={16} />
                           </div>

@@ -101,7 +101,7 @@ const Row = ({ job }: RowProps) => {
 
 
     return (
-        <TableRow >
+        <TableRow  >
 
             <TableCell className="hidden sm:table-cell">
                 <Image
@@ -141,6 +141,9 @@ const Row = ({ job }: RowProps) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         {/* <DropdownMenuLabel>ქმედებები</DropdownMenuLabel> */}
+                        <DropdownMenuItem asChild>
+                            <Link href={`/dashboard/job/${job.id}/resumes`}>რეზიუმეები</Link>
+                        </DropdownMenuItem>
                         <DropdownMenuItem asChild>
                             <Link href={`/dashboard/job/${job.id}`}>ნახვა</Link>
                         </DropdownMenuItem>
