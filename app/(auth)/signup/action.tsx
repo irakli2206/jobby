@@ -21,6 +21,7 @@ export async function signup({ email, password, firstName, lastName }: SignupFor
         }
     })
 
+
     if (error) {
         if (error.message === 'User already registered') return { error: 'ასეთი მომხმარებელი უკვე არსებობს' }
         if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
@@ -47,5 +48,5 @@ export async function signup({ email, password, firstName, lastName }: SignupFor
 
 
     revalidatePath('/', 'layout')
-    redirect('/dashboard')
+    redirect('/login')
 }
