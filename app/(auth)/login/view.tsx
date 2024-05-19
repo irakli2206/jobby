@@ -107,11 +107,11 @@ const LoginView = () => {
                                     <FormItem className='mt-2'>
                                         <div className="flex justify-between">
                                             <FormLabel className='!text-black ' >პაროლი</FormLabel>
-                                            <Button type='reset'
+                                            {/* <Button type='reset'
                                                 // onClick={() => handleForgotPassword()}
                                                 variant='link' className='p-0 h-fit ml-auto text-sm '>
                                                 დაგავიწყდათ პაროლი?
-                                            </Button>
+                                            </Button> */}
                                         </div>
                                         <FormControl className=''>
                                             <Input

@@ -16,17 +16,17 @@ export async function login({ email, password }: LoginFormValues) {
         password: password,
     })
 
-
     if (error) {
         if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
     }
+
+    if (!data.user?.user_metadata.email_verified) {
+        return { error: 'შეამოწმეთ ელ-ფოსტა' }
+    }
     const { data: profile, error: profileError } = await supabase.from('profiles').select().eq('id', data.user.id).maybeSingle()
 
-    if (profile.account_type === 'employer') {
-        redirect('/developers')
-    }
-
-    revalidatePath('/', 'page')
-    redirect('/dashboard')
+    console.log(data)
+    // revalidatePath('/', 'page')
+    // redirect('/dashboard')
 
 }
