@@ -128,12 +128,11 @@ export async function sendResume(jobId: string, resume: FormData) {
     const supabase = createClient()
     // const filePath = `/resumes/${jobId}/${fileName}-${crypto.randomUUID().slice(0, 8)}.pdf`
     const filePath = `/resumes/${jobId}/${crypto.randomUUID().slice(0, 4)}-${fileName}`
-    const { data, error } = await supabase.storage.from('jobs').upload(filePath, resume, { contentType: 'application/pdf',  })
+    const { data, error } = await supabase.storage.from('jobs').upload(filePath, resume, { contentType: 'application/pdf', })
 
     if (error) {
-        if (error.message === 'The resource already exists')
-            console.log(error)
-        return { data: null, error: 'უკვე გაგზავნილი გაქვს' }
+        console.log(error)
+        if (error.message === 'The resource already exists') return { data: null, error: 'უკვე გაგზავნილი გაქვს' }
     }
 
     return { data, error: null }

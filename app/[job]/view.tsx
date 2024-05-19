@@ -20,14 +20,23 @@ type Props = {
 
 const JobView = ({ profile, job }: Props) => {
     const [resume, setResume] = useState<File | undefined>()
-    const isAlreadyApplied = profile.applied_jobs.includes(job.id)
+    const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | undefined>(undefined)
+
     const fileInputRef = useRef(null);
 
     const { toast } = useToast()
 
+    useEffect(() => {
+        if (localStorage) {
+            const applied_jobs = localStorage.getItem('applied_jobs')
+            console.log(applied_jobs)
+            const appliedJobs = applied_jobs ? JSON.parse(applied_jobs) : []
+            if (appliedJobs.includes(job.id)) setIsAlreadyApplied(true)
+            else setIsAlreadyApplied(false)
+        }
+    }, [])
 
 
-    console.log('applied?', isAlreadyApplied)
 
     const handleButtonClick = () => {
         // Programmatically click the hidden file input
@@ -40,7 +49,6 @@ const JobView = ({ profile, job }: Props) => {
         setResume(file)
 
     };
-
     const handleSendResume = async () => {
         if (resume) {
             const formData = new FormData();
@@ -50,7 +58,12 @@ const JobView = ({ profile, job }: Props) => {
                 const { data, error } = await sendResume(job.id, formData)
                 if (error) throw new Error(error)
                 setResume(undefined)
-                await updateProfileAttribute(profile.id, "applied_jobs", Array.from(new Set([...profile.applied_jobs, job.id])))
+                // await updateProfileAttribute(profile.id, "applied_jobs", Array.from(new Set([...profile.applied_jobs, job.id])))
+                const applied_jobs = localStorage.getItem('applied_jobs')
+
+                const appliedJobs = applied_jobs ? [...JSON.parse(applied_jobs), job.id] : [job.id]
+                localStorage.setItem('applied_jobs', JSON.stringify(appliedJobs))
+                setIsAlreadyApplied(true)
                 toast({
                     title: 'წარმატება',
                     description: 'რეზიუმე გაიგზავნა',
@@ -142,20 +155,30 @@ const JobView = ({ profile, job }: Props) => {
             </div> */}
 
                     <div className="sticky z-50 bg-white py-8 bottom-0">
-                        {!isAlreadyApplied ? <>
-                            <Input onChange={handleFileChange} ref={fileInputRef} type='file' className='hidden' />
-                            <div onClick={handleButtonClick} className='mb-4 h-20 rounded-xl border border-gray-300 bg-gray-50 border-dashed'>
-                                <div className="w-full h-full text-gray-400 gap-2 flex items-center justify-center cursor-pointer text-sm"><FileUp size={20} /> {resume ? resume.name : "ატვირთე რეზიუმე"}</div>
-                            </div>
+                        {
+                            isAlreadyApplied !== undefined ?
 
-                            <Button className='w-full ' size={'lg'} onClick={handleSendResume} >გაგზავნა</Button>
-                        </>
-                            :
-                            <div className='flex items-center gap-4 justify-center text-green-500'>
-                                <FileCheck2 />
-                                <h1 className='text-lg'>გაგზავნილია</h1>
-                            </div>
+                                <>
+                                    {isAlreadyApplied === false ? <>
+                                        <Input onChange={handleFileChange} ref={fileInputRef} type='file' className='hidden' />
+                                        <div onClick={handleButtonClick} className='mb-4 h-20 rounded-xl border border-gray-300 bg-gray-50 border-dashed'>
+                                            <div className="w-full h-full text-gray-400 gap-2 flex items-center justify-center cursor-pointer text-sm"><FileUp size={20} /> {resume ? resume.name : "ატვირთე რეზიუმე"}</div>
+                                        </div>
+
+                                        <Button className='w-full ' size={'lg'} onClick={handleSendResume} >გაგზავნა</Button>
+                                    </>
+                                        :
+                                        <div className='flex items-center gap-4 justify-center text-green-500'>
+                                            <FileCheck2 />
+                                            <h1 className='text-lg'>გაგზავნილია</h1>
+                                        </div>
+                                    }
+                                </>
+                                :
+
+                                null
                         }
+
                     </div>
 
 
