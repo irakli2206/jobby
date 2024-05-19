@@ -32,7 +32,7 @@ type Props = {
 const Resumes = async ({ params }: Props) => {
     const jobId = params.job
     const resumes = await getResumes(jobId)
-    // console.log('resumes', resumes)
+    console.log('resumes', resumes)
 
 
     return (

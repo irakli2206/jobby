@@ -45,6 +45,8 @@ type Props = {
 const ResumesView = ({ resumes, jobId }: Props) => {
     const supabase = createClient()
 
+    resumes = resumes.filter(r => r.name !== '.emptyFolderPlaceholder')
+
     const [currentResumeUrl, setCurrentResumeUrl] = useState<string | undefined>()
     const [currentResume, setCurrentResume] = useState<any>()
     const [isSheetOpen, setIsSheetOpen] = useState(false)
