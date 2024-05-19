@@ -21,7 +21,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { clearCache, getUser } from '@/app/action';
+import { clearCache, getRegionFromCoordinates, getUser } from '@/app/action';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -42,7 +42,7 @@ const CreateJob = () => {
         salary: [],
         region: "",
         coordinates: [],
-        application_instruction: ""
+        // application_instruction: ""
     })
     const [logo, setLogo] = useState<File | undefined>()
 
@@ -66,7 +66,7 @@ const CreateJob = () => {
     }, [])
 
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.salary.length || !jobData.region ) {
+        if (!jobData.title || !jobData.company_name || !jobData.description || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || jobData.salary.length === 1) {
             throw new Error("შეავსე ცარიელი ველები")
         }
         else if (jobData.salary[1] < jobData.salary[0]) {
@@ -90,17 +90,21 @@ const CreateJob = () => {
                 imagePath = imageUpload
             }
 
+            const regionFromCoordinates = await getRegionFromCoordinates(jobData.coordinates)
 
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
+            formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
+            formattedJobData.region = regionFromCoordinates
             if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
 
             const { error, status } = await supabase.from('jobs').insert({
                 ...formattedJobData,
             })
-
             if (error) throw new Error(error.message)
+
+
 
             toast({
                 title: "წარმატება",
@@ -347,7 +351,7 @@ const CreateJob = () => {
                         </dd>
                     </div>
 
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <Select onValueChange={(e) =>
@@ -376,7 +380,7 @@ const CreateJob = () => {
                                 </SelectContent>
                             </Select>
                         </dd>
-                    </div>
+                    </div> */}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">ადგილმდებარეობა</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">

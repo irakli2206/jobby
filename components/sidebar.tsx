@@ -33,8 +33,8 @@ export type Props = {
     getNextPage: Function
     jobsCount: number
 }
-
-const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარა"]
+ 
+const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარის ავტონომიური რესპუბლიკა"]
 const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
 
 const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {

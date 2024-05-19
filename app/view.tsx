@@ -172,7 +172,7 @@ const JobsView = () => {
 
       setCurrentPage(1)
       setJobsData(jobs.data!)
-
+      setJobsCount(jobs.count)
 
     } catch (e) {
       console.log(e)

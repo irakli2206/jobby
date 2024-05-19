@@ -137,3 +137,12 @@ export async function sendResume(jobId: string, resume: FormData) {
 
     return { data, error: null }
 }
+
+export async function getRegionFromCoordinates(coordinates: [number, number]) {
+    const regionRes = await fetch(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${coordinates[0]}%2C${coordinates[1]}&lang=ka-GE&apiKey=95FHXqKXTvDUBU9ekni_0JEoeABC8mNP8jUNDS7NFa0`)
+    const region = await regionRes.json()
+    if (region && region.items && region.items[0]) {
+        return region.items[0].address.county
+    }
+    else return null
+}

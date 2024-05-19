@@ -21,7 +21,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { clearCache, getJobById, getUser } from '@/app/action';
+import { clearCache, getJobById, getRegionFromCoordinates, getUser } from '@/app/action';
 import { createClient } from '@/utils/supabase/client';
 import { useParams, useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -52,14 +52,14 @@ const EditView = ({ jobDataDTO }: Props) => {
         if (noSalary) {
             setJobData({ ...jobData, salary: [] })
         }
-     
+
     }, [noSalary])
 
     console.log(jobDataDTO)
 
 
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || jobData.salary.length === 1 || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length || !jobData.region ) {
+        if (!jobData.title || !jobData.company_name || !jobData.description || jobData.salary.length === 1 || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length) {
             throw new Error("შეავსე ცარიელი ველები")
         }
         else if ((jobData.salary[1] < jobData.salary[0]) || jobData.salary[0] < 0 || jobData.salary[1] < 0) {
@@ -83,10 +83,13 @@ const EditView = ({ jobDataDTO }: Props) => {
                 imagePath = imageUpload
             }
 
+            const regionFromCoordinates = await getRegionFromCoordinates(jobData.coordinates)
+
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
             formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
+            formattedJobData.region = regionFromCoordinates
             if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
             const { error, status } = await supabase.from('jobs').upsert({
                 ...formattedJobData,
@@ -354,7 +357,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
 
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <Select onValueChange={(e) =>
@@ -379,11 +382,11 @@ const EditView = ({ jobDataDTO }: Props) => {
                                     <SelectItem value="სამცხე-ჯავახეთი">სამცხე-ჯავახეთი</SelectItem>
                                     <SelectItem value="რაჭა-ლეჩხუმი და ქვემო სვანეთი">რაჭა-ლეჩხუმი და ქვემო სვანეთი</SelectItem>
                                     <SelectItem value="მცხეთა-მთიანეთი">მცხეთა-მთიანეთი</SelectItem>
-                                    <SelectItem value="აჭარა">აჭარა</SelectItem>
+                                    <SelectItem value="აჭარა">აჭარის ავტონომიური რესპუბლიკა</SelectItem>
                                 </SelectContent>
                             </Select>
                         </dd>
-                    </div>
+                    </div> */}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">ადგილმდებარეობა</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
