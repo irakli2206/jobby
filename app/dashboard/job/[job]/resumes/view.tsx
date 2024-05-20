@@ -29,12 +29,13 @@ import { pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import Link from 'next/link'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver';
 
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url,
-).toString();
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//     'pdfjs-dist/build/pdf.worker.min.js',
+//     import.meta.url,
+// ).toString();
 
 
 type Props = {
@@ -90,6 +91,38 @@ const ResumesView = ({ resumes, jobId }: Props) => {
 
     }
 
+    const downloadAllResumes = async () => {
+        const resumePromises: Promise<any>[] = []
+        resumes.forEach(resume => {
+            resumePromises.push(supabase.storage.from('jobs').download(`resumes/${jobId}/${resume.name}`))
+        })
+
+        const response = await Promise.allSettled(resumePromises)
+
+        const downloadedFiles = response.map((result, index) => {
+            if (result.status === "fulfilled") {
+                return {
+                    name: resumes[index].name,
+                    blob: result.value.data,
+                };
+            }
+        });
+
+        const zip = new JSZip();
+        const allResumes = zip.folder('resumes')
+
+        downloadedFiles.forEach((downloadedFile) => {
+            if (downloadedFile) {
+                allResumes?.file(downloadedFile.name, downloadedFile.blob);
+            }
+        });
+
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+            // see FileSaver.js
+            saveAs(content, "resumes.zip");
+        });
+    }
+
 
     return (
         <>
@@ -99,7 +132,7 @@ const ResumesView = ({ resumes, jobId }: Props) => {
                     <Link href='/dashboard' className='flex items-center gap-2 text-black underline'>
                         <MoveLeft size={20} /> დაბრუნება
                     </Link>
-                    <Button className='mb-4 '><FolderDown className='mr-2' size={18} /> ყველას გადმოწერა</Button>
+                    <Button className='mb-4 ' onClick={downloadAllResumes}><FolderDown className='mr-2' size={18} /> ყველას გადმოწერა</Button>
                 </div>
                 <Table className="">
                     <TableHeader>
@@ -136,7 +169,7 @@ type RowProps = {
     name: string
     time: string
     jobId: string
-    handleSetCurrentResume: Function
+    handleSetCurrentResume?: Function
     downloadResume: Function
 }
 
