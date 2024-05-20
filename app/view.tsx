@@ -20,6 +20,7 @@ import { TbCurrencyLari } from "react-icons/tb";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
+import JobDetails from "@/components/job-details";
 
 export type Coordinates = [number, number]
 
@@ -33,29 +34,34 @@ export type Job = {
   title: string
 }
 
-export type Props = {
-  filterJobs: Function
-  clearFilters: Function
-  filtersChanged: boolean
-  sortBy: 'created_at' | 'views'
-  setSortBy: (sort: 'created_at' | 'views') => void
-  titleFilter: string
-  regionFilter: string | undefined
-  industryFilter: string | undefined
-  handleFilterChange: (key: string, value: string | undefined) => void
-  jobsData: Job[]
-  locateJob: (job: Job | null) => void
-  locatedJob: Job | null
-  mapRef?: React.MutableRefObject<MapRef | null>
-  viewState: ViewState
-  setViewState: ViewStateChangeEvent
-}
+// export type Props = {
+//   filterJobs: Function
+//   clearFilters: Function
+//   filtersChanged: boolean
+//   sortBy: 'created_at' | 'views'
+//   setSortBy: (sort: 'created_at' | 'views') => void
+//   titleFilter: string
+//   regionFilter: string | undefined
+//   industryFilter: string | undefined
+//   handleFilterChange: (key: string, value: string | undefined) => void
+//   jobsData: Job[]
+//   locateJob: (job: Job | null) => void
+//   locatedJob: Job | null
+//   mapRef?: React.MutableRefObject<MapRef | null>
+//   viewState: ViewState
+//   setViewState: ViewStateChangeEvent
+// }
 
 function isEqual(objA: Object, objB: Object) {
   return JSON.stringify(objA) === JSON.stringify(objB);
 }
 
-const JobsView = () => {
+type Props = {
+  initialJobData: any[]
+  initialMapData: any[]
+}
+
+const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const mapRef = useRef<MapRef | null>(null)
 
   const [windowWidth, setWindowWidth] = useState<number | null>()
@@ -68,8 +74,8 @@ const JobsView = () => {
   const prevFilters = useRef(filters)
   const filtersChanged = !isEqual(filters, prevFilters.current)
   const [currentPage, setCurrentPage] = useState(1)
-  const [jobsData, setJobsData] = useState<any[]>([])
-  const [mapData, setMapData] = useState<any[]>([])
+  const [jobsData, setJobsData] = useState<any[]>(initialJobData)
+  const [mapData, setMapData] = useState<any[]>(initialMapData)
   const [jobsCount, setJobsCount] = useState<number | undefined>()
   const [locatedJob, setLocatedJob] = useState<Job | null>(null)
   const [sortBy, setSortBy] = useState<"created_at" | "views">('created_at')
@@ -78,15 +84,13 @@ const JobsView = () => {
     latitude: 42,
     zoom: 6,
   })
-  const [popupData, setPopupData] = useState<any>()
   const [mapLoading, setMapLoading] = useState(true)
 
-  // const isMapLoading = useMemo(() => {
+  const [selectedJobDetails, setSelectedJobDetails] = useState<any>()
 
-  //   return jobsData.length !== mapData.length
-  // }, [jobsData, mapData])
-
-  // console.log(isMapLoading)
+  const closeJobDetails = () => {
+    setSelectedJobDetails(null)
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -181,39 +185,21 @@ const JobsView = () => {
 
   const locateJob = async (job: Job | null, mapClick: boolean = false) => {
     if (mapRef) {
-      if (locatedJob && (job.id === locatedJob.id)) {
-        setPopupData(null)
-        setLocatedJob(null)
-        return
-      }
 
-      if (mapClick) {
-        try {
-          const jobData = await getJobById(job.id, 'id, title, company_logo, salary, coordinates')
-          setPopupData(jobData)
-          setLocatedJob(jobData)
-        } finally {
+      const jobCoordinates = job!.coordinates
 
+      mapRef.current.flyTo({
+        center: [jobCoordinates[1], jobCoordinates[0]],
+        zoom: 14,
+        duration: 1000,
+        essential: true,
 
-        }
+      })
 
-      }
-      else {
-        setPopupData(null)
-        const jobCoordinates = job!.coordinates
-
-        mapRef.current.flyTo({
-          center: [jobCoordinates[1], jobCoordinates[0]],
-          zoom: 10,
-          duration: 1000,
-          essential: true,
-
-        })
-
-        setLocatedJob(job)
+      setLocatedJob(job)
 
 
-      }
+
 
     }
   }
@@ -247,10 +233,24 @@ const JobsView = () => {
           windowWidth > 1280 ?
             <ResizablePanelGroup direction="horizontal">
               <ResizablePanel maxSize={55} defaultSize={45}>
-                <Sidebar getNextPage={getNextPage} jobsCount={jobsCount!} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+                <Sidebar selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} getNextPage={getNextPage} jobsCount={jobsCount!} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
               </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel maxSize={55} defaultSize={55} >
+              <ResizableHandle withHandle className="z-20" />
+              <ResizablePanel maxSize={55} defaultSize={55} className="relative !overflow-y-auto no-scrollbar">
+
+                <div className={classNames("absolute w-full h-full bg-white top-0 -right-full transition z-10", {
+                  '-translate-x-full': selectedJobDetails
+                })}>
+                  {selectedJobDetails ?
+                    <JobDetails
+                      job={selectedJobDetails}
+                      closeJobDetails={closeJobDetails}
+                    />
+                    :
+                    null
+                  }
+
+                </div>
 
                 <Map
                   id='home-map'
@@ -275,34 +275,8 @@ const JobsView = () => {
                   </div>
                   }
 
-                  
-                  {popupData && (
-                    <Popup key={crypto.randomUUID()} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
-                      anchor="bottom"
-                      className='pb-6 w-fit'
-                      onClose={() => {
-                        setPopupData(null)
-                        setLocatedJob(null)
-                      }}>
-                      <Button asChild variant='ghost' className="" >
-                        <Link href={`/${popupData.id}`} target='_blank' className=" h-full bg-white rounded-sm border p-4 focus-visible:!ring-0">
-                          <div className="flex gap-4 items-center">
-                            <Image
-                              src={popupData.company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
-                              width={50}
-                              height={1}
-                              alt=''
-                              className="h-[40px] w-[40px]  object-contain rounded-none "
 
-                            />
-                            <div className="space-y-1">
-                              <p className="font-semibold  whitespace-pre-wrap" >{popupData.title}</p>
-                              <p className="flex items-center text-green-500 "><TbCurrencyLari /> {popupData.salary ? `${popupData.salary[0]}-${popupData.salary[1]}` : 'შეთანხმებით'}</p>
-                            </div>
-                          </div>
-                        </Link>
-                      </Button>
-                    </Popup>)}
+
                   {mapData.map((job) => {
                     const { id, coordinates } = job
                     const isLocated = locatedJob ? locatedJob.id == id : false
@@ -314,13 +288,14 @@ const JobsView = () => {
                           onClick={() => {
 
                             console.log('reached')
-                            locateJob(job, true)
+                            setSelectedJobDetails(job)
+                            // locateJob(job, true)
                           }}
                           style={{ zIndex: isLocated ? 1 : 0 }}
                         >
 
                           <div className={classNames(`w-7 h-7 cursor-pointer flex items-center justify-center relative text-white bg-primary rounded-full `, {
-                            '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)] ': isLocated
+                            // '!bg-green-400 !shadow-[0_0_0px_6px_rgba(74,222,128,0.5)] ': isLocated
                           })}>
                             <BsBriefcaseFill size={16} />
                           </div>
@@ -339,7 +314,23 @@ const JobsView = () => {
               </ResizablePanel>
             </ResizablePanelGroup>
             :
-            <Sidebar jobsCount={jobsCount!} getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+            <div className="relative w-full overflow-x-hidden no-scrollbar">
+              <div className={classNames("absolute w-full h-full bg-white top-0 -right-full transition z-10 ", {
+                '-translate-x-full': selectedJobDetails
+              })}>
+                {selectedJobDetails ?
+                  <JobDetails
+                    job={selectedJobDetails}
+                    closeJobDetails={closeJobDetails}
+                  />
+                  :
+                  null
+                }
+
+              </div>
+              <Sidebar selectedJobDetails={setSelectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} jobsCount={jobsCount!} getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+
+            </div>
         }
       </>
         :

@@ -53,7 +53,7 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                         <CardHeader className='gap-4'>
                             <Badge variant='outline' className='w-fit'>უფასო</Badge>
                             <div className="flex flex-row items-end gap-2">
-                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari />44</h1>
+                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari />48</h1>
                                 <p className='text-muted-foreground text-sm'>/განცხადება</p>
                             </div>
                             <p className='text-sm font-medium'>ყველა ფუნქცია ერთ ფასში, მარტივად და საგაგებად.</p>
@@ -80,12 +80,12 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                     </Card> */}
 
                     <Card className='md:min-w-[400px] border-primary '>
-                        <div className="w-full p-2 flex justify-center text-sm bg-primary rounded-t-lg text-white mb-2">პირველი განცხადება უფასოდ!</div>
+                        <div className="w-full p-2 flex justify-center text-sm bg-primary rounded-t-lg text-white mb-2">პირველი განცხადება უფასოა!</div>
 
                         <CardHeader className='gap-4'>
                             <Badge variant='outline' className='w-fit'>სტანდარტული</Badge>
                             <div className="flex flex-row items-end gap-2">
-                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari /> 44 </h1>
+                                <h1 className='text-4xl font-semibold flex items-center'><TbCurrencyLari /> 48 </h1>
                                 <p className='text-muted-foreground text-sm'>/განცხადება</p>
                             </div>
                             <p className='text-sm font-medium'>ყველა ფუნქცია ერთ ფასში, მარტივად და გასაგებად.</p>
@@ -93,6 +93,10 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                         <CardContent>
                             <h1 className='font-semibold mb-3'>რა შედის</h1>
                             <div className="flex flex-col gap-3 text-sm ">
+                                <p className='flex items-center gap-2'>
+                                    <CheckCircledIcon />
+                                    1-თვიანი განცხადება
+                                </p>
                                 <p className='flex items-center gap-2'>
                                     <CheckCircledIcon />
                                     ზოგადი აღწერა
@@ -118,7 +122,7 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                         <CardFooter className=''>
                             <Form {...form}>
                                 <form action={user ? 'api/payment/create-checkout-session' : '/signup?ask_auth=true'} method='POST' className='flex flex-col gap-4 mt-4 w-full'>
-                                    <input type="hidden" name="lookup_key" value="jobby.ge_standard" />
+                                    <input type="hidden" name="lookup_key" value="jobby.ge_standard_price" />
                                     {user && <input type="hidden" name="user_id" value={user.id} />}
                                     <FormField
 

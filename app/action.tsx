@@ -96,7 +96,7 @@ export async function updateProfileAttribute(profileId: string, key: string, val
 
 export async function getFilteredJobs(titleFilter?: string, regionFilter?: string | undefined, industryFilter?: string | undefined, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
     const supabase = createClient()
-    let query = supabase.from('jobs').select('id, title, company_name, coordinates, company_logo, salary, views, created_at', { count: 'exact' })
+    let query = supabase.from('jobs').select('*', { count: 'exact' })
     query.eq('hidden', false)
     if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
     if (regionFilter) query = query.eq('region', regionFilter)
@@ -111,9 +111,11 @@ export async function getFilteredJobs(titleFilter?: string, regionFilter?: strin
     return { data, count: count!, error: null }
 }
 
-export async function getMapJobs(ids: string[]) {
+export async function getMapJobs(ids?: string[]) {
     const supabase = createClient()
-    let { data, error } = await supabase.from('jobs').select('id, coordinates').in('id', ids)
+    let query = supabase.from('jobs').select('*')
+    if (ids) query = query.in('id', ids)
+    let { data, error } = await query
     if (error) return { data: null, error: error.message }
 
     return { data, error: null }

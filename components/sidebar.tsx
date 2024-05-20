@@ -32,12 +32,14 @@ export type Props = {
     locatedJob: Job | null
     getNextPage: Function
     jobsCount: number
+    setSelectedJobDetails: Function
+    selectedJobDetails: any
 }
- 
+
 const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარის ავტონომიური რესპუბლიკა"]
 const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
 
-const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
     const lastJobRef = useRef<HTMLDivElement>()
     const { ref, inView, entry } = useInView({
         /* Optional options */
@@ -173,11 +175,11 @@ const Sidebar = ({ getNextPage, jobsCount, filterJobs, clearFilters, filtersChan
                         //Last job for automatic pagination
                         if (arr.length - 1 === i) return (
                             <div key={job.id} ref={ref}>
-                                <JobCard key={job.id} job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                                <JobCard key={job.id} job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob}   />
                             </div>
                         )
                         else return <div key={job.id}>
-                            <JobCard job={job} locateJob={locateJob} locatedJob={locatedJob} />
+                            <JobCard job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob}  />
                         </div>
                     })
                         :
