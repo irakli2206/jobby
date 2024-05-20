@@ -79,7 +79,6 @@ const JobsView = () => {
     zoom: 6,
   })
   const [popupData, setPopupData] = useState<any>()
-  const [popupLoadingData, setPopupLoadingData] = useState<any>()
   const [mapLoading, setMapLoading] = useState(true)
 
   // const isMapLoading = useMemo(() => {
@@ -185,14 +184,12 @@ const JobsView = () => {
       if (locatedJob && (job.id === locatedJob.id)) {
         setPopupData(null)
         setLocatedJob(null)
-        setPopupLoadingData(null)
         return
       }
 
       if (mapClick) {
         try {
-          const jobData = await getJobById(job.id)
-          setPopupLoadingData(null)
+          const jobData = await getJobById(job.id, 'id, title, company_logo, salary, coordinates')
           setPopupData(jobData)
           setLocatedJob(jobData)
         } finally {
@@ -203,7 +200,6 @@ const JobsView = () => {
       }
       else {
         setPopupData(null)
-        setPopupLoadingData(null)
         const jobCoordinates = job!.coordinates
 
         mapRef.current.flyTo({
@@ -279,26 +275,7 @@ const JobsView = () => {
                   </div>
                   }
 
-                  {popupLoadingData &&
-                    <Popup key={crypto.randomUUID()} latitude={popupLoadingData.coordinates[0]} longitude={popupLoadingData.coordinates[1]}
-                      anchor="bottom"
-                      className='pb-6 '
-                      onClose={() => {
-                        setPopupData(null)
-                        setLocatedJob(null)
-                      }}>
-
-                      <div className="w-full h-full bg-whiterounded-sm border p-4">
-                        <div className="flex flex-row gap-3 items-center">
-                          <Skeleton className="h-[40px] w-[40px] rounded-none " />
-                          <div className="space-y-2">
-                            <Skeleton className="h-2 w-24" />
-                            <Skeleton className="h-2 w-24" />
-                          </div>
-                        </div>
-                      </div>
-                    </Popup>
-                  }
+                  
                   {popupData && (
                     <Popup key={crypto.randomUUID()} latitude={popupData.coordinates[0]} longitude={popupData.coordinates[1]}
                       anchor="bottom"
@@ -337,7 +314,6 @@ const JobsView = () => {
                           onClick={() => {
 
                             console.log('reached')
-                            setPopupLoadingData({ id, coordinates })
                             locateJob(job, true)
                           }}
                           style={{ zIndex: isLocated ? 1 : 0 }}

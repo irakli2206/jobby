@@ -96,7 +96,7 @@ const ResumesView = ({ resumes, jobId }: Props) => {
 
             <div className="max-w-7xl py-12 mx-auto w-full px-2 md:px-4">
                 <div className="flex justify-between">
-                    <Link href='/dashboard' className='flex items-center gap-2 text-blue-500'>
+                    <Link href='/dashboard' className='flex items-center gap-2 text-black underline'>
                         <MoveLeft size={20} /> დაბრუნება
                     </Link>
                     <Button className='mb-4 '><FolderDown className='mr-2' size={18} /> ყველას გადმოწერა</Button>

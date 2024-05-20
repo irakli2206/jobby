@@ -56,9 +56,9 @@ export async function clearCache(path: string, type: 'layout' | 'page' = 'page')
     revalidatePath(path, type)
 }
 
-export async function getJobById(jobId: string) {
+export async function getJobById(jobId: string, fields: string = '*') {
     const supabase = createClient()
-    const { data, error } = await supabase.from('jobs').select().eq('id', jobId).single()
+    const { data, error } = await supabase.from('jobs').select(fields).eq('id', jobId).single()
 
     if (error) return { error: error.message }
 
