@@ -52,13 +52,7 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
 
     return (
         <div className='w-full h-full flex flex-col p-4 '>
-            <header className="flex justify-between gap-8">
-                <div className="flex flex-col gap-4  pb-2">
-                    <h1 className='text-3xl font-medium'>Jobby.ge</h1>
-                    <p className='text-muted-foreground '>საუკეთესო ქართული პორტალი სამსახურის ძიებისთვის</p>
-                </div>
-                {/* <Button variant={'outline'} className=' ' >განათავსე განცხადება</Button> */}
-            </header>
+            
             <form onSubmit={(e) => {
                 e.preventDefault()
             }} className="flex flex-col gap-2 justify-between pt-4 pb-2 ">

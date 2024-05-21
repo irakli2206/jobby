@@ -93,7 +93,7 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
 
     return (
         <div className='py-4 px-4 max-w-7xl mx-auto h-full'>
-            <header className='w-full flex justify-end py-4'>
+            <header className='w-full flex justify-end pb-4'>
                 <Button variant={'ghost'} size='icon' 
                 onClick={() => closeJobDetails()}
                 >
