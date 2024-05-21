@@ -124,7 +124,7 @@ const Header = ({ user }: Props) => {
 
           </div>
         </nav>
-        {isBannerVisible && <div className="fixed top-16  left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-primary text-white px-6 py-1.5 sm:px-3.5 sm:before:flex-1">
+        {/* {isBannerVisible && <div className="fixed top-16  left-0 w-full isolate flex items-center gap-x-6 overflow-hidden bg-primary text-white px-6 py-1.5 sm:px-3.5 sm:before:flex-1">
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <p className="text-sm leading-6 ">
@@ -154,7 +154,7 @@ const Header = ({ user }: Props) => {
               <XMarkIcon className="h-5 w-5 text-white" aria-hidden="true" />
             </button>
           </div>
-        </div>}
+        </div>} */}
       </nav>
 
 

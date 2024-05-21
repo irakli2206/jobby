@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from '@/components/ui/button'
 import moment from 'moment'
-import { FolderDown, MoveLeft } from 'lucide-react'
+import { FileDown, FolderDown, MoveLeft } from 'lucide-react'
 import { Document, Page } from 'react-pdf'
 import {
     Sheet,
@@ -192,7 +192,7 @@ const Row = ({ id, name, time, handleSetCurrentResume, downloadResume, jobId }: 
             <TableCell>
                 <div className="flex gap-4 justify-end">
                     {/* <Button size='sm' variant='outline' onClick={() => handleSetCurrentResume(id)}>ნახვა</Button> */}
-                    <Button onClick={() => downloadResume(id)} size='sm'>გადმოწერა</Button>
+                    <Button onClick={() => downloadResume(id)} size='sm'><FileDown size={16} className='mr-1.5' /> გადმოწერა</Button>
                 </div>
             </TableCell>
         </TableRow>
