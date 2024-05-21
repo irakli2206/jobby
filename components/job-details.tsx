@@ -21,9 +21,10 @@ type Props = {
 }
 
 const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
-    console.log(job)
     const [resume, setResume] = useState<File | undefined>()
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | undefined>(undefined)
+
+    console.log(isAlreadyApplied)
 
     const fileInputRef = useRef(null);
 
@@ -37,7 +38,7 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
             if (appliedJobs.includes(job.id)) setIsAlreadyApplied(true)
             else setIsAlreadyApplied(false)
         }
-    }, [])
+    }, [job])
 
 
 

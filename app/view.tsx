@@ -320,6 +320,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
               })}>
                 {selectedJobDetails ?
                   <JobDetails
+                    key={selectedJobDetails.id}
                     job={selectedJobDetails}
                     closeJobDetails={closeJobDetails}
                   />
