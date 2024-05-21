@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { File, FileCheck2, FileUp, X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { sendResume } from '@/app/action';
+import { incrementJobViews, sendResume } from '@/app/action';
 import MapView from '@/app/[job]/map';
 
 type Props = {
@@ -38,6 +38,12 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
             if (appliedJobs.includes(job.id)) setIsAlreadyApplied(true)
             else setIsAlreadyApplied(false)
         }
+
+        const incrementJobViewsEffect = async () => {
+            if (job) await incrementJobViews(job)
+        }
+
+        incrementJobViewsEffect()
     }, [job])
 
 
