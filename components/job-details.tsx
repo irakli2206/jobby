@@ -94,8 +94,8 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
     return (
         <div className='py-4 px-4 max-w-7xl mx-auto h-full'>
             <header className='w-full flex justify-end pb-4'>
-                <Button variant={'ghost'} size='icon' 
-                onClick={() => closeJobDetails()}
+                <Button variant={'ghost'} size='icon'
+                    onClick={() => closeJobDetails()}
                 >
                     <X />
                 </Button>
@@ -155,6 +155,7 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
                         <dt className="text-sm font-medium leading-6 text-gray-900">ადგილმდებარეობა</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <MapView
+                                key={job.id}
                                 job={job}
                             />
                         </dd>

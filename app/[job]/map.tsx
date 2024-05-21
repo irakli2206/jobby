@@ -6,12 +6,12 @@ import { BsBriefcaseFill } from 'react-icons/bs';
 
 
 const MapView = ({ job }: any) => {
+
     return (
         <>
             {job.coordinates && <Map
-
+                key={job.id}
                 minZoom={7}
-                reuseMaps
                 accessToken="pk.eyJ1IjoiaXJha2xpMjIwNiIsImEiOiJja3dkZzl3dDgwa2FyMnBwbjEybjd0dmxpIn0.-XNJzlRbWG0zH2Q1MRpmOA"
                 mapboxAccessToken="pk.eyJ1IjoiaXJha2xpMjIwNiIsImEiOiJja3dkZzl3dDgwa2FyMnBwbjEybjd0dmxpIn0.-XNJzlRbWG0zH2Q1MRpmOA"
                 initialViewState={{
