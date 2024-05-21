@@ -13,9 +13,16 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
-import { Delete, DeleteIcon, Plus, Trash } from 'lucide-react';
+import { Delete, DeleteIcon, Plus, SlidersHorizontal, Trash } from 'lucide-react';
 import classNames from 'classnames'
 import { useInView } from "react-intersection-observer";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { PopoverSelect } from './popover-select'
+
 
 export type Props = {
     filterJobs: Function
@@ -24,9 +31,9 @@ export type Props = {
     sortBy: 'created_at' | 'views'
     setSortBy: (sort: 'created_at' | 'views') => void
     titleFilter: string
-    regionFilter: string | undefined
-    industryFilter: string | undefined
-    handleFilterChange: (key: string, value: string | undefined) => void
+    regionFilter: string[] | undefined
+    industryFilter: string[] | undefined
+    handleFilterChange: (key: string, value: string | string[] | undefined) => void
     jobsData: Job[]
     locateJob: (job: Job | null) => void
     locatedJob: Job | null
@@ -52,78 +59,96 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
 
     return (
         <div className='w-full h-full flex flex-col p-4 '>
-            
+
             <form onSubmit={(e) => {
                 e.preventDefault()
             }} className="flex flex-col gap-2 justify-between pt-4 pb-2 ">
                 <div className="flex-col w-full flex gap-2">
-                    <Input
-                        placeholder='სამსახურის დასახელება'
-                        value={titleFilter}
-                        onChange={(e) => handleFilterChange('title', e.target.value)}
-                    />
-                    <div className="flex gap-2 w-full">
-                        <Select
-                            key={+new Date()}
-                            defaultValue={regionFilter}
-                            value={regionFilter}
-                            onValueChange={(e) => {
-                                handleFilterChange('region', e)
-                            }}
-                        >
-                            <SelectTrigger aria-label='region' aria-labelledby='region' className=" ">
-                                <SelectValue aria-label='region' aria-labelledby='region' placeholder="მხარე" />
-                            </SelectTrigger>
-                            <SelectContent >
-                                <Button
-                                    className="w-full px-2 mb-2"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        handleFilterChange('region', undefined)
-                                    }}
-                                >
-                                    გაწმენდა
-                                </Button>
-                                <SelectGroup>
-                                    {regions.map(region => <SelectItem key={region} value={region}>{region}</SelectItem>)}
-                                </SelectGroup>
+                    <div className="flex flex-col gap-2">
+                        <Input
+                            placeholder='სამსახურის დასახელება'
+                            value={titleFilter}
+                            onChange={(e) => handleFilterChange('title', e.target.value)}
+                        />
 
-                            </SelectContent>
+                        <div className="flex gap-2 flex-wrap">
+                            <PopoverSelect
+                                filterKey='region'
+                                title='მხარე'
+                                selectedValues={regionFilter}
+                                setSelectedValues={handleFilterChange}
+                                options={regions.map(region => ({ label: region, value: region }))}
+                            />
 
-                        </Select>
-                        <Select
-                            key={`${+new Date()}-industry`}
-                            defaultValue={industryFilter}
-                            value={industryFilter}
-                            onValueChange={(e) => {
-                                handleFilterChange('industry', e)
-                            }}
-                        >
-                            <SelectTrigger aria-label='category' aria-labelledby='category' className=" ">
-                                <SelectValue aria-label='category' aria-labelledby='category' placeholder="კატეგორია" />
-                            </SelectTrigger>
-                            <SelectContent >
-                                <Button
-                                    className="w-full px-2 mb-2"
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        handleFilterChange('industry', undefined)
-                                    }}
-                                >
-                                    გაწმენდა
-                                </Button>
-                                <SelectGroup>
-                                    {industries.map(industry => <SelectItem key={industry} value={industry}>{industry}</SelectItem>)}
-                                </SelectGroup>
-
-                            </SelectContent>
-
-                        </Select>
+                            <PopoverSelect
+                                filterKey='industry'
+                                title='კატეგორია'
+                                selectedValues={industryFilter}
+                                setSelectedValues={handleFilterChange}
+                                options={industries.map(industry => ({ label: industry, value: industry }))}
+                            />
+                        </div>
                     </div>
+                    {/* <Select
+                        key={+new Date()}
+                        defaultValue={regionFilter}
+                        value={regionFilter}
+                        onValueChange={(e) => {
+                            handleFilterChange('region', e)
+                        }}
+                    >
+                        <SelectTrigger aria-label='region' aria-labelledby='region' className=" ">
+                            <SelectValue aria-label='region' aria-labelledby='region' placeholder="მხარე" />
+                        </SelectTrigger>
+                        <SelectContent >
+                            <Button
+                                className="w-full px-2 mb-2"
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleFilterChange('region', undefined)
+                                }}
+                            >
+                                გაწმენდა
+                            </Button>
+                            <SelectGroup>
+                                {regions.map(region => <SelectItem key={region} value={region}>{region}</SelectItem>)}
+                            </SelectGroup>
+
+                        </SelectContent>
+
+                    </Select>
+                    <Select
+                        key={`${+new Date()}-industry`}
+                        defaultValue={industryFilter}
+                        value={industryFilter}
+                        onValueChange={(e) => {
+                            handleFilterChange('industry', e)
+                        }}
+                    >
+                        <SelectTrigger aria-label='category' aria-labelledby='category' className=" ">
+                            <SelectValue aria-label='category' aria-labelledby='category' placeholder="კატეგორია" />
+                        </SelectTrigger>
+                        <SelectContent >
+                            <Button
+                                className="w-full px-2 mb-2"
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleFilterChange('industry', undefined)
+                                }}
+                            >
+                                გაწმენდა
+                            </Button>
+                            <SelectGroup>
+                                {industries.map(industry => <SelectItem key={industry} value={industry}>{industry}</SelectItem>)}
+                            </SelectGroup>
+
+                        </SelectContent>
+
+                    </Select> */}
                 </div>
                 <div className="flex flex-col w-full gap-2 mt-2">
                     <Button type='submit' onClick={() => filterJobs()} className={classNames('w-full', {
@@ -169,11 +194,11 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                         //Last job for automatic pagination
                         if (arr.length - 1 === i) return (
                             <div key={job.id} ref={ref}>
-                                <JobCard key={job.id} job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob}   />
+                                <JobCard key={job.id} job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob} />
                             </div>
                         )
                         else return <div key={job.id}>
-                            <JobCard job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob}  />
+                            <JobCard job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob} />
                         </div>
                     })
                         :

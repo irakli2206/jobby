@@ -67,8 +67,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const [windowWidth, setWindowWidth] = useState<number | null>()
   const [filters, setFilters] = useState({
     title: "",
-    region: "",
-    industry: ""
+    region: [],
+    industry: []
   })
   //useRef doesn't change between renders, but filters state does, meaning we can identify when the two start differing
   const prevFilters = useRef(filters)
@@ -147,6 +147,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
     try {
       // window.sessionStorage.removeItem('currentPage')
       const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry)
+      console.log('jobs', jobs)
       //@ts-ignore
       if (jobs.error) throw new Error(jobs.error.message)
 
@@ -164,12 +165,12 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
     try {
       const emptyFilters = {
         industry: "",
-        region: "",
-        title: ""
+        region: [],
+        title: []
       }
       prevFilters.current = emptyFilters
       setFilters(emptyFilters)
-      const jobs = await getFilteredJobs("", "", "", sortBy)
+      const jobs = await getFilteredJobs("", [], [], sortBy)
       //@ts-ignore
       if (jobs.error) throw new Error(jobs.error.message)
 
@@ -221,7 +222,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   }
 
 
-  const handleFilterChange = (key: string, value: string | undefined) => {
+  const handleFilterChange = (key: string, value: string | string[] | undefined) => {
+    console.log(key)
     setFilters({ ...filters, [key]: value })
   }
 
