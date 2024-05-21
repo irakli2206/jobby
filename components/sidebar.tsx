@@ -101,7 +101,7 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                                 >
 
                                 </label>
-                                <Checkbox id='remote' checked={remoteFilter} onCheckedChange={(e) => {
+                                <Checkbox id='remote' className='w-3.5 h-3.5' iconClassName='!w-3.5 !h-3.5' checked={remoteFilter} onCheckedChange={(e) => {
                                     handleFilterChange('isRemote', e)
                                 }} />
                                 <label
