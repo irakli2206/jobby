@@ -94,13 +94,14 @@ export async function updateProfileAttribute(profileId: string, key: string, val
 }
 
 
-export async function getFilteredJobs(titleFilter?: string, regionFilter?: string[] | undefined, industryFilter?: string[] | undefined, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
+export async function getFilteredJobs(titleFilter?: string, regionFilter?: string[] | undefined, industryFilter?: string[] | undefined, isRemote?: boolean, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
     const supabase = createClient()
     let query = supabase.from('jobs').select('*', { count: 'exact' })
     query.eq('hidden', false)
     if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
     if (regionFilter && regionFilter.length) query = query.in('region', regionFilter)
     if (industryFilter && industryFilter.length) query = query.in('industry', industryFilter)
+    if (isRemote) query = query.eq('is_remote', `${isRemote}`)
 
     const { count } = await query
     //Pagination in the end to avoid missing certain items

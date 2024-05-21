@@ -1,5 +1,5 @@
 import React, { MutableRefObject, Ref, useEffect, useRef } from 'react'
-import { Button } from './ui/button'
+import { Button, buttonVariants } from './ui/button'
 import JobCard from './job-card'
 import { Job } from '@/app/page'
 import { Input } from './ui/input'
@@ -22,18 +22,20 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { PopoverSelect } from './popover-select'
+import { Checkbox } from './ui/checkbox'
 
 
 export type Props = {
     filterJobs: Function
     clearFilters: Function
     filtersChanged: boolean
+    remoteFilter: boolean,
     sortBy: 'created_at' | 'views'
     setSortBy: (sort: 'created_at' | 'views') => void
     titleFilter: string
     regionFilter: string[] | undefined
     industryFilter: string[] | undefined
-    handleFilterChange: (key: string, value: string | string[] | undefined) => void
+    handleFilterChange: (key: string, value: string | string[] | boolean | undefined) => void
     jobsData: Job[]
     locateJob: (job: Job | null) => void
     locatedJob: Job | null
@@ -46,7 +48,7 @@ export type Props = {
 const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარის ავტონომიური რესპუბლიკა"]
 const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
 
-const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, remoteFilter, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
     const lastJobRef = useRef<HTMLDivElement>()
     const { ref, inView, entry } = useInView({
         /* Optional options */
@@ -56,6 +58,7 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
     useEffect(() => {
         if (inView) getNextPage()
     }, [inView])
+
 
     return (
         <div className='w-full h-full flex flex-col p-4 '>
@@ -87,6 +90,29 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                                 setSelectedValues={handleFilterChange}
                                 options={industries.map(industry => ({ label: industry, value: industry }))}
                             />
+
+                            <Button variant='outline' size='sm' onClick={(e) => {
+                                // handleFilterChange('isRemote', !remoteFilter)
+                            }} className={`border-dashed  [&>*]:cursor-pointer px-0`}>
+                                {/* მარცხნივაც label, რომ მთლიანად იყოს ელემენტი დაჭერადი, ნაგავია კოდია მაგრამ მუშაობს */}
+                                <label
+                                    htmlFor='remote'
+                                    className="w-2 h-full"
+                                >
+
+                                </label>
+                                <Checkbox id='remote' checked={remoteFilter} onCheckedChange={(e) => {
+                                    handleFilterChange('isRemote', e)
+                                }} />
+                                <label
+                                    htmlFor='remote'
+                                    className="h-full flex items-center px-2"
+                                >
+                                    დისტანციური
+                                </label>
+
+                            </Button>
+
                         </div>
                     </div>
                     {/* <Select
@@ -149,7 +175,7 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                         </SelectContent>
 
                     </Select> */}
-                </div>
+                </div >
                 <div className="flex flex-col w-full gap-2 mt-2">
                     <Button type='submit' onClick={() => filterJobs()} className={classNames('w-full', {
                         'animate-pulse': filtersChanged
@@ -165,7 +191,7 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                 </div>
 
 
-            </form>
+            </form >
 
             <footer className='flex flex-col gap-4 py-8 overflow-y-scroll no-scrollbar'>
                 <div className="flex justify-between  items-end">
@@ -207,7 +233,7 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                     }
                 </>
             </footer>
-        </div>
+        </div >
     )
 }
 

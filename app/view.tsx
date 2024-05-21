@@ -68,7 +68,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const [filters, setFilters] = useState({
     title: "",
     region: [],
-    industry: []
+    industry: [],
+    isRemote: false
   })
   //useRef doesn't change between renders, but filters state does, meaning we can identify when the two start differing
   const prevFilters = useRef(filters)
@@ -112,7 +113,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
       try {
         // const cachedCurrentPage = window.sessionStorage.getItem('currentPage')
         // const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy, cachedCurrentPage ? Number(cachedCurrentPage) : 0)
-        const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy)
+        const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, filters.isRemote, sortBy)
         if (jobs.error) throw new Error(jobs.error.message)
 
         setJobsData(jobs.data!)
@@ -146,7 +147,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const filterJobs = async () => {
     try {
       // window.sessionStorage.removeItem('currentPage')
-      const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry)
+      const { title, region, industry, isRemote } = filters
+      const jobs = await getFilteredJobs(title, region, industry, isRemote)
       console.log('jobs', jobs)
       //@ts-ignore
       if (jobs.error) throw new Error(jobs.error.message)
@@ -164,13 +166,14 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const clearFilters = async () => {
     try {
       const emptyFilters = {
-        industry: "",
+        title: "",
+        industry: [],
         region: [],
-        title: []
+        isRemote: false
       }
       prevFilters.current = emptyFilters
       setFilters(emptyFilters)
-      const jobs = await getFilteredJobs("", [], [], sortBy)
+      const jobs = await getFilteredJobs("", [], [], false, sortBy)
       //@ts-ignore
       if (jobs.error) throw new Error(jobs.error.message)
 
@@ -209,7 +212,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const getNextPage = async () => {
     if (jobsCount === jobsData.length) return
 
-    const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy, currentPage)
+    const { title, region, industry, isRemote } = filters
+    const jobs = await getFilteredJobs(title, region, industry, isRemote, sortBy, currentPage)
     if (jobs.error) throw new Error(jobs.error)
 
     if (jobs.data?.length) {
@@ -222,8 +226,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   }
 
 
-  const handleFilterChange = (key: string, value: string | string[] | undefined) => {
-    console.log(key)
+  const handleFilterChange = (key: string, value: string | string[] | boolean | undefined) => {
+    console.log(key, value)
     setFilters({ ...filters, [key]: value })
   }
 
@@ -235,7 +239,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
           windowWidth > 1280 ?
             <ResizablePanelGroup direction="horizontal">
               <ResizablePanel maxSize={55} defaultSize={45}>
-                <Sidebar selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} getNextPage={getNextPage} jobsCount={jobsCount!} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+                <Sidebar remoteFilter={filters.isRemote} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} getNextPage={getNextPage} jobsCount={jobsCount!} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
               </ResizablePanel>
               <ResizableHandle withHandle className="z-20" />
               <ResizablePanel maxSize={55} defaultSize={55} className="relative !overflow-y-auto no-scrollbar">
@@ -331,7 +335,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
                 }
 
               </div>
-              <Sidebar selectedJobDetails={setSelectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} jobsCount={jobsCount!} getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
+              <Sidebar remoteFilter={filters.isRemote} selectedJobDetails={setSelectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} jobsCount={jobsCount!} getNextPage={getNextPage} filterJobs={filterJobs} clearFilters={clearFilters} filtersChanged={filtersChanged} sortBy={sortBy} setSortBy={setSortBy} titleFilter={filters.title} regionFilter={filters.region} industryFilter={filters.industry} handleFilterChange={handleFilterChange} jobsData={jobsData} locateJob={locateJob} locatedJob={locatedJob} />
 
             </div>
         }

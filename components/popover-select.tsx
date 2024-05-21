@@ -42,7 +42,6 @@ export function PopoverSelect({
     options,
 }: PopoverSelectProps) {
     const selectedValuesSet = new Set(selectedValues as string[])
-    console.log(selectedValues)
     return (
         <Popover >
             <PopoverTrigger asChild>
