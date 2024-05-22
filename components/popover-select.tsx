@@ -23,6 +23,7 @@ import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "./ui/scroll-area"
 
 interface PopoverSelectProps {
+    singleSelection?: boolean
     selectedValues: string[] | undefined
     setSelectedValues: (key: string, value: string | string[] | undefined) => void
     title: string
@@ -35,12 +36,14 @@ interface PopoverSelectProps {
 }
 
 export function PopoverSelect({
+    singleSelection = false,
     selectedValues,
     setSelectedValues,
     title,
     filterKey,
     options,
 }: PopoverSelectProps) {
+    console.log(selectedValues)
     const selectedValuesSet = new Set(selectedValues as string[])
     return (
         <Popover >
@@ -88,10 +91,11 @@ export function PopoverSelect({
                 <Command>
                     <CommandInput placeholder={title} />
                     <CommandList className="overflow-hidden">
-                        <CommandEmpty>No results found.</CommandEmpty>
                         <ScrollArea className="h-[300px] ">
+                            <CommandEmpty>შედეგი ვერ მოიძებნა</CommandEmpty>
 
-                            <CommandGroup>
+
+                            <CommandGroup className=" ">
 
                                 {options.map((option) => {
                                     const isSelected = selectedValuesSet.has(option.value)
@@ -99,12 +103,19 @@ export function PopoverSelect({
                                         <CommandItem
                                             key={option.value}
                                             onSelect={() => {
-                                                console.log(option)
-                                                if (isSelected) {
-                                                    selectedValuesSet.delete(option.value)
-                                                } else {
-                                                    selectedValuesSet.add(option.value)
+                                                if (singleSelection) {
+                                                    selectedValuesSet.clear()
+                                                    //If clicks on a different option, add that option to set
+                                                    if (!isSelected) selectedValuesSet.add(option.value)
                                                 }
+                                                else {
+                                                    if (isSelected) {
+                                                        selectedValuesSet.delete(option.value)
+                                                    } else {
+                                                        selectedValuesSet.add(option.value)
+                                                    }
+                                                }
+
                                                 const filterValues = Array.from(selectedValuesSet)
                                                 console.log(filterValues)
                                                 setSelectedValues(
@@ -135,16 +146,16 @@ export function PopoverSelect({
                                     )
                                 })}
                             </CommandGroup>
-                        </ScrollArea>
 
-                        {selectedValuesSet.size > 0 && (
-                            <div className="bg-white sticky bottom-0  p-2">
-                                <Separator className="mb-2 " />
-                                <Button onClick={() => setSelectedValues(filterKey, [])} variant='secondary' size='sm' className="sticky bottom-0 w-full">
-                                    გაწმენდა
-                                </Button>
-                            </div>
-                        )}
+                            {selectedValuesSet.size > 0 && (
+                                <div className="bg-white sticky bottom-0 p-2">
+                                    <Separator className="mb-2 " />
+                                    <Button onClick={() => setSelectedValues(filterKey, [])} variant='secondary' size='sm' className="sticky bottom-0 w-full ">
+                                        გაწმენდა
+                                    </Button>
+                                </div>
+                            )}
+                        </ScrollArea>
 
                     </CommandList>
                 </Command>

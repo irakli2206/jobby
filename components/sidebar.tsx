@@ -29,6 +29,7 @@ export type Props = {
     filterJobs: Function
     clearFilters: Function
     filtersChanged: boolean
+    salaryFilter: number | undefined
     remoteFilter: boolean,
     sortBy: 'created_at' | 'views'
     setSortBy: (sort: 'created_at' | 'views') => void
@@ -47,8 +48,9 @@ export type Props = {
 
 const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარის ავტონომიური რესპუბლიკა"]
 const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
+const salaries = [500, 1000, 1500, 2000, 2500, 3000, 4000, 5000]
 
-const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, remoteFilter, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
+const Sidebar = ({ salaryFilter, selectedJobDetails, setSelectedJobDetails, getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, remoteFilter, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
     const lastJobRef = useRef<HTMLDivElement>()
     const { ref, inView, entry } = useInView({
         /* Optional options */
@@ -83,12 +85,23 @@ const Sidebar = ({ selectedJobDetails, setSelectedJobDetails, getNextPage, jobsC
                                 options={regions.map(region => ({ label: region, value: region }))}
                             />
 
+
                             <PopoverSelect
                                 filterKey='industry'
                                 title='კატეგორია'
                                 selectedValues={industryFilter}
                                 setSelectedValues={handleFilterChange}
                                 options={industries.map(industry => ({ label: industry, value: industry }))}
+                            />
+
+
+                            <PopoverSelect
+                                filterKey='salary'
+                                title='ანაზღაურება'
+                                singleSelection={true}
+                                selectedValues={[String(salaryFilter)]}
+                                setSelectedValues={handleFilterChange}
+                                options={salaries.map(salary => ({ label: `${String(salary)}+`, value:  String(salary)}))}
                             />
 
                             <Button variant='outline' size='sm' onClick={(e) => {

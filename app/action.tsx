@@ -94,7 +94,7 @@ export async function updateProfileAttribute(profileId: string, key: string, val
 }
 
 
-export async function getFilteredJobs(titleFilter?: string, regionFilter?: string[] | undefined, industryFilter?: string[] | undefined, isRemote?: boolean, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
+export async function getFilteredJobs(titleFilter?: string, regionFilter?: string[] | undefined, industryFilter?: string[] | undefined, salary?: number, isRemote?: boolean, sort: "created_at" | "views" = 'created_at', currentPage: number = 0) {
     const supabase = createClient()
     let query = supabase.from('jobs').select('*', { count: 'exact' })
     query.eq('hidden', false)
