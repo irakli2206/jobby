@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/popover"
 import { PopoverSelect } from './popover-select'
 import { Checkbox } from './ui/checkbox'
+import { TbCurrencyLari } from "react-icons/tb";
 
 
 export type Props = {
@@ -99,9 +100,9 @@ const Sidebar = ({ salaryFilter, selectedJobDetails, setSelectedJobDetails, getN
                                 filterKey='salary'
                                 title='ანაზღაურება'
                                 singleSelection={true}
-                                selectedValues={[String(salaryFilter)]}
+                                selectedValues={salaryFilter ? [String(salaryFilter)] : []}
                                 setSelectedValues={handleFilterChange}
-                                options={salaries.map(salary => ({ label: `${String(salary)}+`, value:  String(salary)}))}
+                                options={salaries.map(salary => ({ label: `${String(salary)}+`, value: String(salary), icon: TbCurrencyLari }))}
                             />
 
                             <Button variant='outline' size='sm' onClick={(e) => {

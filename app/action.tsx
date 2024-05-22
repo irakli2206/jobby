@@ -101,6 +101,8 @@ export async function getFilteredJobs(titleFilter?: string, regionFilter?: strin
     if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
     if (regionFilter && regionFilter.length) query = query.in('region', regionFilter)
     if (industryFilter && industryFilter.length) query = query.in('industry', industryFilter)
+    // salary is minimum salary
+    if (salary) query = query.gte('min_salary', salary)
     if (isRemote) query = query.eq('is_remote', `${isRemote}`)
 
     const { count } = await query
@@ -127,7 +129,6 @@ export async function getMapJobs(ids?: string[]) {
 export async function sendResume(jobId: string, resume: FormData) {
     const file = resume.get('file')
     const fileName = resume.get('fileName')
-    console.log(fileName)
     const supabase = createClient()
     // const filePath = `/resumes/${jobId}/${fileName}-${crypto.randomUUID().slice(0, 8)}.pdf`
     const filePath = `/resumes/${jobId}/${crypto.randomUUID().slice(0, 4)}-${fileName}`

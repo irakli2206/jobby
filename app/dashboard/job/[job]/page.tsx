@@ -66,7 +66,7 @@ const DashboardJob = async ({ params }: Props) => {
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.salary ? `${job.salary[0]}-${job.salary[1]} ლარი` : "შეთანხმებით"}</dd>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
           </div>
           {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>

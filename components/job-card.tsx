@@ -26,8 +26,8 @@ type Props = {
     selectedJobDetails: any
 }
 
-const JobCard = ({ job, locateJob,  selectedJobDetails, setSelectedJobDetails }: Props) => {
-    const { coordinates, region, salary, title, created_at, views, company_logo, company_name, id } = job
+const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails }: Props) => {
+    const { coordinates, region, min_salary, max_salary, title, created_at, views, company_logo, company_name, id } = job
 
     let createdAt: any = moment(created_at)
     createdAt = createdAt.locale('ka').fromNow()
@@ -95,7 +95,7 @@ const JobCard = ({ job, locateJob,  selectedJobDetails, setSelectedJobDetails }:
 
                             <div className="flex gap-1 items-center ">
                                 <TbCurrencyLari />
-                                {salary ? `${salary[0]}-${salary[1]}` : "შეთანხმებით"}
+                                {(min_salary && max_salary) ? `${min_salary}-${max_salary}` : "შეთანხმებით"}
 
                             </div>
                             <DotFilledIcon className='hidden sm:block' orientation='vertical' />

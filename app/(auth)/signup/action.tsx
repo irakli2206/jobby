@@ -27,7 +27,6 @@ export async function signup({ email, password, firstName, lastName }: SignupFor
         if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
     }
 
-    console.log('userdata', data)
 
     const { data: profileData, error: profileError } = await supabase
         .from('profiles')

@@ -43,7 +43,6 @@ export function PopoverSelect({
     filterKey,
     options,
 }: PopoverSelectProps) {
-    console.log(selectedValues)
     const selectedValuesSet = new Set(selectedValues as string[])
     return (
         <Popover >
@@ -117,7 +116,6 @@ export function PopoverSelect({
                                                 }
 
                                                 const filterValues = Array.from(selectedValuesSet)
-                                                console.log(filterValues)
                                                 setSelectedValues(
                                                     filterKey, filterValues.length ? filterValues : undefined
                                                 )
@@ -134,7 +132,7 @@ export function PopoverSelect({
                                                 <CheckIcon className={cn("h-4 w-4")} />
                                             </div>
                                             {option.icon && (
-                                                <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                                                <option.icon className="mr-1 h-4 w-4 text-muted-foreground" />
                                             )}
                                             <span>{option.label}</span>
                                             {/* {facets?.get(option.value) && (

@@ -37,7 +37,6 @@ const Edit = async ({params}: Props) => {
         ...job,
         required_experiences: job.required_experiences ? job.required_experiences.map(r => ({ id: crypto.randomUUID(), text: r })) : [],
         responsibilities: job.responsibilities ? job.responsibilities.map(r => ({ id: crypto.randomUUID(), text: r })) : [],
-        salary: !job.salary ? [] : job.salary
     }
 
     if (!job) redirect('/dashboard')

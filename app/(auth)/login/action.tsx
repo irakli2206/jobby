@@ -16,7 +16,6 @@ export async function login({ email, password }: LoginFormValues) {
         password: password,
     })
 
-    console.log(data)
     if (error) {
         console.log(error)
         if (error.message === 'Invalid login credentials') return { error: 'არასწორი მონაცემები' }
@@ -24,7 +23,6 @@ export async function login({ email, password }: LoginFormValues) {
 
     const { data: profile, error: profileError } = await supabase.from('profiles').select().eq('id', data.user.id).maybeSingle()
 
-    console.log(data)
     revalidatePath('/', 'page')
     redirect('/dashboard')
 

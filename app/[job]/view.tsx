@@ -29,7 +29,6 @@ const JobView = ({ profile, job }: Props) => {
     useEffect(() => {
         if (localStorage) {
             const applied_jobs = localStorage.getItem('applied_jobs')
-            console.log(applied_jobs)
             const appliedJobs = applied_jobs ? JSON.parse(applied_jobs) : []
             if (appliedJobs.includes(job.id)) setIsAlreadyApplied(true)
             else setIsAlreadyApplied(false)
@@ -44,7 +43,6 @@ const JobView = ({ profile, job }: Props) => {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('reached')
         const file = event.target.files![0];
         setResume(file)
 
@@ -133,7 +131,7 @@ const JobView = ({ profile, job }: Props) => {
                     </div>}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.salary ? `${job.salary[0]}-${job.salary[1]} ლარი` : "შეთანხმებით"}</dd>
+                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
                     </div>
                     {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                 <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>

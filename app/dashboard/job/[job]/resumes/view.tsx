@@ -85,7 +85,6 @@ const ResumesView = ({ resumes, jobId }: Props) => {
 
             // Revoke the object URL to free up memory
             window.URL.revokeObjectURL(url);
-            console.log(data)
 
         }
 

@@ -47,9 +47,7 @@ export async function POST(
     }
 
     const session = event.data.object as Stripe.Checkout.Session
-    console.log('EVENT TYPE', event.type)
     if (event.type === "checkout.session.completed") {
-        console.log('session:', session)
         // Retrieve the subscription details from Stripe.
         const fullSession: Stripe.Checkout.Session = await stripe.checkout.sessions.retrieve(session.id, { expand: ['line_items'] })
         // Metadata comes on payment not on session
@@ -60,7 +58,6 @@ export async function POST(
         const userId = payment.metadata.user_id
 
         const { data: profile, error: profileError } = await supabase.from('profiles').select().eq('id', userId).single()
-        console.log('profile', profile)
         const { data, error }: { data: any | null, error: any } = await supabase.from('profiles').update({
             stripe_customer_id: fullSession.customer as string,
             job_limit: profile.job_limit + quantityPurchased

@@ -24,7 +24,6 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
     const [resume, setResume] = useState<File | undefined>()
     const [isAlreadyApplied, setIsAlreadyApplied] = useState<boolean | undefined>(undefined)
 
-    console.log(isAlreadyApplied)
 
     const fileInputRef = useRef(null);
 
@@ -33,7 +32,6 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
     useEffect(() => {
         if (localStorage) {
             const applied_jobs = localStorage.getItem('applied_jobs')
-            console.log(applied_jobs)
             const appliedJobs = applied_jobs ? JSON.parse(applied_jobs) : []
             if (appliedJobs.includes(job.id)) setIsAlreadyApplied(true)
             else setIsAlreadyApplied(false)
@@ -54,7 +52,6 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('reached')
         const file = event.target.files![0];
         setResume(file)
 

@@ -42,27 +42,25 @@ const EditView = ({ jobDataDTO }: Props) => {
     const { toast } = useToast()
 
     useEffect(() => {
-        if (!jobData.salary.length) setNoSalary(true)
+        if (!jobData.min_salary) setNoSalary(true)
 
     }, [])
 
-    console.log('test', noSalary)
 
     useEffect(() => {
         if (noSalary) {
-            setJobData({ ...jobData, salary: [] })
+            setJobData({ ...jobData, min_salary: null, max_salary: null })
         }
 
     }, [noSalary])
 
-    console.log(jobDataDTO)
 
 
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || jobData.salary.length === 1 || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length) {
+        if (!jobData.title || !jobData.company_name || !jobData.description || (!noSalary && (!jobData.min_salary || !jobData.max_salary)) || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length) {
             throw new Error("შეავსე ცარიელი ველები")
         }
-        else if ((jobData.salary[1] < jobData.salary[0]) || jobData.salary[0] < 0 || jobData.salary[1] < 0) {
+        else if ((jobData.max_salary < jobData.min_salary) || jobData.min_salary < 0 || jobData.max_salary < 0) {
             throw new Error("შეიყვანე სწორი ანაზღაურება")
         }
     }
@@ -88,7 +86,7 @@ const EditView = ({ jobDataDTO }: Props) => {
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
-            formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
+            // formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
             formattedJobData.region = regionFromCoordinates
             if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
             const { error, status } = await supabase.from('jobs').upsert({
@@ -314,25 +312,23 @@ const EditView = ({ jobDataDTO }: Props) => {
                         <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
 
-                            {jobData.salary && <div className="flex gap-2 items-center">
-                                <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.salary.length ? jobData.salary[0] : ''} onChange={(e) => {
-                                    const newSalary = [...jobData.salary]
-                                    newSalary[0] = e.target.valueAsNumber
+                            <div className="flex gap-2 items-center">
+                                <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.min_salary || ''} onChange={(e) => {
+                        
                                     setJobData({
                                         ...jobData,
-                                        salary: newSalary
+                                        min_salary: e.target.valueAsNumber
                                     })
                                 }} />
                                 <span>-</span>
-                                <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.salary.length ? jobData.salary[1] : ''} onChange={(e) => {
-                                    const newSalary = [...jobData.salary]
-                                    newSalary[1] = e.target.valueAsNumber
+                                <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.max_salary || ''} onChange={(e) => {
+                                  
                                     setJobData({
                                         ...jobData,
-                                        salary: newSalary
+                                        max_salary: e.target.valueAsNumber
                                     })
                                 }} />
-                            </div>}
+                            </div>
                             <div className="flex items-center space-x-2">
                                 <Checkbox id="terms" checked={noSalary} onCheckedChange={() => setNoSalary(!noSalary)} />
                                 <label

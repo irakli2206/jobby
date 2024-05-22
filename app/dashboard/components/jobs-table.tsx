@@ -42,7 +42,6 @@ type Props = {
 
 export const JobsTable = ({ user, freeSlots, data }: Props) => {
     const createEndpoint = '/pricing'
-    // console.log(data)
     return (
         <>
             {data.length ?

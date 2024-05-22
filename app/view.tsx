@@ -69,6 +69,14 @@ function isEqual(objA: Object, objB: Object) {
   return JSON.stringify(objA) === JSON.stringify(objB);
 }
 
+type FiltersT = {
+  title: string
+  region: string[]
+  industry: string[]
+  salary: number | undefined
+  isRemote: boolean
+}
+
 type Props = {
   initialJobData: any[]
   initialMapData: any[]
@@ -80,13 +88,14 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [windowWidth, setWindowWidth] = useState<number | null>()
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<FiltersT>({
     title: "",
     region: [],
     industry: [],
     salary: undefined,
     isRemote: false
   })
+
   //useRef doesn't change between renders, but filters state does, meaning we can identify when the two start differing
   const prevFilters = useRef(filters)
   const filtersChanged = !isEqual(filters, prevFilters.current)
@@ -136,7 +145,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
       try {
         // const cachedCurrentPage = window.sessionStorage.getItem('currentPage')
         // const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, sortBy, cachedCurrentPage ? Number(cachedCurrentPage) : 0)
-        const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, filters.salary, filters.isRemote, sortBy)
+        const jobs = await getFilteredJobs(filters.title, filters.region, filters.industry, Number(filters.salary as string), filters.isRemote, sortBy)
         if (jobs.error) throw new Error(jobs.error.message)
 
         setJobsData(jobs.data!)
@@ -188,7 +197,6 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
       // window.sessionStorage.removeItem('currentPage')
       const { title, region, industry, salary, isRemote } = filters
       const jobs = await getFilteredJobs(title, region, industry, salary, isRemote)
-      console.log('jobs', jobs)
       //@ts-ignore
       if (jobs.error) throw new Error(jobs.error.message)
 
@@ -206,6 +214,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
   const clearFilters = async () => {
     try {
+      setMapLoading(true)
       const emptyFilters = {
         title: "",
         industry: [],
@@ -225,6 +234,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
     } catch (e) {
       console.log(e)
+    } finally {
+      setMapLoading(false)
     }
   }
 
@@ -269,7 +280,6 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
 
   const handleFilterChange = (key: string, value: string | string[] | boolean | undefined) => {
-    console.log(key, value)
     setFilters({ ...filters, [key]: value })
   }
 
@@ -353,7 +363,6 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
                           longitude={coordinates[1]}
                           onClick={() => {
 
-                            console.log('reached')
                             setSelectedJobDetails(job)
                             // locateJob(job, true)
                           }}

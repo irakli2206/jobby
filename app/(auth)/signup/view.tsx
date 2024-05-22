@@ -73,7 +73,6 @@ const SignupView = () => {
         // ✅ This will be type-safe and validated.
         try {
             let data = await signup(values)
-            console.log(data)
             if (data && data.error) throw Error(data.error)
         } catch (e: any) {
             toast({

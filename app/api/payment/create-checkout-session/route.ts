@@ -14,7 +14,6 @@ export async function POST(
     req: Request,
     res: NextApiResponse
 ) {
-    console.log('REACHED', BASE_URL)
     const userProfile = await getProfile()
     let formData = await req.formData()
     let userId = formData.get('user_id') as string
