@@ -183,6 +183,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
   const filterJobs = async () => {
     try {
+      setMapLoading(true)
       // window.sessionStorage.removeItem('currentPage')
       const { title, region, industry, isRemote } = filters
       const jobs = await getFilteredJobs(title, region, industry, isRemote)
@@ -197,6 +198,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
     } catch (e) {
       console.log(e)
+    } finally {
+      setMapLoading(false)
     }
   }
 
