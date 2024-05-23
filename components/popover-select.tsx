@@ -147,8 +147,12 @@ export function PopoverSelect({
                                 })}
                             </CommandGroup>
 
-                            {selectedValuesSet.size > 0 && (
-                                <div className="bg-white sticky bottom-0 p-2">
+
+                        </ScrollArea>
+
+                    </CommandList>
+                    {selectedValuesSet.size > 0 && (
+                                <div className="bg-white sticky bottom-0 p-2 pt-0">
                                     <Separator className="mb-2 " />
                                     <Button onClick={() => {
                                         if (singleSelection) setSelectedValues(filterKey, undefined)
@@ -158,9 +162,6 @@ export function PopoverSelect({
                                     </Button>
                                 </div>
                             )}
-                        </ScrollArea>
-
-                    </CommandList>
                 </Command>
             </PopoverContent>
         </Popover >
