@@ -117,7 +117,7 @@ const Row = ({ job }: RowProps) => {
             <TableCell className="font-medium">
                 {job.company_name}
             </TableCell>
-            {job.salary ? <TableCell className=""><TbCurrencyLari className="inline" /> {`${job.salary[0]}-${job.salary[1]}`}</TableCell>
+            {job.min_salary ? <TableCell className=""><TbCurrencyLari className="inline" /> {`${job.min_salary}-${job.max_salary}`}</TableCell>
                 :
                 <TableCell>შეთანხმებით</TableCell>
             }

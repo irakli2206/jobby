@@ -283,7 +283,6 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
     setFilters({ ...filters, [key]: value })
   }
 
-
   return (
     <>
       <AlertDialog open={isDialogOpen} onOpenChange={handleCloseDialog}>

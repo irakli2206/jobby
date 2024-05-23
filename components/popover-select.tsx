@@ -32,7 +32,8 @@ interface PopoverSelectProps {
         label: string
         value: string
         icon?: React.ComponentType<{ className?: string }>
-    }[]
+    }[],
+    scrollAreaClassName?: string
 }
 
 export function PopoverSelect({
@@ -42,10 +43,12 @@ export function PopoverSelect({
     title,
     filterKey,
     options,
+    scrollAreaClassName
 }: PopoverSelectProps) {
+    console.log(title, selectedValues)
     const selectedValuesSet = new Set(selectedValues as string[])
     return (
-        <Popover >
+        <Popover key={title} >
             <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="h-8 border-dashed">
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
@@ -90,7 +93,7 @@ export function PopoverSelect({
                 <Command>
                     <CommandInput placeholder={title} />
                     <CommandList className="overflow-hidden">
-                        <ScrollArea className="h-[300px] ">
+                        <ScrollArea className={`h-[300px] ${scrollAreaClassName}`}>
                             <CommandEmpty>შედეგი ვერ მოიძებნა</CommandEmpty>
 
 
@@ -148,7 +151,10 @@ export function PopoverSelect({
                             {selectedValuesSet.size > 0 && (
                                 <div className="bg-white sticky bottom-0 p-2">
                                     <Separator className="mb-2 " />
-                                    <Button onClick={() => setSelectedValues(filterKey, [])} variant='secondary' size='sm' className="sticky bottom-0 w-full ">
+                                    <Button onClick={() => {
+                                        if (singleSelection) setSelectedValues(filterKey, undefined)
+                                        else setSelectedValues(filterKey, [])
+                                    }} variant='secondary' size='sm' className="sticky bottom-0 w-full ">
                                         გაწმენდა
                                     </Button>
                                 </div>
