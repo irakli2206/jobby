@@ -86,7 +86,6 @@ const EditView = ({ jobDataDTO }: Props) => {
             const formattedJobData = { ...jobData }
             formattedJobData.responsibilities = formattedJobData.responsibilities.map((r: { id: string, text: string }) => r.text)
             formattedJobData.required_experiences = formattedJobData.required_experiences.map((e: { id: string, text: string }) => e.text)
-            // formattedJobData.salary = jobData.salary.length !== 2 ? null : jobData.salary
             formattedJobData.region = regionFromCoordinates
             if (imagePath && imagePath.path) formattedJobData.company_logo = `https://stgxrceiydjulhnxizqz.supabase.co/storage/v1/object/public/jobs/${imagePath.path}`
             const { error, status } = await supabase.from('jobs').upsert({
@@ -200,7 +199,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                         <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <Textarea
-                                maxLength={500}
+                                maxLength={1000}
                                 value={jobData.description}
                                 onChange={(e) => {
                                     setJobData({
@@ -314,7 +313,7 @@ const EditView = ({ jobDataDTO }: Props) => {
 
                             <div className="flex gap-2 items-center">
                                 <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.min_salary || ''} onChange={(e) => {
-                        
+
                                     setJobData({
                                         ...jobData,
                                         min_salary: e.target.valueAsNumber
@@ -322,7 +321,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                                 }} />
                                 <span>-</span>
                                 <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.max_salary || ''} onChange={(e) => {
-                                  
+
                                     setJobData({
                                         ...jobData,
                                         max_salary: e.target.valueAsNumber
