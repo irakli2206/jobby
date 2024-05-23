@@ -133,7 +133,6 @@ const PricingView = ({ user, freeJobsLeft }: Props) => {
                                                 <FormControl>
                                                     <Input
                                                         type='number'
-                                                        defaultValue={1}
                                                         {...field}
                                                     />
                                                 </FormControl>

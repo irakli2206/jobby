@@ -101,7 +101,7 @@ const SignupView = () => {
 
                     <div className="grid gap-2 text-center">
                         <h1 className="text-3xl font-bold ">შექმნა</h1>
-                        <p className="text-balance text-muted-foreground">
+                        <p className="text-balance text-sm text-muted-foreground">
                             შექმენი ახალი ანგარიში
                         </p>
                     </div>

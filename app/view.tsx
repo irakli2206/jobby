@@ -242,7 +242,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
   const locateJob = async (job: Job | null, mapClick: boolean = false) => {
     if (mapRef) {
-
+      setSelectedJobDetails(undefined)
+      
       const jobCoordinates = job!.coordinates
 
       mapRef.current.flyTo({
@@ -260,6 +261,8 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
 
     }
   }
+
+
 
 
   const getNextPage = async () => {

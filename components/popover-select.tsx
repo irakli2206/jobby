@@ -45,7 +45,6 @@ export function PopoverSelect({
     options,
     scrollAreaClassName
 }: PopoverSelectProps) {
-    console.log(title, selectedValues)
     const selectedValuesSet = new Set(selectedValues as string[])
     return (
         <Popover key={title} >

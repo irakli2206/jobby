@@ -75,7 +75,7 @@ const LoginView = () => {
                 <div className="mx-auto grid md:w-[350px] px-2 sm:px-0 gap-6">
                     <div className="grid gap-2 text-center">
                         <h1 className="text-3xl font-bold ">შესვლა</h1>
-                        <p className="text-balance text-muted-foreground">
+                        <p className="text-balance text-sm text-muted-foreground">
                             შეიყვანე შენი მონაცემები ანგარიშში შესასვლელად
                         </p>
                     </div>
