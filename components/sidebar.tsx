@@ -235,11 +235,11 @@ const Sidebar = ({ salaryFilter, selectedJobDetails, setSelectedJobDetails, getN
                         //Last job for automatic pagination
                         if (arr.length - 1 === i) return (
                             <div key={job.id} ref={ref}>
-                                <JobCard key={job.id} job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob} />
+                                <JobCard count={i} key={job.id} job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob} />
                             </div>
                         )
                         else return <div key={job.id}>
-                            <JobCard job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob} />
+                            <JobCard count={i} job={job} selectedJobDetails={selectedJobDetails} setSelectedJobDetails={setSelectedJobDetails} locateJob={locateJob} />
                         </div>
                     })
                         :

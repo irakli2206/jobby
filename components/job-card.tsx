@@ -24,9 +24,10 @@ type Props = {
     locateJob: (job: Job | null) => void
     setSelectedJobDetails: Function
     selectedJobDetails: any
+    count: number
 }
 
-const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails }: Props) => {
+const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, count }: Props) => {
     const { coordinates, region, min_salary, max_salary, title, created_at, views, company_logo, company_name, id } = job
 
     let createdAt: any = moment(created_at)
@@ -66,7 +67,7 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails }: 
                         <header className='flex justify-between'>
                             <div className="flex flex-col ">
                                 <p className="font-semibold text-sm text-muted-foreground">{company_name}</p>
-                                <h2 className="font-semibold text-lg">{title}</h2>
+                                <h2 className="font-semibold text-lg">{title} {count}</h2>
                             </div>
                             <Button aria-label='locate-btn' aria-labelledby='locate-btn' variant='outline' size='icon'
                                 className={classNames('hidden xl:flex transition', {

@@ -86,6 +86,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const mapRef = useRef<MapRef | null>(null)
   const router = useRouter()
 
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [windowWidth, setWindowWidth] = useState<number | null>()
   const [filters, setFilters] = useState<FiltersT>({
@@ -110,7 +111,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
     latitude: 42,
     zoom: 6,
   })
-  const [mapLoading, setMapLoading] = useState(true)
+  const [mapLoading, setMapLoading] = useState(false)
 
   const [selectedJobDetails, setSelectedJobDetails] = useState<any>()
 
@@ -157,23 +158,24 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
     getJobsData()
   }, [sortBy])
 
-  useEffect(() => {
-    // if (mapRef.current) {
-    //   mapRef.current.addControl(new MapboxLanguage({ defaultLanguage: 'ka' }))
-    // }
+  // This useEffect would only display those jobs on the map that are loaded in the sidebar
+  // useEffect(() => {
+  //   // if (mapRef.current) {
+  //   //   mapRef.current.addControl(new MapboxLanguage({ defaultLanguage: 'ka' }))
+  //   // }
 
 
-    const getMapData = async () => {
-      const ids = jobsData.map(j => j.id)
-      const mapDataRes = await getMapJobs(ids)
+  //   const getMapData = async () => {
+  //     const ids = jobsData.map(j => j.id)
+  //     const mapDataRes = await getMapJobs(ids)
 
-      if (!mapDataRes.error) {
-        setMapData(mapDataRes.data!)
-        setMapLoading(false)
-      }
-    }
-    getMapData()
-  }, [jobsData])
+  //     if (!mapDataRes.error) {
+  //       setMapData(mapDataRes.data!)
+  //       setMapLoading(false)
+  //     }
+  //   }
+  //   getMapData()
+  // }, [jobsData])
 
   const handleCloseDialog = (e: boolean) => {
     setIsDialogOpen(e)
@@ -243,7 +245,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
   const locateJob = async (job: Job | null, mapClick: boolean = false) => {
     if (mapRef) {
       setSelectedJobDetails(undefined)
-      
+
       const jobCoordinates = job!.coordinates
 
       mapRef.current.flyTo({

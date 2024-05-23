@@ -33,6 +33,7 @@ export const Home = async() => {
   const {data: jobsData, error: jobsError} = await getFilteredJobs()
   const {data: mapData, error: mapError} = await getMapJobs()
 
+
   if(jobsError || mapError){
     redirect('/error')
   }
