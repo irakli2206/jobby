@@ -103,7 +103,7 @@ const Sidebar = ({ salaryFilter, selectedJobDetails, setSelectedJobDetails, getN
                                 selectedValues={salaryFilter ? [String(salaryFilter)] : []}
                                 setSelectedValues={handleFilterChange}
                                 options={salaries.map(salary => ({ label: `${String(salary)}+`, value: String(salary), icon: TbCurrencyLari }))}
-                                // scrollAreaClassName='h-[265px]'
+                                scrollAreaClassName='h-[265px]'
                             />
 
                             <Button variant='outline' size='sm' onClick={(e) => {
