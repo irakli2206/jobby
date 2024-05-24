@@ -101,8 +101,7 @@ export async function getFilteredJobs(titleFilter?: string, regionFilter?: strin
     if (titleFilter) query = query.ilike('title', `%${titleFilter}%`)
     if (regionFilter && regionFilter.length) query = query.in('region', regionFilter)
     if (industryFilter && industryFilter.length) query = query.in('industry', industryFilter)
-    // salary is minimum salary
-    if (salary) query = query.gte('min_salary', salary)
+    if (salary) query = query.gte('max_salary', salary)
     if (isRemote) query = query.eq('is_remote', `${isRemote}`)
 
     const { count } = await query
