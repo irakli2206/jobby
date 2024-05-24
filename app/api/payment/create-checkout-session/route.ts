@@ -23,6 +23,7 @@ export async function POST(
         lookup_keys: [formData.get('lookup_key') as string],
         expand: ['data.product'],
     });
+
     const session = await stripe.checkout.sessions.create({
         customer: userProfile.stripe_customer_id || undefined,
         billing_address_collection: 'auto',
