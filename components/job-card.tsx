@@ -67,7 +67,7 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
                         <header className='flex justify-between'>
                             <div className="flex flex-col ">
                                 <p className="font-semibold text-sm text-muted-foreground">{company_name}</p>
-                                <h2 className="font-semibold text-lg">{title} {count}</h2>
+                                <h2 className="font-semibold text-lg">{title}</h2>
                             </div>
                             <Button aria-label='locate-btn' aria-labelledby='locate-btn' variant='outline' size='icon'
                                 className={classNames('hidden xl:flex transition', {
