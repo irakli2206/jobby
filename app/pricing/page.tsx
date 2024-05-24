@@ -7,7 +7,7 @@ import PricingView from './view';
 
 const Pricing = async () => {
   const user = await getUser()
-  const  freeJobsLeft = await getFreeJobsLeft()
+  // const  freeJobsLeft = await getFreeJobsLeft()
   // const router = useRouter()
 
 
@@ -22,7 +22,7 @@ const Pricing = async () => {
 
   return (
    <>
-    <PricingView user={user} freeJobsLeft={freeJobsLeft} />
+    <PricingView user={user}  />
    </>
   )
 }

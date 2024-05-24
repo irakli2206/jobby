@@ -18,14 +18,14 @@ import { useRouter } from 'next/navigation';
 
 type Props = {
     user: any
-    freeJobsLeft: number
+    freeJobsLeft?: number
 }
 
 
 
 
 const PricingView = ({ user, freeJobsLeft }: Props) => {
-    const isFree = freeJobsLeft > 0
+    // const isFree = freeJobsLeft > 0
 
     const formSchema = z.object({
         quantity: z.coerce.number().min(1, "აირჩიეთ 0-ზე დიდი რიცხვი"),
