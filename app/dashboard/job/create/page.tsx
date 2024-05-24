@@ -269,7 +269,7 @@ const CreateJob = () => {
                                         }))
                                     }}
                                 >
-                                    <Plus size={16} className='mr-1' /> Add
+                                    <Plus size={16} className='mr-1' /> დამატება
                                 </Button>
                             </ol>
                         </dd>
@@ -317,7 +317,7 @@ const CreateJob = () => {
                                         }))
                                     }}
                                 >
-                                    <Plus size={16} className='mr-1' /> Add
+                                    <Plus size={16} className='mr-1' /> დამატება
                                 </Button>
                             </ol>
                         </dd>
