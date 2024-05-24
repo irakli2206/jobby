@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getProfile } from "@/app/action";
+ import { getProfile } from "@/app/action";
 import { BASE_URL } from "@/env";
 
 import Stripe from "stripe"
@@ -10,7 +10,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET!, {
     typescript: true
 })
 
-export async function POST(
+export async function POST( 
     req: Request,
     res: NextApiResponse
 ) {
@@ -31,7 +31,7 @@ export async function POST(
                 price: prices.data[0].id,
                 // For metered billing, do not pass quantity
                 quantity: quantity || 1,
-
+                
             },
         ],
         // metadata: {
