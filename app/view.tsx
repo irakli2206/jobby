@@ -301,7 +301,7 @@ const JobsView = ({ initialJobData, initialMapData }: Props) => {
             <AlertDialogDescription>
               დადე პირველი განცხადება სრულიად უფასოდ, საბანკო მონაცემების შეყვანის გარეშე.
             </AlertDialogDescription>
-          </AlertDialogHeader>
+          </AlertDialogHeader> 
           <AlertDialogFooter>
             <AlertDialogCancel>დახურვა</AlertDialogCancel>
             <AlertDialogAction onClick={handleDialogAction}>შექმენი განცხადება</AlertDialogAction>
