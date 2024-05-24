@@ -128,7 +128,7 @@ export async function getMapJobs(ids?: string[]) {
 export async function sendResume(jobId: string, resume: FormData) {
     const file = resume.get('file')
     const fileName = resume.get('fileName')
-    const supabase = createClient() 
+    const supabase = createClient()
     // const filePath = `/resumes/${jobId}/${fileName}-${crypto.randomUUID().slice(0, 8)}.pdf`
     const filePath = `/resumes/${jobId}/${crypto.randomUUID().slice(0, 4)}-${fileName}`
     const { data, error } = await supabase.storage.from('jobs').upload(filePath, resume, { contentType: 'application/pdf', })
