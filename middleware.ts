@@ -9,10 +9,11 @@ export async function middleware(request: NextRequest) {
 
     const pathname = request.nextUrl.pathname
 
-    if (user && (pathname.startsWith('/login') || pathname.startsWith('/signup')))
-        if (!user && pathname.startsWith('/dashboard')) {
-            return NextResponse.redirect(new URL('/login', request.url));
-        }
+
+    if (user && (pathname.startsWith('/login') || pathname.startsWith('/signup'))) return NextResponse.redirect(new URL('/dashboard', request.url))
+    if (!user && pathname.startsWith('/dashboard')) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
     return response;
 }
 

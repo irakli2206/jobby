@@ -24,6 +24,7 @@ import {
 import { PopoverSelect } from './popover-select'
 import { Checkbox } from './ui/checkbox'
 import { TbCurrencyLari } from "react-icons/tb";
+import { industries, regions, salaries } from '@/utils/static-data'
 
 
 export type Props = {
@@ -47,9 +48,7 @@ export type Props = {
     selectedJobDetails: any
 }
 
-const regions = ["თბილისი", "კახეთი", "შიდა ქართლი", "ქვემო ქართლი", "იმერეთი", "გურია", "სამეგრელო-ზემო სვანეთი", "სამცხე-ჯავახეთი", "რაჭა-ლეჩხუმი და ქვემო სვანეთი", "მცხეთა-მთიანეთი", "აჭარის ავტონომიური რესპუბლიკა"]
-const industries = ["ფინანსები", "გაყიდვები", "მარკეტინგი", "IT/პროგრამირება", "მედია", "განათლება", "სამართალი", "ჯანმრთელობა/მედიცინა", "კვება", "მშენებლობა", "უსაფრთხოება", "მიწოდება/ლოგისტიკა", "სხვა"]
-const salaries = [500, 1000, 1500, 2000, 2500, 3000, 4000, 5000]
+
 
 const Sidebar = ({ salaryFilter, selectedJobDetails, setSelectedJobDetails, getNextPage, jobsCount, filterJobs, clearFilters, filtersChanged, sortBy, setSortBy, remoteFilter, titleFilter, regionFilter, industryFilter, handleFilterChange, jobsData, locateJob, locatedJob }: Props) => {
     const lastJobRef = useRef<HTMLDivElement>()

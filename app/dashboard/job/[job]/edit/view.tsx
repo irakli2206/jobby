@@ -25,6 +25,7 @@ import { clearCache, getJobById, getRegionFromCoordinates, getUser } from '@/app
 import { createClient } from '@/utils/supabase/client';
 import { useParams, useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
+import { industries } from '@/utils/static-data';
 
 type Props = {
     jobDataDTO: any
@@ -178,19 +179,10 @@ const EditView = ({ jobDataDTO }: Props) => {
                                     <SelectValue placeholder="კატეგორია" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="ფინანსები">ფინანსები</SelectItem>
-                                    <SelectItem value="გაყიდვები">გაყიდვები</SelectItem>
-                                    <SelectItem value="მარკეტინგი">მარკეტინგი</SelectItem>
-                                    <SelectItem value="IT/პროგრამირება">IT/პროგრამირება</SelectItem>
-                                    <SelectItem value="მედია">მედია</SelectItem>
-                                    <SelectItem value="განათლება">განათლება</SelectItem>
-                                    <SelectItem value="სამართალი">სამართალი</SelectItem>
-                                    <SelectItem value="ჯანმრთელობა/მედიცინა">ჯანმრთელობა/მედიცინა</SelectItem>
-                                    <SelectItem value="კვება">კვება</SelectItem>
-                                    <SelectItem value="მშენებლობა">მშენებლობა</SelectItem>
-                                    <SelectItem value="უსაფრთხოება">უსაფრთხოება</SelectItem>
-                                    <SelectItem value="მიწოდება/ლოგისტიკა">მიწოდება/ლოგისტიკა</SelectItem>
-                                    <SelectItem value="სხვა">სხვა</SelectItem>
+                                    {industries.map(industry => (
+                                        <SelectItem key={industry} value={industry}>{industry}</SelectItem>
+
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </dd>
