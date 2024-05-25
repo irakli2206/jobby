@@ -8,11 +8,6 @@ const DashboardLayout = async ({
     children: React.ReactNode;
 }>) => {
 
-
-    const user = await getUser()
-    if (!user) redirect('/login')
-
-
     return (
         <div className='w-full h-full'>
             {children}

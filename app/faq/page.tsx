@@ -47,7 +47,7 @@ const FAQ = () => {
 
     return (
         <div className=' min-h-screen w-full flex justify-center items-start py-12 relative'>
-            <main className="max-w-7xl container flex flex-col relative z-10 mx-auto">
+            <main className="max-w-7xl w-full container flex flex-col relative z-10 mx-auto">
                 <Badge variant='outline' className='w-fit mb-2'>ხშირად დასმული კითხვები</Badge>
                 <h1 className="text-2xl md:text-3xl xl:text-4xl font-semibold">ყველაფერი რაც უნდა იცოდე Jobby.ge-ზე</h1>
 

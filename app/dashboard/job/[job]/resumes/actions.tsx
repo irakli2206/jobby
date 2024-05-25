@@ -14,6 +14,4 @@ export const getResumes = async (jobId: string) => {
     return data
 }
 
-export const downloadResume = async(resumePath: string) => {
-    
-}
+ 

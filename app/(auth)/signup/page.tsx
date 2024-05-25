@@ -35,10 +35,6 @@ import { getUser } from '@/app/action'
 
 
 const Signup = async () => {
-    const user = await getUser()
-
-    if (user) redirect('dashboard')
-
 
     return (
         <>

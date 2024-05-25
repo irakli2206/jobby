@@ -39,7 +39,8 @@ const CreateJob = () => {
         description: "",
         responsibilities: [],
         required_experiences: [],
-        salary: [],
+        min_salary: undefined,
+        max_salary: undefined,
         region: "",
         coordinates: [],
         // application_instruction: ""

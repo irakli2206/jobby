@@ -1,8 +1,19 @@
-import { type NextRequest } from 'next/server'
-import { updateSession } from '@/utils/supabase/middleware'
+import { NextResponse, type NextRequest } from 'next/server'
+import { createMiddleware } from '@/utils/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
-    return await updateSession(request)
+    const { supabase, response } = createMiddleware(request);
+    const {
+        data: { user },
+    } = await supabase.auth.getUser();
+
+    const pathname = request.nextUrl.pathname
+
+    if (user && (pathname.startsWith('/login') || pathname.startsWith('/signup')))
+        if (!user && pathname.startsWith('/dashboard')) {
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+    return response;
 }
 
 export const config = {

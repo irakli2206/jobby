@@ -72,11 +72,11 @@ const Header = ({ user }: Props) => {
   }, [path])
 
   return (
-    <header className={classNames("sticky z-[50] backdrop-blur-sm top-0 flex h-16 items-center gap-4 border-b bg-background/50 px-4 md:px-6", {
+    <header className={classNames("sticky z-[50] backdrop-blur-sm top-0 flex h-16 items-center gap-4 border-b bg-background/50 ", {
 
     })}>
       <nav className="w-full">
-        <nav className="hidden max-w-7xl w-full mx-auto flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+        <nav className="hidden max-w-7xl  w-full mx-auto container flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
             href="/"
             className="flex w-11 h-11 items-center gap-2 text-lg font-semibold md:text-base relative"
@@ -158,7 +158,7 @@ const Header = ({ user }: Props) => {
       </nav>
 
 
-      <nav className="flex md:hidden max-w-7xl w-full mx-auto flex-col gap-6 text-sm font-medium ">
+      <nav className="flex md:hidden container w-full mx-auto flex-col gap-6 text-sm font-medium ">
 
         <Sheet open={isMenuOpen} onOpenChange={(e) => setIsMenuOpen(e)}>
           <SheetTrigger asChild>

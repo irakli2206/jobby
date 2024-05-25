@@ -35,10 +35,7 @@ import LoginView from './view'
 
 
 const Login = async () => {
-  const user = await getUser()
 
-  if(user) redirect('dashboard')
- 
   // const handleForgotPassword = async () => {
   //   const email = form.getValues().email as string
   //   if (!email) {
