@@ -56,10 +56,10 @@ const EditView = ({ jobDataDTO }: Props) => {
     }, [noSalary])
 
 
-
+    console.log(jobData)
     const validateFields = () => {
-        if (!jobData.title || !jobData.company_name || !jobData.description || (!noSalary && (!jobData.min_salary || !jobData.max_salary)) || !jobData.responsibilities.length || !jobData.coordinates.length || !jobData.required_experiences.length) {
-            throw new Error("შეავსე ცარიელი ველები")
+        if (!jobData.title || !jobData.company_name || !jobData.industry || !jobData.coordinates.length) {
+            throw new Error("საჭიროა შეავსოთ სამსახურის სახელი, კომპანიის სახელი, კატეგორია და მონიშნოთ ადგილმდებარეობა")
         }
         else if ((jobData.max_salary < jobData.min_salary) || jobData.min_salary < 0 || jobData.max_salary < 0) {
             throw new Error("შეიყვანე სწორი ანაზღაურება")
@@ -109,7 +109,7 @@ const EditView = ({ jobDataDTO }: Props) => {
             toast({
                 title: "შეცდომა",
                 description: e.message,
-                duration: 3000,
+                duration: 8000,
                 variant: 'destructive'
             })
         } finally {
@@ -252,7 +252,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">საჭირო გამოცდილება</dt>
+                        <dt className="text-sm font-medium leading-6 text-gray-900">გამოცდილება და უნარჩვევები</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
@@ -384,9 +384,9 @@ const EditView = ({ jobDataDTO }: Props) => {
                                 accessToken="pk.eyJ1IjoiaXJha2xpMjIwNiIsImEiOiJja3dkZzl3dDgwa2FyMnBwbjEybjd0dmxpIn0.-XNJzlRbWG0zH2Q1MRpmOA"
                                 mapboxAccessToken="pk.eyJ1IjoiaXJha2xpMjIwNiIsImEiOiJja3dkZzl3dDgwa2FyMnBwbjEybjd0dmxpIn0.-XNJzlRbWG0zH2Q1MRpmOA"
                                 initialViewState={{
-                                    longitude: 44,
-                                    latitude: 42,
-                                    zoom: 6
+                                    longitude: jobDataDTO.coordinates[1],
+                                    latitude: jobDataDTO.coordinates[0],
+                                    zoom: 12
                                 }}
 
                                 onClick={(e) => {

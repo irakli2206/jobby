@@ -112,7 +112,7 @@ const JobView = ({ profile, job }: Props) => {
                     {job.responsibilities && <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <ol className='flex flex-col gap-2 list-disc list-inside'>
+                            <ol className='flex flex-col gap-2 list-disc '>
                                 {job.responsibilities.map((r: any) => {
                                     return <li>{r}</li>
                                 })}
@@ -120,9 +120,9 @@ const JobView = ({ profile, job }: Props) => {
                         </dd>
                     </div>}
                     {job.required_experiences && <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">საჭირო გამოცდილება</dt>
+                        <dt className="text-sm font-medium leading-6 text-gray-900">გამოცდილება და უნარჩვევები</dt>
                         <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                            <ol className='flex flex-col gap-2 list-disc list-inside'>
+                            <ol className='flex flex-col gap-2 list-disc '>
                                 {job.required_experiences.map((e: any) => {
                                     return <li>{e}</li>
                                 })}

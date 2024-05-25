@@ -18,7 +18,7 @@ type Props = {
 
 const DashboardJob = async ({ params }: Props) => {
   const job = await getJobById(params.job)
-
+  console.log(job.responsibilities)
   return (
     <div className='py-12 px-4 max-w-7xl mx-auto'>
       <div className="px-4 sm:px-0 flex w-full justify-between items-end">
@@ -39,31 +39,47 @@ const DashboardJob = async ({ params }: Props) => {
       </div>
       <div className="mt-6 border-t border-gray-200">
         <dl className="divide-y divide-gray-200">
-          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
-          </div>
-          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <ol className='flex flex-col gap-2 list-disc list-inside'>
-                {job.responsibilities.map(r => {
-                  return <li>{r}</li>
-                })}
-              </ol>
-            </dd>
-          </div>
-          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">საჭირო გამოცდილება</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <ol className='flex flex-col gap-2 list-disc list-inside'>
-                {job.required_experiences.map(e => {
-                  return <li>{e}</li>
-                })}
+          {job.description ?
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
+            </div>
+            :
+            null
+          }
 
-              </ol>
-            </dd>
-          </div>
+          {(job.responsibilities && job.responsibilities.length) ?
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <ol className='flex flex-col gap-2 list-disc '>
+                  {job.responsibilities.map(r => {
+                    return <li key={r}>{r}</li>
+                  })}
+                </ol>
+
+              </dd>
+            </div>
+            :
+            null
+          }
+          {(job.required_experiences && job.required_experiences.length) ?
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm font-medium leading-6 text-gray-900">გამოცდილება და უნარჩვევები</dt>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <ol className='flex flex-col gap-2 list-disc '>
+                  {job.required_experiences.map(e => {
+                    return <li>{e}</li>
+                  })}
+
+                </ol>
+              </dd>
+            </div>
+            :
+            null
+
+          }
+
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
