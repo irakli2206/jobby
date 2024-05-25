@@ -32,7 +32,17 @@ import Link from 'next/link'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import { useToast } from '@/components/ui/use-toast'
-
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { deleteResume, downloadAllResumes, downloadResume } from './util'
 // pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 //     'pdfjs-dist/build/pdf.worker.min.js',
@@ -144,7 +154,6 @@ const ResumesView = ({ resumes: resumesData, jobId }: Props) => {
             </div>
 
 
-
         </>
     )
 }
@@ -179,15 +188,38 @@ const Row = ({ id, name, time, handleShowResume, handleDeleteResume, handleDownl
             <TableCell>
                 <div className="flex  justify-end">
                     <Button onClick={() => handleShowResume(name)} variant='ghost' size='icon'>
-                        <BookOpen size={20} />
+                        <BookOpen size={18} />
                     </Button>
 
-                    <Button onClick={() => downloadResume(name, jobId)} variant='ghost' size='icon'>
-                        <FileDown size={20} />
+                    <Button onClick={() => handleDownloadResume(name, jobId)} variant='ghost' size='icon'>
+                        <FileDown size={18} />
                     </Button>
-                    <Button onClick={() => deleteResume(name, jobId)} variant='ghost' size='icon'>
-                        <Trash size={20} />
-                    </Button>
+
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button  variant='ghost' size='icon'>
+
+                                <Trash size={18} />
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>რეზიუმეს წაშლა</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    ამ მოქმედებით წაიშლება არჩეული რეზიუმე. წაშლილი რეზიუმეების აღდგენა შეუძლებელია.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>დახურვა</AlertDialogCancel>
+                                <AlertDialogAction asChild >
+                                    <Button onClick={() => handleDeleteResume(name, jobId)} variant='destructive' size='default'>
+                                        წაშლა
+                                    </Button>
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
                 </div>
             </TableCell>
         </TableRow>
