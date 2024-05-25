@@ -7,6 +7,11 @@
   box-sizing: border-box !important;
 }
 
+/* ჯადოქრობა */
+.job-card:has(.job-card-locate-btn:hover):hover {
+  background-color: white;
+}
+
 /* WebKit Browsers */
 ::-webkit-scrollbar {
   width: 16px;
@@ -108,6 +113,8 @@
     --ring: 240 4.9% 83.9%;
   }
 }
+
+
 
 
 @layer base {

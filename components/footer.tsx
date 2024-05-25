@@ -13,17 +13,17 @@ const Footer = () => {
                     <p className='text-sm font-bold'>მთავარი</p>
                     <ul className='flex flex-col gap-3'>
                         <li>
-                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
                                 <Link href='/'>ძებნა</Link>
                             </Button>
                         </li>
                         <li>
-                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
                                 <Link href='/pricing'>ფასი</Link>
                             </Button>
                         </li>
                         <li>
-                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
                                 <Link href='/faq'>კითხვები</Link>
                             </Button>
                         </li>
@@ -33,7 +33,7 @@ const Footer = () => {
                     <p className='text-sm font-bold'>დაკავშირება</p>
                     <ul className='flex flex-col gap-3'>
                         <li>
-                            <Button asChild variant='link' className='p-0  h-fit text-gray-900'>
+                            <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
                                 <Link href='mailto:support@jobby.ge'>support@jobby.ge</Link>
                             </Button>
                         </li>

@@ -159,15 +159,15 @@ const EditView = ({ jobDataDTO }: Props) => {
                         }}
                     />
                 </div>
-                {/* <p className="mt-3 max-w-2xl text-sm  text-gray-500">{job.location}</p> */}
+                {/* <p className="mt-3 max-w-2xl text-sm  text-zinc-500">{job.location}</p> */}
             </div>
 
-            <div className="mt-6 border-t border-gray-200">
+            <div className="mt-6 border-t border-zinc-200">
 
-                <dl className="divide-y divide-gray-200">
+                <dl className="divide-y divide-zinc-200">
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">კატეგორია</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">კატეგორია</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <Select onValueChange={(e) =>
                                 setJobData({
                                     ...jobData,
@@ -188,8 +188,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">სამსახურის შესახებ</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <Textarea
                                 maxLength={1000}
                                 value={jobData.description}
@@ -204,8 +204,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">შენი პასუხისმგებლობები</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
                                     jobData.responsibilities.map((responsibility: any, i: number) => {
@@ -252,8 +252,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">გამოცდილება და უნარჩვევები</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">გამოცდილება და უნარჩვევები</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc'>
                                 {
                                     jobData.required_experiences.map((experience: any, i: number) => {
@@ -300,8 +300,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">ანაზღაურება (თვე)</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
 
                             <div className="flex gap-2 items-center">
                                 <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.min_salary || ''} onChange={(e) => {
@@ -345,8 +345,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                     </div>
 
                     {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">მხარე</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <Select onValueChange={(e) =>
                                 setJobData({
                                     ...jobData,
@@ -375,8 +375,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div> */}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ადგილმდებარეობა</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">ადგილმდებარეობა</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <Map
 
                                 minZoom={7}
@@ -415,8 +415,8 @@ const EditView = ({ jobDataDTO }: Props) => {
                         </dd>
                     </div>
                     {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">რეზიუმეს გამოგზავნა</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">რეზიუმეს გამოგზავნა</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <Textarea
                                 maxLength={200}
                                 value={jobData.application_instruction}

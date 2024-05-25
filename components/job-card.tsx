@@ -17,7 +17,8 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { CalendarIcon, DotFilledIcon } from '@radix-ui/react-icons'
 import moment from 'moment-with-locales-es6';
-import { MousePointerClick } from 'lucide-react';
+import { ArrowUpRight, MousePointerClick, Rss, Zap } from 'lucide-react';
+import { Badge } from './ui/badge';
 
 type Props = {
     job: Job
@@ -28,7 +29,7 @@ type Props = {
 }
 
 const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, count }: Props) => {
-    const { coordinates, region, min_salary, max_salary, title, created_at, views, company_logo, company_name, id } = job
+    const { coordinates, region, min_salary, max_salary, title, created_at, views, company_logo, company_name, urgent, is_remote, id } = job
 
     let createdAt: any = moment(created_at)
     createdAt = createdAt.locale('ka').fromNow()
@@ -41,8 +42,8 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
 
     return (
 
-        <Card className={classNames("w-full rounded-md shadow-none hover:bg-primary-foreground cursor-pointer transition", {
-            " bg-gray-50 border-gray-300 ": selectedJobDetails ? selectedJobDetails.id === id : false
+        <Card className={classNames("job-card w-full rounded-md shadow-none hover:bg-primary-foreground cursor-pointer transition", {
+            " bg-zinc-50 border-zinc-300 ": selectedJobDetails ? selectedJobDetails.id === id : false
         })}
             onClick={() => onCardClick()}
         >
@@ -51,26 +52,28 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
                 target='_blank'
             > */}
 
-            <CardContent className='py-4 px-6'>
-                <div className="flex gap-4 w-full items-center">
-                    <div className="h-20 w-20">
-                        <Image
-                            src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
-                            alt=''
-                            width={500}
-                            height={1}
-                            className='object-contain h-full'
-                        />
+            <CardContent className='p-3  rounded-md'>
 
-                    </div>
-                    <section className="flex flex-col w-full">
-                        <header className='flex justify-between'>
+                <main className="flex gap-4 w-full items-center   ">
+                    <section className="flex flex-col w-full ">
+                        <header className='flex gap-4 items-center'>
+                            <div className="h-16 w-16">
+                                <Image
+                                    src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
+                                    alt=''
+                                    width={500}
+                                    height={1}
+                                    className='object-contain h-full'
+                                />
+
+                            </div>
                             <div className="flex flex-col ">
-                                <p className="font-semibold text-sm text-muted-foreground">{company_name}</p>
                                 <h2 className="font-semibold text-lg">{title}</h2>
+                                <p className="font-medium text-sm text-muted-foreground">{company_name}</p>
+
                             </div>
                             <Button aria-label='locate-btn' aria-labelledby='locate-btn' variant='outline' size='icon'
-                                className={classNames('hidden xl:flex transition', {
+                                className={classNames('job-card-locate-btn hidden xl:flex transition ml-auto self-start rounded-full', {
                                     // 'border-green-300 bg-green-50 text-green-500 hover:text-green-500 hover:bg-green-50 hover:border-green-300 hover:opacity-75': isLocated
                                 })}
                                 onClick={(e) => {
@@ -78,27 +81,24 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
                                     e.stopPropagation()
                                     locateJob(job)
                                 }}>
-                                <GrMap size={18} className='' />
+                                <ArrowUpRight size={18} />
                             </Button>
                         </header>
-                        <footer className='flex items-center gap-1 mt-2 text-sm text-muted-foreground'>
-                            {/* <div className="flex gap-1 items-center ">
-                                    <IoIosPin />
-                                    {region}
-                                </div>
-                                <DotFilledIcon className=' ' orientation='vertical' /> */}
+                        <main className="flex gap-2 my-3">
+                            <Badge variant='outline' ><TbCurrencyLari size={14} className='mr-1' />
+                                {(min_salary && max_salary) ? `${min_salary}-${max_salary}` : "შეთანხმებით"}
+                            </Badge>
+                            { }
+                            {urgent && <Badge variant='outline' className='bg-white' ><Zap size={14} className='mr-1' /> სასწრაფო</Badge>}
+                            {is_remote && <Badge variant='outline' className='bg-white' ><Rss size={14} className='mr-1' /> დისტანციური</Badge>}
+                        </main>
+                        <footer className='flex items-center gap-1 mt-2 text-xs text-muted-foreground'>
                             <div className="flex gap-1 items-center ">
                                 <CalendarIcon />
                                 <time dateTime={created_at}>{createdAt}</time>
 
                             </div>
-                            <DotFilledIcon className=' ' orientation='vertical' />
 
-                            <div className="flex gap-1 items-center ">
-                                <TbCurrencyLari />
-                                {(min_salary && max_salary) ? `${min_salary}-${max_salary}` : "შეთანხმებით"}
-
-                            </div>
                             <DotFilledIcon className='hidden sm:block' orientation='vertical' />
                             <div className="hidden sm:flex gap-1 items-center ">
                                 <MousePointerClick size={16} />
@@ -106,9 +106,11 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
 
                             </div>
 
+
+
                         </footer>
                     </section>
-                </div>
+                </main>
             </CardContent>
             {/* </Link> */}
         </Card>

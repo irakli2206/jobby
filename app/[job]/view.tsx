@@ -90,8 +90,8 @@ const JobView = ({ profile, job }: Props) => {
             <div className="px-4 sm:px-0 flex w-full justify-between items-end">
 
                 <div className="flex flex-col">
-                    <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
-                    <p className="  mt-1 max-w-2xl font-medium text-gray-500">{job.company_name}</p>
+                    <h3 className="text-xl font-semibold text-zinc-900">{job.title}</h3>
+                    <p className="  mt-1 max-w-2xl font-medium text-zinc-500">{job.company_name}</p>
                 </div>
 
                 <div className='w-40 h-20 relative mb-2'>
@@ -103,15 +103,15 @@ const JobView = ({ profile, job }: Props) => {
                     />
                 </div>
             </div>
-            <div className="mt-6 border-t border-gray-200">
-                <dl className="divide-y divide-gray-200">
+            <div className="mt-6 border-t border-zinc-200">
+                <dl className="divide-y divide-zinc-200">
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">სამსახურის შესახებ</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
                     </div>
                     {job.responsibilities && <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">შენი პასუხისმგებლობები</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc '>
                                 {job.responsibilities.map((r: any) => {
                                     return <li>{r}</li>
@@ -120,8 +120,8 @@ const JobView = ({ profile, job }: Props) => {
                         </dd>
                     </div>}
                     {job.required_experiences && <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">გამოცდილება და უნარჩვევები</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">გამოცდილება და უნარჩვევები</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <ol className='flex flex-col gap-2 list-disc '>
                                 {job.required_experiences.map((e: any) => {
                                     return <li>{e}</li>
@@ -130,24 +130,24 @@ const JobView = ({ profile, job }: Props) => {
                         </dd>
                     </div>}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">ანაზღაურება (თვე)</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
                     </div>
                     {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.region}</dd>
+                <dt className="text-sm font-medium leading-6 text-zinc-900">მხარე</dt>
+                <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">{job.region}</dd>
             </div> */}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-gray-900">ადგილმდებარეობა</dt>
-                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        <dt className="text-sm font-medium leading-6 text-zinc-900">ადგილმდებარეობა</dt>
+                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                             <MapView
                                 job={job}
                             />
                         </dd>
                     </div>
                     {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                <dt className="text-sm font-medium leading-6 text-gray-900">რეზიუმეს გამოგზავნა</dt>
-                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <dt className="text-sm font-medium leading-6 text-zinc-900">რეზიუმეს გამოგზავნა</dt>
+                <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                     {job.application_instruction}
                 </dd>
             </div> */}
@@ -159,8 +159,8 @@ const JobView = ({ profile, job }: Props) => {
                                 <>
                                     {isAlreadyApplied === false ? <>
                                         <Input onChange={handleFileChange} ref={fileInputRef} type='file' className='hidden' />
-                                        <div onClick={handleButtonClick} className='mb-4 h-20 rounded-xl border border-gray-300 bg-gray-50 border-dashed'>
-                                            <div className="w-full h-full text-gray-400 gap-2 flex items-center justify-center cursor-pointer text-sm"><FileUp size={20} /> {resume ? resume.name : "ატვირთე რეზიუმე"}</div>
+                                        <div onClick={handleButtonClick} className='mb-4 h-20 rounded-xl border border-zinc-300 bg-zinc-50 border-dashed'>
+                                            <div className="w-full h-full text-zinc-400 gap-2 flex items-center justify-center cursor-pointer text-sm"><FileUp size={20} /> {resume ? resume.name : "ატვირთე რეზიუმე"}</div>
                                         </div>
 
                                         <Button className='w-full ' size={'lg'} onClick={handleSendResume} >გაგზავნა</Button>

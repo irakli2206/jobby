@@ -58,7 +58,7 @@ const DashboardView = ({ user, jobs, freeSlots }: Props) => {
                 <div className="flex flex-col divide-y border-t">
                     {Array.from({ length: freeSlots }).map(slot => {
                         return (
-                            <Button asChild variant='ghost' className="w-full h-20 hover:bg-gray-50 text-muted-foreground">
+                            <Button asChild variant='ghost' className="w-full h-20 hover:bg-zinc-50 text-muted-foreground">
                                 <Link href='/dashboard/job/create' className='flex items-center text-sm'><Plus size={14} className='mr-1' /> დაამატე განცხადება</Link>
                             </Button>
                         )

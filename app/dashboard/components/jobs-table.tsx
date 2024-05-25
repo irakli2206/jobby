@@ -79,7 +79,7 @@ export const JobsTable = ({ user, freeSlots, data }: Props) => {
                 :
                 null
             }
-            {user.job_limit === 0 && <Button asChild variant='ghost' className="w-full h-20 hover:bg-gray-50 text-muted-foreground border-t">
+            {user.job_limit === 0 && <Button asChild variant='ghost' className="w-full h-20 hover:bg-zinc-50 text-muted-foreground border-t">
                 <Link href={createEndpoint} className='flex items-center text-sm'><Plus size={14} className='mr-1' /> შექმენი შენი პირველი განცხადება</Link>
             </Button>
 

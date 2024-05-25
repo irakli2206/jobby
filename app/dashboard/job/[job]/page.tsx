@@ -23,8 +23,8 @@ const DashboardJob = async ({ params }: Props) => {
     <div className='py-12 px-4 max-w-7xl mx-auto'>
       <div className="px-4 sm:px-0 flex w-full justify-between items-end">
         <div className="flex flex-col">
-          <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
-          <p className="  mt-1 max-w-2xl font-medium text-gray-500">{job.company_name}</p>
+          <h3 className="text-xl font-semibold text-zinc-900">{job.title}</h3>
+          <p className="  mt-1 max-w-2xl font-medium text-zinc-500">{job.company_name}</p>
         </div>
 
         <div className='w-40 h-20 relative mb-2'>
@@ -37,12 +37,12 @@ const DashboardJob = async ({ params }: Props) => {
         </div>
 
       </div>
-      <div className="mt-6 border-t border-gray-200">
-        <dl className="divide-y divide-gray-200">
+      <div className="mt-6 border-t border-zinc-200">
+        <dl className="divide-y divide-zinc-200">
           {job.description ?
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-gray-900">სამსახურის შესახებ</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
+              <dt className="text-sm font-medium leading-6 text-zinc-900">სამსახურის შესახებ</dt>
+              <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">{job.description}</dd>
             </div>
             :
             null
@@ -50,8 +50,8 @@ const DashboardJob = async ({ params }: Props) => {
 
           {(job.responsibilities && job.responsibilities.length) ?
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-gray-900">შენი პასუხისმგებლობები</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt className="text-sm font-medium leading-6 text-zinc-900">შენი პასუხისმგებლობები</dt>
+              <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                 <ol className='flex flex-col gap-2 list-disc '>
                   {job.responsibilities.map(r => {
                     return <li key={r}>{r}</li>
@@ -65,8 +65,8 @@ const DashboardJob = async ({ params }: Props) => {
           }
           {(job.required_experiences && job.required_experiences.length) ?
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6 text-gray-900">გამოცდილება და უნარჩვევები</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+              <dt className="text-sm font-medium leading-6 text-zinc-900">გამოცდილება და უნარჩვევები</dt>
+              <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
                 <ol className='flex flex-col gap-2 list-disc '>
                   {job.required_experiences.map(e => {
                     return <li>{e}</li>
@@ -81,16 +81,16 @@ const DashboardJob = async ({ params }: Props) => {
           }
 
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">ანაზღაურება (თვე)</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
+            <dt className="text-sm font-medium leading-6 text-zinc-900">ანაზღაურება (თვე)</dt>
+            <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">{job.min_salary ? `${job.min_salary}-${job.max_salary} ლარი` : "შეთანხმებით"}</dd>
           </div>
           {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">მხარე</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{job.region}</dd>
+            <dt className="text-sm font-medium leading-6 text-zinc-900">მხარე</dt>
+            <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">{job.region}</dd>
           </div> */}
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">ადგილმდებარეობა</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <dt className="text-sm font-medium leading-6 text-zinc-900">ადგილმდებარეობა</dt>
+            <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
               <MapView job={job} />
               {/* <Map
 
@@ -122,8 +122,8 @@ const DashboardJob = async ({ params }: Props) => {
             </dd>
           </div>
           {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">რეზიუმეს გამოგზავნა</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <dt className="text-sm font-medium leading-6 text-zinc-900">რეზიუმეს გამოგზავნა</dt>
+            <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
               {job.application_instruction}
             </dd>
           </div> */}
