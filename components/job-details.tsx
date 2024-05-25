@@ -95,32 +95,34 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
 
 
     return (
-        <div className='py-4 px-4 max-w-7xl mx-auto h-full'>
-            <header className='w-full flex justify-end pb-4'>
-                <Button variant={'ghost'} size='icon'
+        <div className='pb-4 px-4 max-w-7xl mx-auto h-full'>
+            <header className='w-full sticky top-0 bg-white flex flex-col justify-end pb-4 border-b'>
+                <Button variant={'ghost'} size='icon' className='ml-auto my-4'
                     onClick={() => closeJobDetails()}
                 >
                     <X />
                 </Button>
+
+                <div className="px-4 sm:px-0 flex w-full justify-between items-end">
+
+                    <div className="flex flex-col">
+                        <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
+                        <p className="  mt-1 max-w-2xl font-medium text-gray-500">{job.company_name}</p>
+                    </div>
+
+                    <div className='w-40 h-20 relative'>
+                        <Image
+                            src={job.company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
+                            alt=''
+                            fill
+                            className='object-contain '
+                        />
+                    </div>
+                </div>
             </header>
 
-            <div className="px-4 sm:px-0 flex w-full justify-between items-end">
 
-                <div className="flex flex-col">
-                    <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
-                    <p className="  mt-1 max-w-2xl font-medium text-gray-500">{job.company_name}</p>
-                </div>
-
-                <div className='w-40 h-20 relative mb-2'>
-                    <Image
-                        src={job.company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
-                        alt=''
-                        fill
-                        className='object-contain '
-                    />
-                </div>
-            </div>
-            <div className="mt-6 border-t border-gray-200">
+            <div className=" ">
                 <dl className="divide-y divide-gray-200">
                     {job.description ?
                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
