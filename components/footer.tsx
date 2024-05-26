@@ -39,7 +39,7 @@ const Footer = () => {
                         </li>
                         <li>
                             <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
-                                <Link href='mailto:support@jobby.ge'>support@jobby.ge</Link>
+                                <Link href='mailto:support@jobby.ge'>ელ-ფოსტა</Link>
                             </Button>
                         </li>
 
