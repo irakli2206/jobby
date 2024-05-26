@@ -33,6 +33,7 @@ import { TbCurrencyLari } from "react-icons/tb";
 import moment from "moment"
 import Link from "next/link"
 import { changeJobVisibility } from "../action"
+import classNames from "classnames"
 
 type Props = {
     user: any
@@ -125,7 +126,9 @@ const Row = ({ job }: RowProps) => {
 
             <TableCell className="hidden md:table-cell">{job.views}</TableCell>
             <TableCell>
-                <Badge variant="outline">{job.hidden ? "დამალული" : "ხილვადი"}</Badge>
+                <Badge className={classNames('bg-blue-50 text-blue-600 border-blue-200', {
+                    'bg-yellow-50 text-yellow-600 border-yellow-300': job.hidden
+                })} variant="outline">{job.hidden ? "დამალული" : "ხილვადი"}</Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">
                 {moment(job.created_at).format('DD/MM/YY')}
