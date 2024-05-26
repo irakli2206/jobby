@@ -16,7 +16,7 @@ const NotoSans = Noto_Sans_Georgian({ subsets: ['georgian'] })
 
 
 export const metadata: Metadata = {
-  title: "Jobby.ge",
+  title: "Jobby.ge - დასაქმდი და დაასაქმე",
   description: "საუკეთესო ქართული პორტალი სამსახურის ძიებისთვის",
 };
 
