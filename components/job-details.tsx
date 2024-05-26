@@ -184,7 +184,7 @@ const JobDetails = ({ profile, job, closeJobDetails }: Props) => {
                                 <>
                                     {isAlreadyApplied === false ? <>
                                         <Input onChange={handleFileChange} ref={fileInputRef} type='file' className='hidden' />
-                                        <div onClick={handleButtonClick} className='mb-4 h-20 rounded-xl border border-zinc-300 bg-zinc-50 border-dashed'>
+                                        <div onClick={handleButtonClick} className='mb-4 h-20  rounded-xl border border-zinc-300 bg-zinc-50 border-dashed'>
                                             <div className="w-full h-full text-zinc-400 gap-2 flex items-center justify-center cursor-pointer text-sm"><FileUp size={20} /> {resume ? resume.name : "ატვირთე რეზიუმე"}</div>
                                         </div>
 

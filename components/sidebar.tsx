@@ -63,7 +63,7 @@ const Sidebar = ({ salaryFilter, selectedJobDetails, setSelectedJobDetails, getN
 
 
     return (
-        <div className='w-full h-full flex flex-col p-4 '>
+        <div className='w-full h-full flex flex-col p-4 pb-0'>
 
             <form onSubmit={(e) => {
                 e.preventDefault()

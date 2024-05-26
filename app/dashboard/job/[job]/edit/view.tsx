@@ -26,6 +26,7 @@ import { createClient } from '@/utils/supabase/client';
 import { useParams, useRouter } from 'next/navigation';
 import { Checkbox } from '@/components/ui/checkbox';
 import { industries } from '@/utils/static-data';
+import MultiInput, { MultiInputObjectT } from '@/app/dashboard/components/multi-input';
 
 type Props = {
     jobDataDTO: any
@@ -118,6 +119,21 @@ const EditView = ({ jobDataDTO }: Props) => {
 
     }
 
+    const handleChange = (key: string, value: any) => {
+        setJobData({ ...jobData, [key]: value })
+    }
+
+    const handleMultiInputAdd = (key: string) => {
+        const id = crypto.randomUUID()
+        handleChange(key, [...jobData[key], {
+            id,
+            text: ""
+        }])
+    }
+
+    const handleMultiInputRemove = (key: string, idToRemove: string) => {
+        handleChange(key, jobData[key].filter((e: any) => e.id !== idToRemove))
+    }
 
     return (
         <div className='py-12 px-4 max-w-7xl w-full mx-auto'>
@@ -138,10 +154,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                     <Input type="text" id="title" placeholder="ვებ დეველოპერი"
                         value={jobData.title}
                         onChange={(e) => {
-                            setJobData({
-                                ...jobData,
-                                title: e.target.value
-                            })
+                            handleChange('title', e.target.value)
                         }}
                     />
                 </div>
@@ -152,14 +165,23 @@ const EditView = ({ jobDataDTO }: Props) => {
                     <Input type="text" id="name" placeholder="Apple"
                         value={jobData.company_name}
                         onChange={(e) => {
-                            setJobData({
-                                ...jobData,
-                                company_name: e.target.value
-                            })
+                            handleChange('company_name', e.target.value)
                         }}
                     />
                 </div>
-                {/* <p className="mt-3 max-w-2xl text-sm  text-zinc-500">{job.location}</p> */}
+
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                    <div className="flex  items-center space-x-2">
+                        <Label htmlFor="is_remote">დისტანციური</Label>
+                        {/* <Switch id="airplane-mode" /> */}
+                        <Checkbox id="is_remote" checked={jobData.is_remote} onCheckedChange={(e) => handleChange('is_remote', e)} />
+                    </div>
+                    <div className="flex  items-center space-x-2">
+                        <Label htmlFor="urgent">სასწრაფო</Label>
+                        {/* <Switch id="airplane-mode" /> */}
+                        <Checkbox id="urgent" checked={jobData.urgent} onCheckedChange={(e) => handleChange('urgent', e)} />
+                    </div>
+                </div>
             </div>
 
             <div className="mt-6 border-t border-zinc-200">
@@ -168,11 +190,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-zinc-900">კატეგორია</dt>
                         <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
-                            <Select onValueChange={(e) =>
-                                setJobData({
-                                    ...jobData,
-                                    industry: e
-                                })}
+                            <Select onValueChange={(e) => handleChange('industry', e)}
                                 value={jobData.industry}
                             >
                                 <SelectTrigger className="w-[180px]">
@@ -194,130 +212,38 @@ const EditView = ({ jobDataDTO }: Props) => {
                                 maxLength={1000}
                                 value={jobData.description}
                                 onChange={(e) => {
-                                    setJobData({
-                                        ...jobData,
-                                        description: e.target.value
-                                    })
+                                    handleChange('description', e.target.value)
                                 }}
 
                             />
                         </dd>
                     </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-zinc-900">შენი პასუხისმგებლობები</dt>
-                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
-                            <ol className='flex flex-col gap-2 list-disc'>
-                                {
-                                    jobData.responsibilities.map((responsibility: any, i: number) => {
-                                        return <div key={responsibility.id} className='flex gap-2 items-center'>
-                                            <Input
+                    <MultiInput
+                        label='შენი პასუხისმგებლობები'
+                        inputs={jobData.responsibilities}
+                        handleAdd={() => handleMultiInputAdd('responsibilities')}
+                        handleChange={(e) => handleChange('responsibilities', e)}
+                        handleRemove={(e) => handleMultiInputRemove('responsibilities', e)}
+                    />
+                    <MultiInput
+                        label='გამოცდილება და უნარჩვევები'
+                        inputs={jobData.required_experiences}
+                        handleAdd={() => handleMultiInputAdd('required_experiences')}
+                        handleChange={(e) => handleChange('required_experiences', e)}
+                        handleRemove={(e) => handleMultiInputRemove('required_experiences', e)}
+                    />
 
-                                                value={responsibility.text}
-                                                onChange={(e) => {
-                                                    let updatedResponsibilities = [...jobData.responsibilities]
-                                                    updatedResponsibilities[i].text = e.target.value
-                                                    setJobData((prevState: any) => ({
-                                                        ...prevState,
-                                                        responsibilities: updatedResponsibilities
-                                                    }))
-                                                }}
-                                            />
-                                            <Button onClick={() => {
-                                                setJobData((prevState: any) => ({
-                                                    ...prevState,
-                                                    responsibilities: prevState.responsibilities.filter((r: any) => r.id !== responsibility.id)
-                                                }))
-                                            }} variant='ghost' size='icon'>
-                                                <Trash size={20} />
-                                            </Button>
-                                        </div>
-                                    })
-                                }
-
-                                <Button variant='ghost' className='w-fit'
-                                    onClick={() => {
-                                        const id = crypto.randomUUID()
-                                        setJobData((jobData: any) => ({
-                                            ...jobData,
-                                            responsibilities: [...jobData.responsibilities, {
-                                                id,
-                                                text: ""
-                                            }]
-                                        }))
-                                    }}
-                                >
-                                    <Plus size={16} className='mr-1' /> დამატება
-                                </Button>
-                            </ol>
-                        </dd>
-                    </div>
-                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-zinc-900">გამოცდილება და უნარჩვევები</dt>
-                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
-                            <ol className='flex flex-col gap-2 list-disc'>
-                                {
-                                    jobData.required_experiences.map((experience: any, i: number) => {
-                                        return <div key={experience.id} className='flex gap-2 items-center'>
-                                            <Input
-
-                                                value={experience.text}
-                                                onChange={(e) => {
-                                                    let updatedResponsibilities = [...jobData.required_experiences]
-                                                    updatedResponsibilities[i].text = e.target.value
-                                                    setJobData((prevState: any) => ({
-                                                        ...prevState,
-                                                        required_experiences: updatedResponsibilities
-                                                    }))
-                                                }}
-                                            />
-                                            <Button onClick={() => {
-                                                setJobData((prevState: any) => ({
-                                                    ...prevState,
-                                                    required_experiences: prevState.required_experiences.filter((e: any) => e.id !== experience.id)
-                                                }))
-                                            }} variant='ghost' size='icon'>
-                                                <Trash size={20} />
-                                            </Button>
-                                        </div>
-                                    })
-                                }
-
-                                <Button variant='ghost' className='w-fit'
-                                    onClick={() => {
-                                        const id = crypto.randomUUID()
-                                        setJobData((required_experiences: any[]) => ({
-                                            ...required_experiences,
-                                            required_experiences: [...jobData.required_experiences, {
-                                                id,
-                                                text: ""
-                                            }]
-                                        }))
-                                    }}
-                                >
-                                    <Plus size={16} className='mr-1' /> დამატება
-                                </Button>
-                            </ol>
-                        </dd>
-                    </div>
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-zinc-900">ანაზღაურება (თვე)</dt>
                         <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0 flex flex-col gap-4">
 
                             <div className="flex gap-2 items-center">
                                 <Input disabled={noSalary} placeholder='-დან' type='number' value={jobData.min_salary || ''} onChange={(e) => {
-
-                                    setJobData({
-                                        ...jobData,
-                                        min_salary: e.target.valueAsNumber
-                                    })
+                                    handleChange('min_salary', e.target.valueAsNumber)
                                 }} />
                                 <span>-</span>
                                 <Input disabled={noSalary} placeholder='-მდე' type='number' value={jobData.max_salary || ''} onChange={(e) => {
-
-                                    setJobData({
-                                        ...jobData,
-                                        max_salary: e.target.valueAsNumber
-                                    })
+                                    handleChange('max_salary', e.target.valueAsNumber)
                                 }} />
                             </div>
                             <div className="flex items-center space-x-2">
@@ -329,51 +255,10 @@ const EditView = ({ jobDataDTO }: Props) => {
                                     შეთანხმებით
                                 </label>
                             </div>
-                            {/* <Textarea
-                        maxLength={128}
-                        placeholder='1500-2500 ლარი გამოცდილების მიხედვით'
-                        value={jobData.salary}
-                        onChange={(e) => {
-                            setJobData({
-                                ...jobData,
-                                salary: e.target.value
-                            })
-                        }}
 
-                    /> */}
                         </dd>
                     </div>
 
-                    {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-zinc-900">მხარე</dt>
-                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
-                            <Select onValueChange={(e) =>
-                                setJobData({
-                                    ...jobData,
-                                    region: e
-                                })}
-                                value={jobData.region}
-                            >
-                                <SelectTrigger className="w-[180px]">
-                                    <SelectValue placeholder="მხარე" />
-                                </SelectTrigger>
-                                <SelectContent>
-
-                                    <SelectItem value="თბილისი">თბილისი</SelectItem>
-                                    <SelectItem value="კახეთი">კახეთი</SelectItem>
-                                    <SelectItem value="შიდა ქართლი">შიდა ქართლი</SelectItem>
-                                    <SelectItem value="ქვემო ქართლი">ქვემო ქართლი</SelectItem>
-                                    <SelectItem value="იმერეთი">იმერეთი</SelectItem>
-                                    <SelectItem value="გურია">გურია</SelectItem>
-                                    <SelectItem value="სამეგრელო-ზემო სვანეთი">სამეგრელო-ზემო სვანეთი</SelectItem>
-                                    <SelectItem value="სამცხე-ჯავახეთი">სამცხე-ჯავახეთი</SelectItem>
-                                    <SelectItem value="რაჭა-ლეჩხუმი და ქვემო სვანეთი">რაჭა-ლეჩხუმი და ქვემო სვანეთი</SelectItem>
-                                    <SelectItem value="მცხეთა-მთიანეთი">მცხეთა-მთიანეთი</SelectItem>
-                                    <SelectItem value="აჭარა">აჭარის ავტონომიური რესპუბლიკა</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </dd>
-                    </div> */}
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 text-zinc-900">ადგილმდებარეობა</dt>
                         <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
@@ -414,22 +299,7 @@ const EditView = ({ jobDataDTO }: Props) => {
                             </Map>
                         </dd>
                     </div>
-                    {/* <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                        <dt className="text-sm font-medium leading-6 text-zinc-900">რეზიუმეს გამოგზავნა</dt>
-                        <dd className="mt-1 text-sm leading-6 text-zinc-700 sm:col-span-2 sm:mt-0">
-                            <Textarea
-                                maxLength={200}
-                                value={jobData.application_instruction}
-                                onChange={(e) => {
-                                    setJobData({
-                                        ...jobData,
-                                        application_instruction: e.target.value
-                                    })
-                                }}
 
-                            />
-                        </dd>
-                    </div> */}
                 </dl>
             </div>
 

@@ -42,7 +42,7 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
 
     return (
 
-        <Card className={classNames("job-card w-full rounded-md shadow-none hover:bg-primary-foreground cursor-pointer transition", {
+        <Card className={classNames("job-card  w-full rounded-md shadow-none hover:bg-primary-foreground cursor-pointer transition", {
             " bg-zinc-50 border-zinc-300 ": selectedJobDetails ? selectedJobDetails.id === id : false
         })}
             onClick={() => onCardClick()}
@@ -84,16 +84,16 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
                                 <ArrowUpRight size={18} />
                             </Button>
                         </header>
-                        <main className="flex gap-2 mt-3 [&_svg]:mr-1 ">
-                            <Badge variant='outline' >
+                        <main className="flex flex-wrap gap-2 mt-3 [&_svg]:mr-1 [&>div]:whitespace-nowrap">
+                            <Badge variant='outline' className='bg-white' >
                                 <Calendar size={14}  />
                                 <time dateTime={created_at}>{createdAt}</time>
                             </Badge>
-                            <Badge variant='outline' >
+                            <Badge variant='outline' className='bg-white'>
                                 <MousePointerClick size={16}  />
                                 {views} მონახულება
                             </Badge>
-                            <Badge variant='outline' 
+                            <Badge variant='outline' className='bg-white' 
                             // className='bg-green-50 text-green-700 border-green-300' 
                             ><TbCurrencyLari size={14} />
                                 {(min_salary && max_salary) ? `${min_salary}-${max_salary}` : "შეთანხმებით"}
