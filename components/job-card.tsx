@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { CalendarIcon, DotFilledIcon } from '@radix-ui/react-icons'
 import moment from 'moment-with-locales-es6';
-import { ArrowUpRight, MousePointerClick, Rss, Zap } from 'lucide-react';
+import { ArrowUpRight, Calendar, MousePointerClick, Rss, Zap } from 'lucide-react';
 import { Badge } from './ui/badge';
 
 type Props = {
@@ -57,7 +57,7 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
                 <main className="flex gap-4 w-full items-center   ">
                     <section className="flex flex-col w-full ">
                         <header className='flex gap-4 items-center'>
-                            <div className="h-16 w-16">
+                            <div className="h-14 w-14">
                                 <Image
                                     src={company_logo || "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/991px-Placeholder_view_vector.svg.png"}
                                     alt=''
@@ -84,31 +84,26 @@ const JobCard = ({ job, locateJob, selectedJobDetails, setSelectedJobDetails, co
                                 <ArrowUpRight size={18} />
                             </Button>
                         </header>
-                        <main className="flex gap-2 my-3">
-                            <Badge variant='outline' ><TbCurrencyLari size={14} className='mr-1' />
+                        <main className="flex gap-2 mt-3 [&_svg]:mr-1 ">
+                            <Badge variant='outline' >
+                                <Calendar size={14}  />
+                                <time dateTime={created_at}>{createdAt}</time>
+                            </Badge>
+                            <Badge variant='outline' >
+                                <MousePointerClick size={16}  />
+                                {views} მონახულება
+                            </Badge>
+                            <Badge variant='outline' 
+                            // className='bg-green-50 text-green-700 border-green-300' 
+                            ><TbCurrencyLari size={14} />
                                 {(min_salary && max_salary) ? `${min_salary}-${max_salary}` : "შეთანხმებით"}
                             </Badge>
                             { }
-                            {urgent && <Badge variant='outline' className='bg-white' ><Zap size={14} className='mr-1' /> სასწრაფო</Badge>}
-                            {is_remote && <Badge variant='outline' className='bg-white' ><Rss size={14} className='mr-1' /> დისტანციური</Badge>}
+                            {urgent && <Badge variant='outline' className='bg-yellow-50 text-yellow-600 border-yellow-300' ><Zap size={14}   /> სასწრაფო</Badge>}
+                            {is_remote && <Badge variant='outline' className='bg-blue-50 text-blue-600 border-blue-200' ><Rss size={14}  /> დისტანციური</Badge>}
+
                         </main>
-                        <footer className='flex items-center gap-1 mt-2 text-xs text-muted-foreground'>
-                            <div className="flex gap-1 items-center ">
-                                <CalendarIcon />
-                                <time dateTime={created_at}>{createdAt}</time>
 
-                            </div>
-
-                            <DotFilledIcon className='hidden sm:block' orientation='vertical' />
-                            <div className="hidden sm:flex gap-1 items-center ">
-                                <MousePointerClick size={16} />
-                                {views} მონახულება
-
-                            </div>
-
-
-
-                        </footer>
                     </section>
                 </main>
             </CardContent>
