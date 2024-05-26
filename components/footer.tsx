@@ -34,6 +34,11 @@ const Footer = () => {
                     <ul className='flex flex-col gap-3'>
                         <li>
                             <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
+                                <Link href='https://calendly.com/iraklibego1/45min' target="_blank">შეხვედრის ჩანიშნვა</Link>
+                            </Button>
+                        </li>
+                        <li>
+                            <Button asChild variant='link' className='p-0  h-fit text-zinc-900'>
                                 <Link href='mailto:support@jobby.ge'>support@jobby.ge</Link>
                             </Button>
                         </li>
