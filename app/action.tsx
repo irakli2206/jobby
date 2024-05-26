@@ -116,6 +116,7 @@ export async function getFilteredJobs(titleFilter?: string, regionFilter?: strin
 export async function getMapJobs(ids?: string[]) {
     const supabase = createClient()
     let query = supabase.from('jobs').select()
+    query.eq('hidden', false)
     if (ids) query = query.in('id', ids)
     let { data, error } = await query
     if (error) return { data: null, error: error.message }
