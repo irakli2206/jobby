@@ -215,7 +215,7 @@ const SignupView = () => {
                         width={1200}
                         quality={100}
                         priority
-                        className="absolute  rounded-xl right-0 top-0 drop-shadow-lg translate-x-[12%]"
+                        className="absolute  rounded-xl right-0 top-0 drop-shadow-md translate-x-[12%]"
                     />
 
                 </div>
