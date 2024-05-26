@@ -11,6 +11,7 @@ import {
   Menu,
   MoveRight,
   Package2,
+  Plus,
   Search,
   Users,
 } from "lucide-react"
@@ -41,7 +42,8 @@ import { ExitIcon } from '@radix-ui/react-icons'
 import { createClient } from "@/utils/supabase/client"
 import Image from "next/image"
 import { XMarkIcon } from '@heroicons/react/20/solid'
-import { ArrowRightIcon } from "lucide-react"
+import { FilePlus } from "lucide-react"
+
 
 type Props = {
   user: any
@@ -119,7 +121,7 @@ const Header = ({ user }: Props) => {
               null
             }
             <Button asChild className=' ' >
-              <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2" /> განათავსე განცხადება </Link>
+              <Link href={user ? '/dashboard' : '/login'} ><FilePlus size={18} className="mr-2" />  განათავსე განცხადება </Link>
             </Button>
 
           </div>
@@ -215,7 +217,7 @@ const Header = ({ user }: Props) => {
                   null
                 }
                 <Button size='lg' asChild className='' >
-                  <Link href={user ? '/dashboard' : '/login'} ><FilePlus2 size={16} className="mr-2" /> განათავსე განცხადება </Link>
+                  <Link href={user ? '/dashboard' : '/login'} ><FilePlus size={16} className="mr-2" /> განათავსე განცხადება  </Link>
                 </Button>
 
               </div>
