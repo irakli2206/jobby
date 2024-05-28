@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 
 export const getUser = async () => {
@@ -49,6 +50,7 @@ export async function signout() {
     const supabase = createClient()
     await supabase.auth.signOut()
     revalidatePath('/')
+    redirect('/login')
 }
 
 

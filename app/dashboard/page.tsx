@@ -37,6 +37,8 @@ import DashboardView from './view'
 const Dashboard = async () => {
   const user = await getProfile()
 
+  if(!user) return
+
   const jobs = await getJobsByUser(user.id)
 
 
