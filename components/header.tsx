@@ -109,6 +109,14 @@ const Header = ({ user }: Props) => {
             >
               კითხვები
             </Link>
+            <Link
+              href="/blog"
+              className={classNames("text-muted-foreground transition-colors hover:text-foreground", {
+                "!text-black": path.includes('blog')
+              })}
+            >
+              ბლოგი
+            </Link>
           </div>
           <div className="flex justify-self-end items-center gap-4  md:gap-2 lg:gap-4">
             {user ?
