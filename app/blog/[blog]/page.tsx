@@ -27,13 +27,13 @@ const Blogpost = async ({ params }: any) => {
 
   const portableTextComponents: PortableTextComponents = {
     block: {
-      h2: ({ children }) => <h1 className="text-2xl font-medium">{children}</h1>,
-      p: ({ children }) => <p className="text-lg">{children}</p>,
+      h2: ({ children }) => <h1 className="text-xl md:text-2xl font-medium">{children}</h1>,
+      p: ({ children }) => <p className="md:text-lg">{children}</p>,
     },
     marks: {
       link: ({ value, children }) => {
         return (
-          <a target='_blank' href={value?.href} className="text-lg text-blue-600 underline">{children}</a>
+          <a target='_blank' href={value?.href} className="md:text-lg text-blue-600 underline">{children}</a>
         )
       }
     }
@@ -54,7 +54,7 @@ const Blogpost = async ({ params }: any) => {
           <Dot className='text-muted-foreground' />
           <p className=' font-medium text-blue-600'>{`${estimatedReadingTime} წუთის წასაკითხი`}</p>
         </div>
-        <h1 className='text-4xl font-semibold'>{title}</h1>
+        <h1 className='text-3xl lg:text-4xl font-semibold'>{title}</h1>
 
         <div className="flex flex-col mt-4">
           <PortableText

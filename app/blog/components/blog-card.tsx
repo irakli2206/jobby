@@ -18,12 +18,12 @@ const BlogCard = async ({ slug, title, description, readTime, categories, date, 
     console.log(categories)
 
     return (
-        <Link href={slug} className='flex gap-2 hover:ring-1 hover:bg-muted/50 rounded-md ring-gray-200 transition  p-4'>
+        <Link href={slug} className='flex gap-2 hover:ring-1 hover:bg-muted/50 rounded-md ring-gray-200 transition  md:p-4'>
             <div className="flex flex-col">
                 <p className="mb-2 text-sm font-medium text-blue-600">{date}</p>
-                <h1 className='text-2xl mb-6 font-semibold'>{title}</h1>
+                <h1 className='text-lg md:text-2xl mb-6 font-semibold'>{title}</h1>
 
-                <p className='text-muted-foreground'>{description}</p>
+                <p className='text-sm md:text-base text-muted-foreground'>{description}</p>
 
 
                 <div className="flex gap-0 items-center mt-8">
@@ -43,7 +43,7 @@ const BlogCard = async ({ slug, title, description, readTime, categories, date, 
                     src={imageUrl}
                     width={400}
                     height={400}
-                    className='h-full object-contain'
+                    className='h-full object-contain hidden md:block'
                 />
             </div>
         </Link>

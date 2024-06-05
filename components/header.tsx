@@ -213,7 +213,12 @@ const Header = ({ user }: Props) => {
               >
                 კითხვები
               </Link>
-
+              <Link
+                href="/blog"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                ბლოგი
+              </Link>
               <div className="flex flex-col   gap-4  md:gap-2 lg:gap-4">
                 {user ?
                   <Button size='lg' variant='outline' className='' onClick={() => {
