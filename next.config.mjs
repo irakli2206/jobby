@@ -10,10 +10,19 @@ const nextConfig = {
     },
     images: {
         dangerouslyAllowSVG: true,
-        remotePatterns: [{
-            protocol: 'https',
-            hostname: "**"
-        }]
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: "**"
+            },
+            {
+                protocol: 'https',
+                hostname: 'cdn.sanity.io'
+            }
+        ]
+    },
+    experimental: {
+        taint: true
     }
 };
 
