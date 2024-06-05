@@ -39,7 +39,6 @@ const Blogpost = async ({ params }: any) => {
     }
   }
 
-  console.log('body is', body)
 
   return (
     <div className='min-h-screen w-full flex justify-center items-start py-12 pb-24 relative'>

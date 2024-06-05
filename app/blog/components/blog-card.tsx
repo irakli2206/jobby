@@ -15,7 +15,6 @@ type Props = {
 }
 
 const BlogCard = async ({ slug, title, description, readTime, categories, date, imageUrl }: Props) => {
-    console.log(categories)
 
     return (
         <Link href={slug} className='flex gap-2 hover:ring-1 hover:bg-muted/50 rounded-md ring-gray-200 transition  md:p-4'>

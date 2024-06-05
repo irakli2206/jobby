@@ -30,7 +30,6 @@ const Blog = async () => {
     }`
     const data = await (await fetch(endpoint)).json()
 
-    console.log(data)
     const description = data.result[0].body[0].children[0].text.slice(0, 200)
 
 
